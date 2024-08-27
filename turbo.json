@@ -12,6 +12,11 @@
       "cache": false,
       "persistent": true
     },
+    "blink-twitter-inject#dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@repo/blinks#build"]
+    },
     "clean": {
       "cache": false
     }

@@ -1,6 +1,3 @@
-import base58 from 'bs58';
-import { Buffer } from 'buffer';
-
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   console.log('on message', msg, sender);
   if (!sender.tab || !sender.tab.id) {
@@ -8,7 +5,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
   if (msg.type === 'getSelectedWallet') {
     chrome.storage.local.get(['selectedWallet'], (storage) => {
-      sendResponse(storage.selectedWallet);
+      // sendResponse(storage.selectedWallet);
+      sendResponse('metamask');
     });
     return true;
   }
@@ -31,70 +29,59 @@ async function handleWalletCommunication(
   wallet: string,
   payload: object,
 ) {
+  // TODO: update based on wallet, its metamask for now.
+  console.log('type', type);
+  console.log('wallet', wallet);
+  console.log('payload', payload);
+
   if (type === 'connect') {
     console.log('connecting wallet', wallet);
     const res = await chrome.scripting.executeScript({
       world: 'MAIN',
       target: { tabId: tabId },
-      func:
-        wallet === 'solflare'
-          ? async () => {
-              // @ts-ignore
-              const provider = window.solflare;
-              const res = await provider.connect();
-              return provider.publicKey.toString();
-            }
-          : async () => {
-              // @ts-ignore
-              const provider = window.solana;
-              const res = await provider.connect();
-              return res.publicKey.toString();
-            },
+      func: async () => {
+        // @ts-ignore
+        const provider = window.ethereum;
+        const accounts = await provider.request({
+          method: 'eth_requestAccounts',
+        });
+        return accounts[0];
+      },
     });
+    console.log('result', res);
     return res[0].result;
   } else if (type === 'sign_message') {
-    // @ts-ignore
-    console.log('signing message', payload.message);
-    const res = await chrome.scripting.executeScript({
-      world: 'MAIN',
-      target: { tabId: tabId },
-      func: async (message: string) => {
-        const provider =
-          // @ts-ignore
-          wallet === 'solflare' ? window.solflare : window.solana;
-        const textToSign = new TextEncoder().encode(message);
-        const res = await provider.signMessage(textToSign);
-        return res;
-      },
-      // @ts-ignore
-      args: [payload.message, wallet],
-    });
-    return res[0].result;
+    // // @ts-ignore
+    // console.log('signing message', payload.message);
+    // const res = await chrome.scripting.executeScript({
+    //   world: 'MAIN',
+    //   target: { tabId: tabId },
+    //   func: async (message: string) => {
+    //     const provider =
+    //       // @ts-ignore
+    //       wallet === 'solflare' ? window.solflare : window.solana;
+    //     const textToSign = new TextEncoder().encode(message);
+    //     const res = await provider.signMessage(textToSign);
+    //     return res;
+    //   },
+    //   // @ts-ignore
+    //   args: [payload.message, wallet],
+    // });
+    // return res[0].result;
   } else if (type === 'sign_transaction') {
     // @ts-ignore
     console.log('signing transaction', wallet, payload.txData);
     const res = await chrome.scripting.executeScript({
       world: 'MAIN',
       target: { tabId: tabId },
-      func: async (transaction: string, wallet) => {
+      func: async (transaction: any, wallet) => {
         try {
-          const res =
-            wallet === 'solflare'
-              ? // @ts-ignore
-                await window.solflare.request({
-                  method: 'signAndSendTransaction',
-                  params: {
-                    transaction,
-                  },
-                })
-              : // @ts-ignore
-                await window.solana.request({
-                  method: 'signAndSendTransaction',
-                  params: {
-                    message: transaction,
-                  },
-                });
-          console.log('result', res);
+          // @ts-ignore
+          const provider = window.ethereum;
+          const res = await provider.request({
+            method: 'eth_sendTransaction',
+            params: [transaction],
+          });
           return res;
         } catch (e: any) {
           console.log('error', e);
@@ -102,7 +89,7 @@ async function handleWalletCommunication(
         }
       },
       // @ts-ignore
-      args: [base58.encode(Buffer.from(payload.txData, 'base64')), wallet],
+      args: [payload.txData, wallet],
     });
     return res[0].result;
   }

@@ -53,9 +53,15 @@ export class ActionsRegistry {
   public async refresh(): Promise<void> {
     this.initPromise = fetchActionsRegistryConfig();
     const config = await this.initPromise;
+    // TODO:
+    config.websites.push({ host: 'localhost:3000', state: 'trusted' });
+    config.actions.push({ host: 'localhost:3000', state: 'trusted' });
+    config.interstitials.push({ host: 'localhost:3000', state: 'trusted' });
+
     this.actionsByHost = Object.fromEntries(
       config.actions.map((action) => [action.host, action]),
     );
+
     this.websitesByHost = Object.fromEntries(
       config.websites.map((website) => [website.host, website]),
     );

@@ -420,7 +420,11 @@ export const ActionContainer = ({
         .post(account)
         .catch((e: Error) => ({ error: e.message }));
 
-      if (!(tx as ActionPostResponse).transaction || isPostRequestError(tx)) {
+      if (
+        !(tx as ActionPostResponse).transactionData ||
+        isPostRequestError(tx)
+      ) {
+        console.log('tx', tx);
         dispatch({
           type: ExecutionType.SOFT_RESET,
           errorMessage: isPostRequestError(tx)
@@ -431,7 +435,7 @@ export const ActionContainer = ({
       }
 
       const signResult = await action.adapter.signTransaction(
-        tx.transaction,
+        tx.transactionData,
         context,
       );
 

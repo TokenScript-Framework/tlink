@@ -1,15 +1,15 @@
-import { ActionConfig, BlockchainIds } from '@repo/blinks';
+import { ActionConfig, BlockchainIds, TransactionData } from '@repo/blinks';
 import { setupTwitterObserver } from '@repo/blinks/ext/twitter';
 import '@repo/blinks/index.css';
 
 const adapter = (wallet: string) =>
   new ActionConfig(import.meta.env.VITE_RPC_URL, {
-    signTransaction: (tx: string) =>
+    signTransaction: (txData: TransactionData) =>
       chrome.runtime.sendMessage({
         type: 'sign_transaction',
         wallet,
         payload: {
-          txData: tx,
+          txData,
         },
       }),
     connect: () =>

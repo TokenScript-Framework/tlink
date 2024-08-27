@@ -147,7 +147,9 @@ async function handleNewNode(
   if (!anchor || !container) return;
 
   const shortenedUrl = anchor.href;
-  const actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
+  let actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
+  console.log('actionUrl', actionUrl);
+  actionUrl = new URL('http://localhost:3000/smartcat');
   const interstitialData = isInterstitial(actionUrl);
 
   let actionApiUrl: string | null;

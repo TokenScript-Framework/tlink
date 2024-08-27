@@ -179,12 +179,21 @@ export interface ActionPostRequest<T = string> {
   data?: Record<keyof T, string | Array<string>>;
 }
 
+export interface TransactionData {
+  from: string;
+  to?: string;
+  gas?: string;
+  gasPrice?: string;
+  value?: string;
+  data?: string;
+  nonce?: string;
+}
+
 /**
  * Response body payload returned from the Action POST Request
  */
 export interface ActionPostResponse<T extends ActionType = ActionType> {
-  /** base64 encoded serialized transaction */
-  transaction: string;
+  transactionData: TransactionData;
   /** describes the nature of the transaction */
   message?: string;
   links?: {

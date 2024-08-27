@@ -3,7 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { Connection, VersionedTransaction } from '@solana/web3.js';
 import { useMemo } from 'react';
-import { ActionConfig } from '../../api';
+import { ActionConfig, type TransactionData } from '../../api';
 
 /**
  * Hook to create an action adapter using solana's wallet adapter.
@@ -37,8 +37,9 @@ export function useActionSolanaWalletAdapter(
 
         return wallet.publicKey?.toBase58() ?? null;
       },
-      signTransaction: async (txData: string) => {
+      signTransaction: async (txData: TransactionData) => {
         try {
+          // TODO:
           const tx = await wallet.sendTransaction(
             // @ts-ignore
             VersionedTransaction.deserialize(Buffer.from(txData, 'base64')),
