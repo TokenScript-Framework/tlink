@@ -5,8 +5,8 @@ export const GET = (req: Request) => {
     {
       rules: [
         {
-          pathPattern: '/smartcat/**',
-          apiPath: 'http://localhost:3000/api/smartcat/**',
+          pathPattern: '/**',
+          apiPath: 'http://localhost:3000/api/**',
         },
       ],
     },
