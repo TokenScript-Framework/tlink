@@ -1,13 +1,10 @@
 import { ReactNode } from 'react';
-import PhantomLogo from '../assets/PhantomLogo';
-import SolflareLogo from '../assets/SolflareLogo';
-import BackpackLogo from '../assets/BackpackLogo';
+import MetaMaskLogo from '../assets/MetaMaskLogo';
 import ArrowFromSquareIcon from '../icons/ArrowFromSquareIcon';
 import { Checkbox } from './Checkbox';
 
 enum Wallets {
-  Solflare = 'solflare',
-  Phantom = 'phantom',
+  MetaMask = 'metamask',
 }
 interface WalletProps {
   title: string;
@@ -101,33 +98,17 @@ export const WalletSelector = ({
     setSelectedWallet(null);
     chrome.storage.local.remove('selectedWallet');
   }
-  const isWalletSolflare = selectedWallet === Wallets.Solflare;
-  const isWalletPhantom = selectedWallet === Wallets.Phantom;
+  const isWalletMetaMask = selectedWallet === Wallets.MetaMask;
   return (
     <div className="flex flex-col flex-1 gap-2 w-full">
       <WalletSelect
-        isSelected={isWalletPhantom}
-        title="Phantom"
-        subtitle="Blinks are also natively supported in Phantom"
-        icon={<PhantomLogo />}
+        isSelected={isWalletMetaMask}
+        title="MetaMask"
+        subtitle="The most popular wallet for Ethereum"
+        icon={<MetaMaskLogo className="w-8 h-8" />}
         onChange={(isChecked: boolean) =>
-          isChecked ? selectWallet(Wallets.Phantom) : unselectWallet()
+          isChecked ? selectWallet(Wallets.MetaMask) : unselectWallet()
         }
-      />
-      <WalletSelect
-        isSelected={isWalletSolflare}
-        title="Solflare"
-        subtitle="Blinks are also natively supported in Solflare"
-        icon={<SolflareLogo />}
-        onChange={(isChecked: boolean) =>
-          isChecked ? selectWallet(Wallets.Solflare) : unselectWallet()
-        }
-      />
-      <WalletLink
-        title="Backpack"
-        subtitle="Blinks are natively supported in Backpack"
-        icon={<BackpackLogo />}
-        url="https://chromewebstore.google.com/detail/backpack/aflkmfhebedbjioipglgcbcmnbpgliof"
       />
     </div>
   );

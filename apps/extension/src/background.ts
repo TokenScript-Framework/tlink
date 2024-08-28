@@ -5,8 +5,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
   if (msg.type === 'getSelectedWallet') {
     chrome.storage.local.get(['selectedWallet'], (storage) => {
-      // sendResponse(storage.selectedWallet);
-      sendResponse('metamask');
+      sendResponse(storage.selectedWallet);
     });
     return true;
   }
@@ -29,7 +28,6 @@ async function handleWalletCommunication(
   wallet: string,
   payload: object,
 ) {
-  // TODO: update based on wallet, its metamask for now.
   console.log('type', type);
   console.log('wallet', wallet);
   console.log('payload', payload);
