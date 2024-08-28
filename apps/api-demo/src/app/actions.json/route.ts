@@ -1,4 +1,4 @@
-import { ACTIONS_CORS_HEADERS } from '@solana/actions'
+import { ACTIONS_CORS_HEADERS } from '@repo/actions'
 
 export const GET = (req: Request) => {
   return Response.json(

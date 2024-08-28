@@ -1,4 +1,4 @@
-import { ACTIONS_CORS_HEADERS, ActionGetResponse } from '@solana/actions'
+import { ACTIONS_CORS_HEADERS, ActionGetResponse } from '@repo/actions'
 
 export const GET = async (req: Request) => {
   const payload: ActionGetResponse = {

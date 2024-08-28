@@ -1,4 +1,4 @@
-import { ACTIONS_CORS_HEADERS } from '@solana/actions'
+import { ACTIONS_CORS_HEADERS } from '@repo/actions'
 import { encodeFunctionData } from 'viem'
 
 export const GET = async (req: Request) => {
