@@ -1,6 +1,9 @@
 import { ACTIONS_CORS_HEADERS, ActionGetResponse } from '@repo/actions'
 
-export const GET = async (req: Request) => {
+export const GET = async (
+  req: Request,
+  { params }: { params: { tokenId: string } },
+) => {
   const payload: ActionGetResponse = {
     type: 'action',
     icon: 'https://miro.medium.com/v2/resize:fit:1400/format:webp/1*UT8UFZc-pKx7uxNqUaaW3A.png',
@@ -12,7 +15,7 @@ export const GET = async (req: Request) => {
       actions: [
         {
           label: 'Feed cat',
-          href: '/api/smartcat/feed',
+          href: `/api/smartcat/${params.tokenId}/feed`,
         },
         // {
         //   label: 'Clean cat',

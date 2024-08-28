@@ -32,6 +32,26 @@ async function handleWalletCommunication(
   console.log('wallet', wallet);
   console.log('payload', payload);
 
+  //  case "eth_requestAccounts":
+  //  case "eth_sendTransaction":
+
+  // TODO:
+  //  case "eth_accounts":
+  //  case "eth_getCode":
+  //  case "eth_chainId":
+  //  case "net_version":
+  //  case "eth_blockNumber":
+  //  case "eth_estimateGas":
+  //  case "eth_getTransactionByHash":
+  //  case "eth_getTransactionReceipt":
+  //  case "eth_getTransactionCount":
+  //  case "personal_sign":
+  //  case "eth_call":
+  //  case "eth_signTypedData":
+  //  case "eth_signTypedData_v4":
+  //  case "eth_getBlockByNumber":
+  //  case "wallet_switchEthereumChain"
+
   if (type === 'connect') {
     console.log('connecting wallet', wallet);
     const res = await chrome.scripting.executeScript({
