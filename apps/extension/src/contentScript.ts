@@ -6,7 +6,7 @@ const adapter = (wallet: string) =>
   new ActionConfig(import.meta.env.VITE_RPC_URL, {
     signTransaction: (txData: TransactionData) =>
       chrome.runtime.sendMessage({
-        type: 'sign_transaction',
+        type: 'eth_sendTransaction',
         wallet,
         payload: {
           txData,

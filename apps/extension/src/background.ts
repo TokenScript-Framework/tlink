@@ -66,7 +66,7 @@ async function handleWalletCommunication(
     //   args: [payload.message, wallet],
     // });
     // return res[0].result;
-  } else if (type === 'sign_transaction') {
+  } else if (type === 'eth_sendTransaction') {
     // @ts-ignore
     console.log('signing transaction', wallet, payload.txData);
     const res = await chrome.scripting.executeScript({
