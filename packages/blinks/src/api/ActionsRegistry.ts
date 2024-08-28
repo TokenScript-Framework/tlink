@@ -57,6 +57,12 @@ export class ActionsRegistry {
     config.websites.push({ host: 'localhost:3000', state: 'trusted' });
     config.actions.push({ host: 'localhost:3000', state: 'trusted' });
     config.interstitials.push({ host: 'localhost:3000', state: 'trusted' });
+    config.websites.push({ host: 'viewer.tokenscript.org', state: 'trusted' });
+    config.actions.push({ host: 'viewer.tokenscript.org', state: 'trusted' });
+    config.interstitials.push({
+      host: 'viewer.tokenscript.org',
+      state: 'trusted',
+    });
 
     this.actionsByHost = Object.fromEntries(
       config.actions.map((action) => [action.host, action]),

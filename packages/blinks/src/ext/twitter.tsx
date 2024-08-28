@@ -13,6 +13,7 @@ import {
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
 import { ActionContainer, type StylePreset } from '../ui/index.ts';
 import { noop } from '../utils/constants.ts';
+import { handleTokenScript } from '../utils/handle-tokenscript.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { proxify } from '../utils/proxify.ts';
 import {
@@ -147,9 +148,8 @@ async function handleNewNode(
   if (!anchor || !container) return;
 
   const shortenedUrl = anchor.href;
-  let actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
+  const actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
   console.log('actionUrl', actionUrl);
-  actionUrl = new URL('http://localhost:3000/smartcat/1649017156');
   const interstitialData = isInterstitial(actionUrl);
 
   let actionApiUrl: string | null;
@@ -172,14 +172,16 @@ async function handleNewNode(
       return;
     }
 
-    const actionsJsonUrl = actionUrl.origin + '/actions.json';
+    // TODO: temp solution, hardcoded for TS
+    const parsedActionUrl = handleTokenScript(actionUrl);
+    const actionsJsonUrl = parsedActionUrl.origin + '/actions.json';
     const actionsJson = await fetch(proxify(actionsJsonUrl)).then(
       (res) => res.json() as Promise<ActionsJsonConfig>,
     );
 
     const actionsUrlMapper = new ActionsURLMapper(actionsJson);
 
-    actionApiUrl = actionsUrlMapper.mapUrl(actionUrl);
+    actionApiUrl = actionsUrlMapper.mapUrl(parsedActionUrl);
   }
 
   const state = actionApiUrl ? getExtendedActionState(actionApiUrl) : null;

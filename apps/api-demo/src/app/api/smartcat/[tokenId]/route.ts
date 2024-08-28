@@ -4,6 +4,8 @@ export const GET = async (
   req: Request,
   { params }: { params: { tokenId: string } },
 ) => {
+  // TODO: generate json from https://ts-viewer/chain/address?params with Token Kit
+
   const payload: ActionGetResponse = {
     type: 'action',
     icon: 'https://miro.medium.com/v2/resize:fit:1400/format:webp/1*UT8UFZc-pKx7uxNqUaaW3A.png',
@@ -34,6 +36,7 @@ export const GET = async (
       ],
     },
   }
+
   return Response.json(payload, {
     headers: ACTIONS_CORS_HEADERS,
   })
