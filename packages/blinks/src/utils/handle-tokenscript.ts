@@ -11,10 +11,7 @@ export const handleTokenScript = (actionUrl: URL) => {
   const tokenId = params.get('tokenId');
 
   if (chain && contract && tokenId) {
-    return new URL('http://localhost:3000/1649017156');
-    // return new URL(
-    //   `http://localhost:3000/smartcat/${chain}/${contract}/${tokenId}`,
-    // );
+    return new URL(`http://localhost:3000/${chain}/${contract}/${tokenId}`);
   }
 
   return actionUrl;
