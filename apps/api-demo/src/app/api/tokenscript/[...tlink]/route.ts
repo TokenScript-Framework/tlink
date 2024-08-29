@@ -1,21 +1,28 @@
+// import { handlers } from '@/auth'
+
+// export const { GET, POST } = handlers
 import { getERC721Metadata } from '@/app/libs/ethereum'
 import { getMetadata } from '@/app/service/externalApi'
 import { ACTIONS_CORS_HEADERS, ActionGetResponse } from '@repo/actions'
 
+type ChainId = string
+type Contract = `0x${string}`
+type TokenId = string
+type ActionName = string
+type Tlink =
+  | [ChainId, Contract, TokenId]
+  | [ChainId, Contract, TokenId, ActionName]
+
 export const GET = async (
   req: Request,
-  {
-    params,
-  }: { params: { chainId: string; contract: string; tokenId: string } },
+  { params }: { params: { tlink: Tlink } },
 ) => {
-  const tsMetaData = await getMetadata(
-    Number(params.chainId),
-    params.contract as `0x${string}`,
-  )
+  const [chainId, contract, tokenId, actionName] = params.tlink
+  const tsMetaData = await getMetadata(Number(chainId), contract)
   const tokenMetadata = await getERC721Metadata(
-    Number(params.chainId),
-    params.contract as `0x${string}`,
-    BigInt(params.tokenId),
+    Number(chainId),
+    contract,
+    BigInt(tokenId),
   )
 
   const payload: ActionGetResponse = {
@@ -29,23 +36,23 @@ export const GET = async (
         tsMetaData.actions
           ?.map((actionName) => ({
             label: camelCaseToWords(actionName),
-            href: `/api/${params.chainId}/${params.contract}/${params.tokenId}/${actionName}`,
+            href: `/api/${chainId}/${contract}/${tokenId}/${actionName}`,
           }))
           .concat([
             {
               label: 'Feed Cat',
-              href: `/api/${params.chainId}/${params.contract}/${params.tokenId}/feedCat`,
+              href: `/api/${chainId}/${contract}/${tokenId}/feedCat`,
             },
           ]) || [],
     },
   }
 
-  return Response.json(payload, {
-    headers: ACTIONS_CORS_HEADERS,
-  })
+  return Response.json(payload, { headers: ACTIONS_CORS_HEADERS })
 }
 
-export const OPTIONS = GET
+export const OPTIONS = async (req: Request) => {
+  return Response.json({}, { headers: ACTIONS_CORS_HEADERS })
+}
 
 function camelCaseToWords(str: string) {
   return str

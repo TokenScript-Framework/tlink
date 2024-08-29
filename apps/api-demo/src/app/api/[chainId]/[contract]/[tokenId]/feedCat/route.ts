@@ -17,11 +17,11 @@ const ABI = [
   },
 ] as const
 
-const CAT_GAME = '0x7573933eB12Fa15D5557b74fDafF845B3BaF0ba2'
-
 export const POST = async (
   req: Request,
-  { params }: { params: { tokenId: string } },
+  {
+    params,
+  }: { params: { chainId: string; contract: string; tokenId: string } },
 ) => {
   try {
     const { account } = await req.json()
@@ -33,7 +33,7 @@ export const POST = async (
       {
         transactionData: {
           from: account,
-          to: CAT_GAME,
+          to: params.contract,
           data: encodeFunctionData({
             abi: ABI,
             functionName: 'feedCat',
