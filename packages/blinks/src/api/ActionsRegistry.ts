@@ -53,16 +53,6 @@ export class ActionsRegistry {
   public async refresh(): Promise<void> {
     this.initPromise = fetchActionsRegistryConfig();
     const config = await this.initPromise;
-    // TODO:
-    config.websites.push({ host: 'localhost:3000', state: 'trusted' });
-    config.actions.push({ host: 'localhost:3000', state: 'trusted' });
-    config.interstitials.push({ host: 'localhost:3000', state: 'trusted' });
-    config.websites.push({ host: 'viewer.tokenscript.org', state: 'trusted' });
-    config.actions.push({ host: 'viewer.tokenscript.org', state: 'trusted' });
-    config.interstitials.push({
-      host: 'viewer.tokenscript.org',
-      state: 'trusted',
-    });
 
     this.actionsByHost = Object.fromEntries(
       config.actions.map((action) => [action.host, action]),
@@ -196,17 +186,24 @@ export const getExtendedInterstitialState = (
 
 async function fetchActionsRegistryConfig(): Promise<ActionsRegistryConfig> {
   try {
-    const response = await fetch('https://actions-registry.dial.to/all');
-
-    if (!response.ok) {
-      console.error(
-        '[@tokenscript/tlinks] Failed to fetch actions registry config',
-        await response.json(),
-      );
-      return { actions: [], interstitials: [], websites: [] };
-    }
-
-    return await response.json();
+    // const response = await fetch('https://actions-registry.dial.to/all');
+    return Promise.resolve({
+      actions: [
+        { host: 'localhost:3000', state: 'trusted' },
+        { host: 'viewer.tokenscript.org', state: 'trusted' },
+        { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
+      ],
+      interstitials: [
+        { host: 'localhost:3000', state: 'trusted' },
+        { host: 'viewer.tokenscript.org', state: 'trusted' },
+        { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
+      ],
+      websites: [
+        { host: 'localhost:3000', state: 'trusted' },
+        { host: 'viewer.tokenscript.org', state: 'trusted' },
+        { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
+      ],
+    });
   } catch (e) {
     console.error(
       '[@tokenscript/tlinks] Failed to fetch actions registry config',
