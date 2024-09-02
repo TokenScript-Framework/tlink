@@ -17,6 +17,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "dev": "tsup ./src --watch",
     "build": "tsup ./src"
   },
   "keywords": [],

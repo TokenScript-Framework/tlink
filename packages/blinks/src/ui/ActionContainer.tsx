@@ -416,26 +416,29 @@ export const ActionContainer = ({
         return;
       }
 
-      const tx = await component
+      const payload = await component
         .post(account)
         .catch((e: Error) => ({ error: e.message }));
 
       if (
-        !(tx as ActionPostResponse).transactionData ||
-        isPostRequestError(tx)
+        !(payload as ActionPostResponse).transactionData ||
+        isPostRequestError(payload)
       ) {
-        console.log('tx', tx);
+        console.log('tx', payload);
         dispatch({
           type: ExecutionType.SOFT_RESET,
-          errorMessage: isPostRequestError(tx)
-            ? tx.error
+          errorMessage: isPostRequestError(payload)
+            ? payload.error
             : 'Transaction data missing',
         });
         return;
       }
 
       const signResult = await action.adapter.signTransaction(
-        tx.transactionData,
+        {
+          txData: payload.transactionData,
+          chainId: payload.chainId,
+        },
         context,
       );
 
@@ -444,16 +447,16 @@ export const ActionContainer = ({
       } else {
         await action.adapter.confirmTransaction(signResult.signature, context);
 
-        if (!tx.links?.next) {
+        if (!payload.links?.next) {
           dispatch({
             type: ExecutionType.FINISH,
-            successMessage: tx.message,
+            successMessage: payload.message,
           });
           return;
         }
 
         // chain
-        const nextAction = await action.chain(tx.links.next, {
+        const nextAction = await action.chain(payload.links.next, {
           signature: signResult.signature,
           account: account,
         });
@@ -461,7 +464,7 @@ export const ActionContainer = ({
         if (!nextAction) {
           dispatch({
             type: ExecutionType.FINISH,
-            successMessage: tx.message,
+            successMessage: payload.message,
           });
           return;
         }

@@ -58,6 +58,7 @@ export function handlePostTokenScriptAction(
     url.pathname.split('/').filter(Boolean);
 
   return {
+    chainId,
     transactionData: {
       from: account,
       to: contract,

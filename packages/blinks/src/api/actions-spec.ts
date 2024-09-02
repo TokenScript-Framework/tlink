@@ -179,6 +179,11 @@ export interface ActionPostRequest<T = string> {
   data?: Record<keyof T, string | Array<string>>;
 }
 
+export interface TransactionPayload {
+  txData: TransactionData;
+  chainId: string;
+}
+
 export interface TransactionData {
   from: string;
   to?: string;
@@ -194,6 +199,7 @@ export interface TransactionData {
  */
 export interface ActionPostResponse<T extends ActionType = ActionType> {
   transactionData: TransactionData;
+  chainId: string;
   /** describes the nature of the transaction */
   message?: string;
   links?: {

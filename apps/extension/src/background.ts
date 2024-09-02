@@ -50,6 +50,32 @@ async function handleWalletCommunication(
       console.log('result', connectRes);
       return connectRes[0].result;
 
+    case 'eth_sendTransaction':
+      // @ts-ignore
+      console.log('signing transaction', wallet, payload.txData);
+      const sendTransactionRes = await chrome.scripting.executeScript({
+        world: 'MAIN',
+        target: { tabId: tabId },
+        func: async (payload: { txData: any; chainId: string }, wallet) => {
+          try {
+            // @ts-ignore
+            const provider = window.ethereum;
+            const chainId = payload.chainId;
+            const res = await provider.request({
+              method: 'eth_sendTransaction',
+              params: [payload.txData],
+            });
+            return res;
+          } catch (e: any) {
+            console.log('error', e);
+            return { error: e.message ?? 'Unknown error' };
+          }
+        },
+        // @ts-ignore
+        args: [payload, wallet, payload],
+      });
+      return sendTransactionRes[0].result;
+
     case 'sign_message':
       // // @ts-ignore
       // console.log('signing message', payload.message);
@@ -69,31 +95,6 @@ async function handleWalletCommunication(
       // });
       // return signMessageRes[0].result;
       break;
-
-    case 'eth_sendTransaction':
-      // @ts-ignore
-      console.log('signing transaction', wallet, payload.txData);
-      const sendTransactionRes = await chrome.scripting.executeScript({
-        world: 'MAIN',
-        target: { tabId: tabId },
-        func: async (transaction: any, wallet) => {
-          try {
-            // @ts-ignore
-            const provider = window.ethereum;
-            const res = await provider.request({
-              method: 'eth_sendTransaction',
-              params: [transaction],
-            });
-            return res;
-          } catch (e: any) {
-            console.log('error', e);
-            return { error: e.message ?? 'Unknown error' };
-          }
-        },
-        // @ts-ignore
-        args: [payload.txData, wallet],
-      });
-      return sendTransactionRes[0].result;
 
     default:
       // TODO:

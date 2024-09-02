@@ -104,7 +104,7 @@ setupTwitterObserver(new ActionConfig(RPC_URL, {
     supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET]
   },
   connect: async () => { ... },
-  signTransaction: async (tx: string) => { ... }
+  signTransaction: async (payload: TransactionPayload) => { ... }
 }))
 
 // or
@@ -113,7 +113,7 @@ import { type ActionAdapter } from "@dialectlabs/blinks";
 
 class MyActionAdapter implements ActionAdapter {
   async connect() { ... }
-  async signTransaction(tx: string) { ... }
+  async signTransaction(payload: TransactionPayload) { ... }
   async confirmTransaction(sig: string) { ... }
   get metadata(): ActionAdapterMetadata {
     return {

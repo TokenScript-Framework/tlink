@@ -2,7 +2,7 @@ import { Connection } from '@solana/web3.js';
 import { AbstractActionComponent } from './Action/action-components/index.ts';
 import { DEFAULT_SUPPORTED_BLOCKCHAIN_IDS } from './Action/action-supportability.ts';
 import { type Action } from './Action/index.ts';
-import type { TransactionData } from './actions-spec.ts';
+import type { TransactionPayload } from './actions-spec.ts';
 
 export interface ActionContext {
   originalUrl: string;
@@ -35,7 +35,7 @@ export interface ActionAdapter {
   metadata: ActionAdapterMetadata;
   connect: (context: ActionContext) => Promise<string | null>;
   signTransaction: (
-    txData: TransactionData,
+    payload: TransactionPayload,
     context: ActionContext,
   ) => Promise<{ signature: string } | { error: string }>;
   confirmTransaction: (
@@ -69,8 +69,8 @@ export class ActionConfig implements ActionAdapter {
     return this.adapter.metadata ?? ActionConfig.DEFAULT_METADATA;
   }
 
-  signTransaction(txData: TransactionData, context: ActionContext) {
-    return this.adapter.signTransaction(txData, context);
+  signTransaction(payload: TransactionPayload, context: ActionContext) {
+    return this.adapter.signTransaction(payload, context);
   }
 
   confirmTransaction(signature: string): Promise<void> {
