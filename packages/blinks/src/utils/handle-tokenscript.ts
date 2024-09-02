@@ -1,5 +1,6 @@
 import { getERC721Metadata, getMetadata } from '@repo/token-kit';
 import { encodeFunctionData } from 'viem';
+import type { ActionPostResponse } from '../api/actions-spec';
 
 export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   // example:
@@ -49,7 +50,7 @@ function camelCaseToWords(str: string) {
 export function handlePostTokenScriptAction(
   actionUrl: string,
   account: string,
-) {
+): ActionPostResponse {
   // "https://viewer.tokenscript.org/api/tokenscript/137/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/1649017156/feedCat"
   const url = new URL(actionUrl);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
