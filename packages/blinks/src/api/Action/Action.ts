@@ -1,4 +1,6 @@
 import { isUrlSameOrigin } from '../../shared/index.ts';
+import { handleGetTokenScriptAction } from '../../utils/handle-tokenscript.ts';
+import { isTokenScriptViewerUrl } from '../../utils/is-tokenscript-viewer-url.ts';
 import { proxify, proxifyImage } from '../../utils/proxify.ts';
 import type { ActionAdapter } from '../ActionConfig.ts';
 import type {
@@ -229,6 +231,18 @@ export class Action {
     adapter?: ActionAdapter,
     supportStrategy: ActionSupportStrategy = defaultActionSupportStrategy,
   ) {
+    if (isTokenScriptViewerUrl(new URL(apiUrl))) {
+      const data = await handleGetTokenScriptAction(new URL(apiUrl));
+
+      return new Action(
+        apiUrl,
+        { ...data, type: 'action' },
+        { blockchainIds: undefined, version: undefined },
+        supportStrategy,
+        adapter,
+      );
+    }
+
     const proxyUrl = proxify(apiUrl);
     const response = await fetch(proxyUrl, {
       headers: {

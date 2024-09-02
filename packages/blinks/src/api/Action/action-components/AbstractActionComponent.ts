@@ -1,3 +1,5 @@
+import { handlePostTokenScriptAction } from '../../../utils/handle-tokenscript.ts';
+import { isTokenScriptViewerUrl } from '../../../utils/is-tokenscript-viewer-url.ts';
 import { proxify } from '../../../utils/proxify.ts';
 import type {
   ActionError,
@@ -32,6 +34,10 @@ export abstract class AbstractActionComponent {
   protected abstract buildBody(account: string): ActionPostRequest;
 
   public async post(account: string) {
+    if (isTokenScriptViewerUrl(new URL(this.href))) {
+      return handlePostTokenScriptAction(this.href, account);
+    }
+
     const proxyUrl = proxify(this.href);
     const response = await fetch(proxyUrl, {
       method: 'POST',

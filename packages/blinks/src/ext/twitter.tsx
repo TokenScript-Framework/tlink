@@ -13,8 +13,8 @@ import {
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
 import { ActionContainer, type StylePreset } from '../ui/index.ts';
 import { noop } from '../utils/constants.ts';
-import { handleTokenScript } from '../utils/handle-tokenscript.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
+import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
 import { proxify } from '../utils/proxify.ts';
 import {
   type ActionsJsonConfig,
@@ -153,7 +153,11 @@ async function handleNewNode(
   const interstitialData = isInterstitial(actionUrl);
 
   let actionApiUrl: string | null;
-  if (interstitialData.isInterstitial) {
+
+  if (isTokenScriptViewerUrl(actionUrl)) {
+    // handle TokenScript viewer url
+    actionApiUrl = actionUrl.toString();
+  } else if (interstitialData.isInterstitial) {
     const interstitialState = getExtendedInterstitialState(
       actionUrl.toString(),
     );
@@ -172,16 +176,14 @@ async function handleNewNode(
       return;
     }
 
-    // TODO: temp solution, hardcoded for TS
-    const parsedActionUrl = handleTokenScript(actionUrl);
-    const actionsJsonUrl = parsedActionUrl.origin + '/actions.json';
+    const actionsJsonUrl = actionUrl.origin + '/actions.json';
     const actionsJson = await fetch(proxify(actionsJsonUrl)).then(
       (res) => res.json() as Promise<ActionsJsonConfig>,
     );
 
     const actionsUrlMapper = new ActionsURLMapper(actionsJson);
 
-    actionApiUrl = actionsUrlMapper.mapUrl(parsedActionUrl);
+    actionApiUrl = actionsUrlMapper.mapUrl(actionUrl);
   }
 
   const state = actionApiUrl ? getExtendedActionState(actionApiUrl) : null;
