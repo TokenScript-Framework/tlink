@@ -51,8 +51,6 @@ async function handleWalletCommunication(
       return connectRes[0].result;
 
     case 'eth_sendTransaction':
-      // @ts-ignore
-      console.log('signing transaction', wallet, payload.txData);
       const sendTransactionRes = await chrome.scripting.executeScript({
         world: 'MAIN',
         target: { tabId: tabId },
@@ -60,7 +58,23 @@ async function handleWalletCommunication(
           try {
             // @ts-ignore
             const provider = window.ethereum;
-            const chainId = payload.chainId;
+            const currentChainId = await provider.request({
+              method: 'eth_chainId',
+            });
+            let targetChainId = payload.chainId;
+
+            // 确保 targetChainId 是正确的格式
+            if (!targetChainId.startsWith('0x')) {
+              targetChainId = '0x' + parseInt(targetChainId).toString(16);
+            }
+
+            if (currentChainId !== targetChainId) {
+              await provider.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: targetChainId }],
+              });
+            }
+
             const res = await provider.request({
               method: 'eth_sendTransaction',
               params: [payload.txData],
@@ -72,7 +86,7 @@ async function handleWalletCommunication(
           }
         },
         // @ts-ignore
-        args: [payload, wallet, payload],
+        args: [payload, wallet],
       });
       return sendTransactionRes[0].result;
 
