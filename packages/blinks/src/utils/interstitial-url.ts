@@ -37,7 +37,7 @@ export function isInterstitial(url: string | URL): IsInterstitialResult {
     };
   } catch (e) {
     console.error(
-      `[@dialectlabs/blinks] Failed to check if URL is interstitial: ${url}`,
+      `[@tokenscript/tlinks] Failed to check if URL is interstitial: ${url}`,
       e,
     );
     return { isInterstitial: false };

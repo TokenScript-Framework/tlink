@@ -140,7 +140,7 @@ export class Action {
       return await this._supportStrategy(this);
     } catch (e) {
       console.error(
-        `[@dialectlabs/blinks] Failed to check supportability for action ${this.url}`,
+        `[@tokenscript/tlinks] Failed to check supportability for action ${this.url}`,
       );
       return {
         isSupported: false,

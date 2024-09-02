@@ -30,7 +30,7 @@ function useActionApiUrl(url: string | URL) {
         setApiUrl(apiUrl);
       })
       .catch((e) => {
-        console.error('[@dialectlabs/blinks] Failed to unfurl action URL', e);
+        console.error('[@tokenscript/tlinks] Failed to unfurl action URL', e);
         setApiUrl(null);
       });
 
@@ -67,7 +67,7 @@ export function useAction({
         setAction(action);
       })
       .catch((e) => {
-        console.error('[@dialectlabs/blinks] Failed to fetch action', e);
+        console.error('[@tokenscript/tlinks] Failed to fetch action', e);
         setAction(null);
       })
       .finally(() => {

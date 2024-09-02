@@ -103,7 +103,7 @@ export class ActionConfig implements ActionAdapter {
           }
         } catch (e) {
           console.error(
-            '[@dialectlabs/blinks] Error confirming transaction',
+            '[@tokenscript/tlinks] Error confirming transaction',
             e,
           );
         }
