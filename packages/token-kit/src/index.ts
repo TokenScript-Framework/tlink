@@ -1,4 +1,4 @@
-import { createTLink } from '../dist/index.mjs'
+import { createTLink } from './createTlink'
 import { getERC721Metadata } from './libs'
 import { getMetadata } from './service/externalApi'
 
