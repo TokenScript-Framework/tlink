@@ -1,0 +1,44 @@
+{
+  "name": "@repo/token-kit",
+  "version": "1.0.0",
+  "description": "",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup ./src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@peculiar/x509": "^1.12.1",
+    "@repo/actions": "workspace:*",
+    "@tokenscript/xmldsigjs": "^2.5.2",
+    "axios": "^1.7.5",
+    "bignumber.js": "^9.1.2",
+    "clsx": "^2.1.1",
+    "ethers": "^6.13.2",
+    "ipfs-only-hash": "^4.0.0",
+    "jsdom": "^22.1.0",
+    "tailwind-merge": "^2.5.2",
+    "viem": "^2.20.0",
+    "webcrypto-liner": "^1.4.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.2.0",
+    "typescript": "^5.5.4",
+    "@types/jsdom": "latest"
+  }
+}

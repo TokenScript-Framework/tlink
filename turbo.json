@@ -15,7 +15,7 @@
     "blink-twitter-inject#dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["@repo/blinks#build"]
+      "dependsOn": ["@repo/blinks#build", "@repo/token-kit#build"]
     },
     "clean": {
       "cache": false

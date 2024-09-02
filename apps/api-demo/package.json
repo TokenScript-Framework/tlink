@@ -9,23 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@peculiar/x509": "^1.12.1",
     "@repo/actions": "workspace:*",
     "@repo/blinks": "workspace:*",
-    "@tokenscript/xmldsigjs": "^2.5.2",
-    "axios": "^1.7.5",
-    "bignumber.js": "^9.1.2",
-    "ethers": "^6.13.2",
     "next": "14.2.6",
     "react": "^18",
     "react-dom": "^18",
-    "viem": "^2.20.0",
-    "frog": "^0.15.9",
-    "ipfs-only-hash": "^4.0.0",
-    "jsdom": "^22.1.0",
-    "sharp": "^0.33.4",
-    "wagmi": "^2.10.9",
-    "webcrypto-liner": "^1.4.3"
+    "@repo/token-kit": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20",
