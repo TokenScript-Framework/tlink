@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { TokenScriptWebsite } from '../constant';
 import { Header } from './components/Header';
 import { WalletSelector } from './components/WalletSelector';
-import CircleExclamationIcon from './icons/CircleExclamationIcon';
 
 export const Popup = () => {
   const [isLoading, setLoading] = useState(true);
@@ -36,7 +35,7 @@ export const Popup = () => {
           setSelectedWallet={setSelectedWallet}
         />
 
-        {selectedWallet && (
+        {/* {selectedWallet && (
           <div className="bg-accent-brand/10 rounded-lg p-2 flex items-center gap-2 w-full">
             <div className="flex-0 text-accent-brand">
               <CircleExclamationIcon />
@@ -47,7 +46,7 @@ export const Popup = () => {
               in any wallets.
             </span>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
