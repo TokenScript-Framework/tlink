@@ -14,8 +14,17 @@
     },
     "blink-twitter-inject#dev": {
       "cache": false,
+      "persistent": true
+    },
+    "@repo/token-kit#dev": {
+      "cache": false,
       "persistent": true,
-      "dependsOn": ["@repo/token-kit#build", "@repo/blinks#build"]
+      "outputs": ["dist/**"]
+    },
+    "@repo/blinks#dev": {
+      "cache": false,
+      "persistent": true,
+      "outputs": ["dist/**"]
     },
     "clean": {
       "cache": false
