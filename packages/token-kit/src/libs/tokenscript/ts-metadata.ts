@@ -1,22 +1,22 @@
-import axios from "axios";
-import { getERC5169ScriptURISingle } from "../ethereum";
-import { TokenScript } from "./engine-lite/tokenscript";
-import { Meta } from "./engine-lite/tokenScript/Meta";
-import { getTsCache, setTsCache } from "./ts-cache";
+import axios from 'axios'
+import { getERC5169ScriptURISingle } from '../ethereum'
+import { TokenScript } from './engine-lite/tokenscript'
+import { Meta } from './engine-lite/tokenScript/Meta'
+import { getTsCache, setTsCache } from './ts-cache'
 
 export type MetdataOptions = {
-  actions?: boolean;
-};
+  actions?: boolean
+}
 
 export type TsMetadata = {
-  actions?: string[];
-  meta: Meta;
-  name: string;
-};
+  actions?: string[]
+  meta: Meta
+  name: string
+}
 
 const defaultOptions = {
   actions: true,
-};
+}
 
 export async function getTokenscriptMetadata(
   chainId: number,
@@ -24,42 +24,46 @@ export async function getTokenscriptMetadata(
   options: MetdataOptions = defaultOptions,
   index = 0,
 ): Promise<TsMetadata> {
-  const scriptURIs = await getERC5169ScriptURISingle(chainId, contract);
-  const scriptURI = scriptURIs[index];
-  if (scriptURIs === "not implemented" || !scriptURI)
-    throw new Error("Script URI not exist");
+  const scriptURIs = await getERC5169ScriptURISingle(chainId, contract)
+  const scriptURI = scriptURIs[index]
+  if (scriptURIs === 'not implemented' || !scriptURI)
+    throw new Error('Script URI not exist')
 
-  const tokenscript = await loadTokenscript(scriptURI);
+  const tokenscript = await loadTokenscript(scriptURI)
 
-  const result: any = {};
+  const result: any = {}
 
   if (options.actions) {
-    result.actions = tokenscript.getCards().map((card) => card.name);
+    result.actions = tokenscript.getCards().map((card) => card.name)
   }
 
-  result.meta = tokenscript.getMetadata();
-  result.name = tokenscript.getName();
+  result.meta = tokenscript.getMetadata()
+  result.name = tokenscript.getName()
 
-  return result;
+  return result
 }
 
 async function loadTokenscript(scriptURI: string) {
-  let tokenscript = getTsCache(scriptURI);
+  let tokenscript = getTsCache(scriptURI)
   if (!tokenscript) {
-    const xmlStr = (await axios.get(scriptURI)).data;
+    const httpUrl = scriptURI.startsWith('ipfs://')
+      ? `https://ipfs.io/ipfs/${scriptURI.slice(7)}`
+      : scriptURI
 
-    let parser;
-    if (typeof process !== "undefined" && process.release.name === "node") {
-      const { JSDOM } = await import("jsdom");
-      const jsdom = new JSDOM();
-      parser = new jsdom.window.DOMParser();
+    const xmlStr = (await axios.get(httpUrl)).data
+
+    let parser
+    if (typeof process !== 'undefined' && process.release.name === 'node') {
+      const { JSDOM } = await import('jsdom')
+      const jsdom = new JSDOM()
+      parser = new jsdom.window.DOMParser()
     } else {
-      parser = new DOMParser();
+      parser = new DOMParser()
     }
-    const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-    tokenscript = new TokenScript(xmlStr, xmlDoc);
-    setTsCache(scriptURI, tokenscript);
+    const xmlDoc = parser.parseFromString(xmlStr, 'text/xml')
+    tokenscript = new TokenScript(xmlStr, xmlDoc)
+    setTsCache(scriptURI, tokenscript)
   }
 
-  return tokenscript;
+  return tokenscript
 }

@@ -25,7 +25,10 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
 
   return {
     type: 'action',
-    icon: tokenMetadata.image || tsMetaData.meta.imageUrl,
+    icon:
+      tokenMetadata.image ||
+      tsMetaData.meta.imageUrl ||
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==',
     label: tsMetaData.name,
     title: tsMetaData.name,
     description: tsMetaData.meta.description,

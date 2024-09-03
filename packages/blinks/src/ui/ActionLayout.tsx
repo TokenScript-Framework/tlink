@@ -285,7 +285,7 @@ export const ActionLayout = ({
             {title}
           </span>
           <span className="mb-4 whitespace-pre-wrap text-subtext text-text-secondary">
-            {description}
+            {description.trim()}
           </span>
           {!supportability.isSupported ? (
             <NotSupportedBlock message={supportability.message} />
