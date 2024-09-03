@@ -10,14 +10,8 @@ const adapter = (wallet: string) =>
         wallet,
         payload,
       }),
-    connect: () =>
-      chrome.runtime.sendMessage({
-        wallet,
-        type: 'connect',
-      }),
-    metadata: {
-      supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET],
-    },
+    connect: () => chrome.runtime.sendMessage({ wallet, type: 'connect' }),
+    metadata: { supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET] },
   });
 
 function initTwitterObserver() {

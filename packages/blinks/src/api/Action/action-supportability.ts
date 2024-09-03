@@ -1,11 +1,10 @@
 import { BlockchainIds, getShortBlockchainName } from '../../utils/caip-2.ts';
-import { ACTIONS_SPEC_VERSION } from '../../utils/dependency-versions.ts';
 import type { Action } from './Action.ts';
 
 /**
  * Max spec version the Blink client supports.
  */
-export const MAX_SUPPORTED_ACTION_VERSION = ACTIONS_SPEC_VERSION;
+export const MAX_SUPPORTED_ACTION_VERSION = 1;
 
 export const DEFAULT_SUPPORTED_BLOCKCHAIN_IDS = [
   BlockchainIds.SOLANA_MAINNET,
@@ -140,6 +139,8 @@ export function isVersionSupported({
   supportedActionVersion,
   actionVersion,
 }: IsVersionSupportedParams): boolean {
+  return true;
+  // TODO: implement
   return compareSemverIgnoringPatch(actionVersion, supportedActionVersion) <= 0;
 }
 

@@ -91,23 +91,6 @@ async function handleWalletCommunication(
       return sendTransactionRes[0].result;
 
     case 'sign_message':
-      // // @ts-ignore
-      // console.log('signing message', payload.message);
-      // const signMessageRes = await chrome.scripting.executeScript({
-      //   world: 'MAIN',
-      //   target: { tabId: tabId },
-      //   func: async (message: string) => {
-      //     const provider =
-      //       // @ts-ignore
-      //       wallet === 'solflare' ? window.solflare : window.solana;
-      //     const textToSign = new TextEncoder().encode(message);
-      //     const res = await provider.signMessage(textToSign);
-      //     return res;
-      //   },
-      //   // @ts-ignore
-      //   args: [payload.message, wallet],
-      // });
-      // return signMessageRes[0].result;
       break;
 
     default:
