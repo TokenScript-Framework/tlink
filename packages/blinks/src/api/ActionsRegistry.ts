@@ -186,7 +186,6 @@ export const getExtendedInterstitialState = (
 
 async function fetchActionsRegistryConfig(): Promise<ActionsRegistryConfig> {
   try {
-    // const response = await fetch('https://actions-registry.dial.to/all');
     return Promise.resolve({
       actions: [
         { host: 'localhost:3000', state: 'trusted' },

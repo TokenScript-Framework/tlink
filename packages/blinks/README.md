@@ -1,11 +1,7 @@
-- [ ] @solana/web3.js
 - [ ] DEFAULT_SUPPORTED_BLOCKCHAIN_IDS
-- [ ] https://actions-registry.dial.to/all
 - [ ] https://proxy.dial.to
 - [ ] isInterstitial
 - [ ] // TODO: search https://
-
-# @dialectlabs/blinks &mdash; the [Actions](https://github.com/dialectlabs/actions) Interface
 
 ## Usage
 
@@ -21,8 +17,8 @@
 - `custom` - clean slate, no colors, radii at all, use CSS Variables to style. See [Overriding Theme](#overriding-theme).
 
 ```tsx
-import '@dialectlabs/blinks/index.css';
-import { Blink } from "@dialectlabs/blinks";
+import '@repo/blinks/index.css';
+import { Blink } from "@repo/blinks";
 
 <Blink stylePreset="x-dark" ... />
 ```
@@ -87,7 +83,7 @@ In your CSS, you can override the following CSS Variables to customize the look 
 }
 ```
 
-> be sure to import these overrides after @dialectlabs/blinks styles (or by [CSS Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) as suggested above)
+> be sure to import these overrides after @repo/blinks styles (or by [CSS Specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) as suggested above)
 
 ### Chrome Extension
 
@@ -108,7 +104,7 @@ setupTwitterObserver(new ActionConfig({
 
 // or
 
-import { type ActionAdapter } from "@dialectlabs/blinks";
+import { type ActionAdapter } from "@repo/blinks";
 
 class MyActionAdapter implements ActionAdapter {
   async connect() { ... }
