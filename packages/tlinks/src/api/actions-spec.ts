@@ -194,7 +194,7 @@ export interface TransactionData {
 /**
  * Response body payload returned from the Action POST Request
  */
-export interface ActionPostResponse<T extends ActionType = ActionType> {
+export interface ActionPostResponse {
   transactionData: TransactionData;
   chainId: string;
   /** describes the nature of the transaction */
