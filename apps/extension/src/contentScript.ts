@@ -3,7 +3,7 @@ import { setupTwitterObserver } from '@repo/blinks/ext/twitter';
 import '@repo/blinks/index.css';
 
 const adapter = (wallet: string) =>
-  new ActionConfig(import.meta.env.VITE_RPC_URL, {
+  new ActionConfig({
     signTransaction: (payload: TransactionPayload) =>
       chrome.runtime.sendMessage({
         type: 'eth_sendTransaction',

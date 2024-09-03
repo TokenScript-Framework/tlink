@@ -98,8 +98,7 @@ Package provides an entrypoint function with styled for X Blink components
 import { setupTwitterObserver } from "@repo/blinks/ext/twitter";
 import { ActionConfig } from "@repo/blinks";
 
-// your RPC_URL is used to create a connection to confirm the transaction after action execution
-setupTwitterObserver(new ActionConfig(RPC_URL, {
+setupTwitterObserver(new ActionConfig({
   metadata: {
     supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET]
   },
@@ -114,7 +113,6 @@ import { type ActionAdapter } from "@dialectlabs/blinks";
 class MyActionAdapter implements ActionAdapter {
   async connect() { ... }
   async signTransaction(payload: TransactionPayload) { ... }
-  async confirmTransaction(sig: string) { ... }
   get metadata(): ActionAdapterMetadata {
     return {
       supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET],

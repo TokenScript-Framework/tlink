@@ -4,7 +4,7 @@ import type { Action } from './Action.ts';
 /**
  * Max spec version the Blink client supports.
  */
-export const MAX_SUPPORTED_ACTION_VERSION = 1;
+export const MAX_SUPPORTED_ACTION_VERSION = '1';
 
 export const DEFAULT_SUPPORTED_BLOCKCHAIN_IDS = [
   BlockchainIds.SOLANA_MAINNET,

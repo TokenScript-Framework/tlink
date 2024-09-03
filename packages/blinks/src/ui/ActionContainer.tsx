@@ -445,8 +445,6 @@ export const ActionContainer = ({
       if (!signResult || isSignTransactionError(signResult)) {
         dispatch({ type: ExecutionType.RESET });
       } else {
-        await action.adapter.confirmTransaction(signResult.signature, context);
-
         if (!payload.links?.next) {
           dispatch({
             type: ExecutionType.FINISH,

@@ -11,20 +11,9 @@ const commonCfg: Partial<Options> = {
 export default defineConfig([
   {
     ...commonCfg,
-    entry: [
-      'src/index.ts',
-      'src/index.css',
-      'src/ext/twitter.tsx',
-      'src/hooks/index.ts',
-      'src/hooks/solana/index.ts',
-    ],
+    entry: ['src/index.ts', 'src/index.css', 'src/ext/twitter.tsx'],
     dts: {
-      entry: [
-        'src/index.ts',
-        'src/ext/twitter.tsx',
-        'src/hooks/index.ts',
-        'src/hooks/solana/index.ts',
-      ],
+      entry: ['src/index.ts', 'src/ext/twitter.tsx'],
     },
   },
 ]);
