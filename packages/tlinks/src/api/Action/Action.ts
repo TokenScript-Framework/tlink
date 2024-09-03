@@ -147,7 +147,7 @@ export class Action {
       return {
         isSupported: false,
         message:
-          'Failed to check supportability, please contact your Blink client provider.',
+          'Failed to check supportability, please contact your Tlink client provider.',
       };
     }
   }

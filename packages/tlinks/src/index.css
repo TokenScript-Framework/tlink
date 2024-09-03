@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .tlink {
+    container-type: inline-size;
+  }
+
+  .tlink input[type='date']::-webkit-inner-spin-button,
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='datetime-local']::-webkit-inner-spin-button,
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    /*
+      this is very dirty hack to make picker openable, since in chrome ext environment, programmatic `showPicker` doesn't work and/or crashes the browser
+      https://issues.chromium.org/issues/356419161
+    */
+    position: absolute;
+    left: 1rem;
+    opacity: 0;
+  }
+
+  .dial-light {
+    --tlink-bg-primary: #ffffff;
+    --tlink-bg-secondary: #f2f3f5;
+    --tlink-button: #2a2a2b;
+    --tlink-button-disabled: #737373;
+    --tlink-button-hover: #323335;
+    --tlink-button-success: #09cbbf1a;
+    --tlink-icon-error: #f71a05;
+    --tlink-icon-error-hover: #ff402e;
+    --tlink-icon-primary: #737373;
+    --tlink-icon-primary-hover: #888989;
+    --tlink-icon-warning: #d55f00;
+    --tlink-icon-warning-hover: #ef6f08;
+    --tlink-input-bg: #ffffff;
+    --tlink-input-bg-selected: #08c0b4;
+    --tlink-input-bg-disabled: #dee1e7;
+    --tlink-input-stroke: #c4c6c8;
+    --tlink-input-stroke-disabled: #dee1e7;
+    --tlink-input-stroke-error: #ff402e;
+    --tlink-input-stroke-hover: #b3b3b3;
+    --tlink-input-stroke-selected: #08c0b4;
+    --tlink-stroke-error: #ff9696;
+    --tlink-stroke-primary: #d7d7d7;
+    --tlink-stroke-secondary: #ebebeb;
+    --tlink-stroke-warning: #ffbc6e;
+    --tlink-text-brand: #08c0b4;
+    --tlink-text-button: #ffffff;
+    --tlink-text-button-disabled: #f2f3f5;
+    --tlink-text-button-success: #00a095;
+    --tlink-text-error: #f71a05;
+    --tlink-text-error-hover: #ff402e;
+    --tlink-text-input: #232324;
+    --tlink-text-input-disabled: #b3b3b3;
+    --tlink-text-input-placeholder: #737373;
+    --tlink-text-link: #737373;
+    --tlink-text-link-hover: #888989;
+    --tlink-text-primary: #232324;
+    --tlink-text-secondary: #434445;
+    --tlink-text-success: #00a095;
+    --tlink-text-warning: #d55f00;
+    --tlink-text-warning-hover: #ef6f08;
+    --tlink-transparent-error: #ff96961a;
+    --tlink-transparent-grey: #b3b3b31a;
+    --tlink-transparent-warning: #ffbc6e1a;
+
+    --tlink-border-radius-rounded-lg: 0.25rem;
+    --tlink-border-radius-rounded-xl: 0.5rem;
+    --tlink-border-radius-rounded-2xl: 1rem;
+    --tlink-border-radius-rounded-button: 0.5rem;
+    --tlink-border-radius-rounded-input: 0.5rem;
+    --tlink-border-radius-rounded-input-standalone: 0.5rem;
+
+    --tlink-shadow-container: 0px 129.333px 103.467px 0px rgba(0, 0, 0, 0.07),
+      0px 54.032px 43.226px 0px rgba(0, 0, 0, 0.05),
+      0px 16.195px 12.956px 0px rgba(0, 0, 0, 0.04),
+      0px 8.601px 6.881px 0px rgba(0, 0, 0, 0.03),
+      0px 3.579px 2.863px 0px rgba(0, 0, 0, 0.02);
+  }
+
+  .x-dark,
+  .x-light {
+    --tlink-border-radius-rounded-lg: 0.25rem;
+    --tlink-border-radius-rounded-xl: 0.5rem;
+    --tlink-border-radius-rounded-2xl: 1.125rem;
+    --tlink-border-radius-rounded-button: 624.9375rem;
+    --tlink-border-radius-rounded-input: 1.25rem;
+    --tlink-border-radius-rounded-input-standalone: 1.75rem;
+  }
+
+  .x-dark {
+    --tlink-bg-primary: #202327;
+    --tlink-bg-secondary: #262a2d;
+    --tlink-button: #1d9bf0;
+    --tlink-button-disabled: #2f3336;
+    --tlink-button-hover: #3087da;
+    --tlink-button-success: #00ae661a;
+    --tlink-icon-error: #ff6565;
+    --tlink-icon-error-hover: #ff7a7a;
+    --tlink-icon-primary: #6e767d;
+    --tlink-icon-primary-hover: #949ca4;
+    --tlink-icon-warning: #ffb545;
+    --tlink-icon-warning-hover: #ffc875;
+    --tlink-input-bg: #202327;
+    --tlink-input-bg-selected: #1d9bf0;
+    --tlink-input-bg-disabled: #2f3336;
+    --tlink-input-stroke: #3d4144;
+    --tlink-input-stroke-disabled: #2f3336;
+    --tlink-input-stroke-error: #ff6565;
+    --tlink-input-stroke-hover: #6e767d;
+    --tlink-input-stroke-selected: #1d9bf0;
+    --tlink-stroke-error: #ff6565;
+    --tlink-stroke-primary: #1d9bf0;
+    --tlink-stroke-secondary: #3d4144;
+    --tlink-stroke-warning: #ffb545;
+    --tlink-text-brand: #35aeff;
+    --tlink-text-button: #ffffff;
+    --tlink-text-button-disabled: #768088;
+    --tlink-text-button-success: #12dc88;
+    --tlink-text-error: #ff6565;
+    --tlink-text-error-hover: #ff7a7a;
+    --tlink-text-input: #ffffff;
+    --tlink-text-input-disabled: #566470;
+    --tlink-text-input-placeholder: #6e767d;
+    --tlink-text-link: #6e767d;
+    --tlink-text-link-hover: #949ca4;
+    --tlink-text-primary: #ffffff;
+    --tlink-text-secondary: #949ca4;
+    --tlink-text-success: #12dc88;
+    --tlink-text-warning: #ffb545;
+    --tlink-text-warning-hover: #ffc875;
+    --tlink-transparent-error: #aa00001a;
+    --tlink-transparent-grey: #6e767d1a;
+    --tlink-transparent-warning: #a966001a;
+
+    --tlink-shadow-container: 0px 2px 8px 0px rgba(59, 176, 255, 0.22),
+      0px 1px 48px 0px rgba(29, 155, 240, 0.24);
+  }
+
+  .x-light {
+    --tlink-bg-primary: #ffffff;
+    --tlink-bg-secondary: #f7f7f7;
+    --tlink-button: #499bea;
+    --tlink-button-disabled: #f0f3f4;
+    --tlink-button-hover: #428cd2;
+    --tlink-button-success: #00b1271a;
+    --tlink-icon-error: #f71a05;
+    --tlink-icon-error-hover: #ff402e;
+    --tlink-icon-primary: #949ca4;
+    --tlink-icon-primary-hover: #9da3ae;
+    --tlink-icon-warning: #ef6f08;
+    --tlink-icon-warning-hover: #ffbc6e;
+    --tlink-input-bg: #ffffff;
+    --tlink-input-bg-selected: #499bea;
+    --tlink-input-bg-disabled: #f0f3f4;
+    --tlink-input-stroke: #d1d9de;
+    --tlink-input-stroke-disabled: #f0f3f4;
+    --tlink-input-stroke-error: #ff402e;
+    --tlink-input-stroke-hover: #9da3ae;
+    --tlink-input-stroke-selected: #499bea;
+    --tlink-stroke-error: #ff9696;
+    --tlink-stroke-primary: #499bea;
+    --tlink-stroke-secondary: #d1d9de;
+    --tlink-stroke-warning: #ffbc6e;
+    --tlink-text-brand: #428cd2;
+    --tlink-text-button: #ffffff;
+    --tlink-text-button-disabled: #949ca4;
+    --tlink-text-button-success: #029923;
+    --tlink-text-error: #f71a05;
+    --tlink-text-error-hover: #ff402e;
+    --tlink-text-input: #101418;
+    --tlink-text-input-disabled: #9da3ae;
+    --tlink-text-input-placeholder: #949ca4;
+    --tlink-text-link: #949ca4;
+    --tlink-text-link-hover: #9da3ae;
+    --tlink-text-primary: #101418;
+    --tlink-text-secondary: #566470;
+    --tlink-text-success: #029923;
+    --tlink-text-warning: #d55f00;
+    --tlink-text-warning-hover: #ef6f08;
+    --tlink-transparent-error: #ff96961a;
+    --tlink-transparent-grey: #6e767d1a;
+    --tlink-transparent-warning: #ffbc6e1a;
+
+    --tlink-shadow-container: 0px 2px 8px 0px rgba(62, 177, 255, 0.22),
+      0px 1px 48px 0px rgba(62, 177, 255, 0.24);
+  }
+
+  .custom {
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "blink-twitter-inject",
+  "name": "tlink-twitter-inject",
   "displayName": "TLinks",
   "version": "0.1.0",
   "author": "Smart Token Labs",
@@ -23,7 +23,7 @@
     "zip": "npm run build && node src/zip.js"
   },
   "dependencies": {
-    "@repo/blinks": "workspace:*",
+    "@repo/tlinks": "workspace:*",
     "bs58": "^6.0.0",
     "buffer": "^6.0.3",
     "react": "^18.3.1",

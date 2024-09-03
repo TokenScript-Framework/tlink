@@ -14,10 +14,6 @@ export const ACTIONS_CORS_HEADERS: Record<string, string> = {
 }
 
 /**
- * Solana Actions and blinks specification - v2.0
- */
-
-/**
  * Protocol identifier for the Solana Actions protocol
  */
 export type SOLANA_ACTIONS_PROTOCOL = 'solana-action:'
@@ -33,7 +29,6 @@ export type SupportedProtocols = SOLANA_ACTIONS_PROTOCOL | SOLANA_PAY_PROTOCOL
 
 /**
  * The `actions.json` instruct clients on what website URLs support
- * Solana Actions and provide the mapping rules for blink urls to reach their Actions API.
  */
 export interface ActionsJson {
   rules: ActionRuleObject[]

@@ -1,6 +1,6 @@
-import { ActionConfig, BlockchainIds, TransactionPayload } from '@repo/blinks';
-import { setupTwitterObserver } from '@repo/blinks/ext/twitter';
-import '@repo/blinks/index.css';
+import { ActionConfig, BlockchainIds, TransactionPayload } from '@repo/tlinks';
+import { setupTwitterObserver } from '@repo/tlinks/ext/twitter';
+import '@repo/tlinks/index.css';
 
 const adapter = (wallet: string) =>
   new ActionConfig({

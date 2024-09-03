@@ -41,8 +41,8 @@ export const Popup = () => {
               <CircleExclamationIcon />
             </div>
             <span className="text-caption font-normal text-start">
-              Blinks should only be enabled for one wallet at a time. Before
-              enabling support here, be sure you haven’t enabled native Blinks
+              Tlinks should only be enabled for one wallet at a time. Before
+              enabling support here, be sure you haven’t enabled native Tlinks
               in any wallets.
             </span>
           </div>

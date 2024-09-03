@@ -217,7 +217,7 @@ export const ActionLayout = ({
   supportability,
 }: LayoutProps) => {
   return (
-    <div className={clsx('blink', stylePresetClassMap[stylePreset])}>
+    <div className={clsx('tlink', stylePresetClassMap[stylePreset])}>
       <div className="w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action">
         {image && (
           <Linkable

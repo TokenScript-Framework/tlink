@@ -1,6 +1,6 @@
 let prefixOverrideList = ['html', 'body'];
 const selectorIgnoreList = [
-  '.blink',
+  '.tlink',
   '.x-dark',
   '.x-light',
   '.dial-light',
@@ -12,7 +12,7 @@ export default {
     tailwindcss: {},
     autoprefixer: {},
     'postcss-prefix-selector': {
-      prefix: '.blink',
+      prefix: '.tlink',
       includeFiles: ['index.css'],
       transform: function (prefix, selector, prefixedSelector) {
         const shouldIgnore =

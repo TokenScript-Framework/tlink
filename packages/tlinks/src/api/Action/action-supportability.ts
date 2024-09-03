@@ -2,7 +2,7 @@ import { BlockchainIds, getShortBlockchainName } from '../../utils/caip-2.ts';
 import type { Action } from './Action.ts';
 
 /**
- * Max spec version the Blink client supports.
+ * Max spec version the tlink client supports.
  */
 export const MAX_SUPPORTED_ACTION_VERSION = '1';
 
@@ -47,7 +47,7 @@ export type ActionSupportStrategy = (
 
 /**
  * Default implementation for checking if an action is supported.
- * Checks if the action version and the action blockchain IDs are supported by blink.
+ * Checks if the action version and the action blockchain IDs are supported by tlink.
  * @param action Action.
  *
  * @see {isVersionSupported}
@@ -101,22 +101,22 @@ export const defaultActionSupportStrategy: ActionSupportStrategy = async (
         : `blockchains ${notSupportedActionBlockchainNames.join(', ')}`;
     return {
       isSupported: false,
-      message: `Action version ${actionVersion} and ${blockchainMessage} are not supported by your Blink client.`,
+      message: `Action version ${actionVersion} and ${blockchainMessage} are not supported by your tlink client.`,
     };
   }
 
   if (!versionSupported) {
     return {
       isSupported: false,
-      message: `Action version ${actionVersion} is not supported by your Blink client.`,
+      message: `Action version ${actionVersion} is not supported by your tlink client.`,
     };
   }
 
   if (!blockchainSupported) {
     const blockchainMessage =
       notSupportedActionBlockchainNames.length === 1
-        ? `Action blockchain ${notSupportedActionBlockchainNames[0]} is not supported by your Blink client.`
-        : `Action blockchains ${notSupportedActionBlockchainNames.join(', ')} are not supported by your Blink client.`;
+        ? `Action blockchain ${notSupportedActionBlockchainNames[0]} is not supported by your tlink client.`
+        : `Action blockchains ${notSupportedActionBlockchainNames.join(', ')} are not supported by your tlink client.`;
 
     return {
       isSupported: false,
@@ -129,8 +129,8 @@ export const defaultActionSupportStrategy: ActionSupportStrategy = async (
 };
 
 /**
- * Check if the action version is supported by blink.
- * @param supportedActionVersion The version the blink supports.
+ * Check if the action version is supported by tlink.
+ * @param supportedActionVersion The version the tlink supports.
  * @param actionVersion The version of the action.
  *
  * @returns `true` if the action version is less than or equal to the supported ignoring patch version, `false` otherwise.
@@ -156,12 +156,12 @@ function compareSemverIgnoringPatch(v1: string, v2: string): number {
 }
 
 /**
- * Check if action blockchain IDs are supported by the blink.
+ * Check if action blockchain IDs are supported by the tlink.
  *
  * @param supportedBlockchainIds List of CAIP-2 blockchain IDs the client supports.
  * @param actionBlockchainIds List of CAIP-2 blockchain IDs the action supports.
  *
- * @returns `true` if all action blockchain IDs are supported by blink, `false` otherwise.
+ * @returns `true` if all action blockchain IDs are supported by tlink, `false` otherwise.
  *
  * @see BlockchainIds
  */

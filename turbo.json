@@ -12,7 +12,7 @@
       "cache": false,
       "persistent": true
     },
-    "blink-twitter-inject#dev": {
+    "tlink-twitter-inject#dev": {
       "cache": false,
       "persistent": true
     },
@@ -21,7 +21,7 @@
       "persistent": true,
       "outputs": ["dist/**"]
     },
-    "@repo/blinks#dev": {
+    "@repo/tlinks#dev": {
       "cache": false,
       "persistent": true,
       "outputs": ["dist/**"]

@@ -1,5 +1,5 @@
 /**
- * Solana Actions and blinks specification - v2.0
+ * Solana Actions and tlinks specification - v2.0
  */
 
 /**
@@ -18,7 +18,6 @@ export type SupportedProtocols = SOLANA_ACTIONS_PROTOCOL | SOLANA_PAY_PROTOCOL;
 
 /**
  * The `actions.json` instruct clients on what website URLs support
- * Solana Actions and provide the mapping rules for blink urls to reach their Actions API.
  */
 export interface ActionsJson {
   rules: ActionRuleObject[];
