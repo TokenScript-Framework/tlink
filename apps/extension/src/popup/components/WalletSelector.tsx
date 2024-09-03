@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import MetaMaskLogo from '../assets/MetaMaskLogo';
 import ArrowFromSquareIcon from '../icons/ArrowFromSquareIcon';
 import { Checkbox } from './Checkbox';
+import MetaMaskLogo from './MetaMaskLogo';
 
 enum Wallets {
   MetaMask = 'metamask',
