@@ -1,42 +1,41 @@
 // import { getERC721Metadata } from '@/app/libs/ethereum'
 // import { getMetadata } from '@/app/service/externalApi'
-import { ACTIONS_CORS_HEADERS } from '@repo/actions'
-import { encodeFunctionData } from 'viem'
-import { getERC721Metadata } from './libs'
-import { getMetadata } from './service/externalApi'
+import { ACTIONS_CORS_HEADERS } from '@repo/actions';
+import { getERC721Metadata, getMetadata } from '@repo/token-kit';
+import { encodeFunctionData } from 'viem';
 
-type ChainId = string
-type Contract = `0x${string}`
-type TokenId = string
-type ActionName = string
-type TLinkGetParams = [ChainId, Contract, TokenId]
-type TLinkPostParams = [ChainId, Contract, TokenId, ActionName]
+type ChainId = string;
+type Contract = `0x${string}`;
+type TokenId = string;
+type ActionName = string;
+type TLinkGetParams = [ChainId, Contract, TokenId];
+type TLinkPostParams = [ChainId, Contract, TokenId, ActionName];
 
-export const createTLink = (config: {}) => {
-  return { GET: buildGet(), POST: buildPost(), OPTIONS }
-}
+export const createTLink = () => {
+  return { GET: buildGet(), POST: buildPost(), OPTIONS };
+};
 
 function camelCaseToWords(str: string) {
   return str
     .replace(/([A-Z])/g, ' $1')
     .replace(/^./, function (str) {
-      return str.toUpperCase()
+      return str.toUpperCase();
     })
-    .trim()
+    .trim();
 }
 
 function buildGet() {
   return async (
-    req: Request,
+    _req: Request,
     { params }: { params: { tlink: TLinkGetParams } },
   ) => {
-    const [chainId, contract, tokenId] = params.tlink
-    const tsMetaData = await getMetadata(Number(chainId), contract)
+    const [chainId, contract, tokenId] = params.tlink;
+    const tsMetaData = await getMetadata(Number(chainId), contract);
     const tokenMetadata = await getERC721Metadata(
       Number(chainId),
       contract,
       BigInt(tokenId),
-    )
+    );
 
     const payload: any = {
       type: 'action',
@@ -50,10 +49,10 @@ function buildGet() {
           href: `/api/tokenscript/${chainId}/${contract}/${tokenId}/${actionName}`,
         })),
       },
-    }
+    };
 
-    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS })
-  }
+    return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
+  };
 }
 
 function buildPost() {
@@ -61,15 +60,18 @@ function buildPost() {
     req: Request,
     { params }: { params: { tlink: TLinkPostParams } },
   ) => {
-    const [chainId, contract, tokenId, actionName] = params.tlink
+    const [chainId, contract, tokenId, actionName] = params.tlink;
     try {
-      const { account } = await req.json()
+      const { account } = await req.json();
       if (!account) {
-        return Response.json('Missing account in request body', { status: 400 })
+        return Response.json('Missing account in request body', {
+          status: 400,
+        });
       }
 
       return Response.json(
         {
+          chainId,
           transactionData: {
             from: account,
             to: contract,
@@ -95,13 +97,13 @@ function buildPost() {
           },
         },
         { headers: ACTIONS_CORS_HEADERS },
-      )
+      );
     } catch (err) {
-      return Response.json('An unknown error occurred', { status: 400 })
+      return Response.json('An unknown error occurred', { status: 400 });
     }
-  }
+  };
 }
 
-function OPTIONS(req: Request) {
-  return Response.json({}, { headers: ACTIONS_CORS_HEADERS })
+function OPTIONS() {
+  return Response.json({}, { headers: ACTIONS_CORS_HEADERS });
 }

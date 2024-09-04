@@ -66,6 +66,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
+    "@repo/actions": "workspace:*",
     "@repo/token-kit": "workspace:*",
     "clsx": "^2.1.1",
     "viem": "^2.20.0"
