@@ -3,7 +3,6 @@
   "displayName": "Tlink extension",
   "version": "0.0.1",
   "description": "Enable TLinks on Twitter",
-  "author": "Plasmo Corp. <foss@plasmo.com>",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",

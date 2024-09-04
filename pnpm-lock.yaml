@@ -146,6 +146,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.18
         version: 18.2.18
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.33)
       postcss:
         specifier: 8.4.33
         version: 8.4.33
@@ -5122,6 +5125,22 @@ packages:
       normalize-range: 0.1.2
       picocolors: 1.0.0
       postcss: 8.4.35
+      postcss-value-parser: 4.2.0
+    dev: true
+
+  /autoprefixer@10.4.20(postcss@8.4.33):
+    resolution: {integrity: sha512-XY25y5xSv/wEoqzDyXXME4AFfkZI0P23z6Fs3YgymDnKJkCGOnkL0iTxCa85UTqaSgfcqyf3UA6+c7wUvx/16g==}
+    engines: {node: ^10 || ^12 || >=14}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      browserslist: 4.23.3
+      caniuse-lite: 1.0.30001651
+      fraction.js: 4.3.7
+      normalize-range: 0.1.2
+      picocolors: 1.0.1
+      postcss: 8.4.33
       postcss-value-parser: 4.2.0
     dev: true
 
