@@ -12,7 +12,8 @@
     "plasmo": "0.89.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.4.1"
+    "tailwindcss": "3.4.1",
+    "@repo/tlinks": "workspace:*"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
@@ -26,7 +27,13 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://twitter.com/*",
+      "https://x.com/*"
+    ],
+    "permissions": [
+      "storage",
+      "activeTab",
+      "scripting"
     ]
   }
 }
