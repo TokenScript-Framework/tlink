@@ -25,7 +25,7 @@ const Popup = () => {
         <Header />
         <div className="flex flex-col mt-20 items-center h-full">
           <h1 className="text-highlight font-bold mb-2">
-            Enable TLinks-------------
+            Enable TLinks!!!!!!!!
           </h1>
           <p className="text-tertiary text-subtext mb-8 text-center font-normal">
             Choose a wallet you would like to enable TLinks for. What are
