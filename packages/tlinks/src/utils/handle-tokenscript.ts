@@ -16,13 +16,16 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     throw new Error('invalid tokenscript link');
   }
 
-  const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract);
+  const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract, {
+    actions: true,
+  });
   const tokenMetadata = await getERC721Metadata(
     Number(chainId),
     contract,
     BigInt(tokenId),
   );
 
+  console.log(tsMetaData, 'debug here');
   return {
     type: 'action',
     icon:

@@ -30,7 +30,9 @@ function buildGet() {
     { params }: { params: { tlink: TLinkGetParams } },
   ) => {
     const [chainId, contract, tokenId] = params.tlink;
-    const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract);
+    const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract, {
+      actions: true,
+    });
     const tokenMetadata = await getERC721Metadata(
       Number(chainId),
       contract,
