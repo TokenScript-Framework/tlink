@@ -1,4 +1,12 @@
-import { getERC721Metadata } from './libs'
-import { getMetadata } from './service/externalApi'
+// export * from "./components";
+// export * from "./hooks";
+export * from "./libs";
 
-export { getERC721Metadata, getMetadata }
+let infuraApiKey: string | undefined;
+export const TokenKit = {
+  setInfuraApiKey: (apiKey: string) => {
+    TokenKit.infuraApiKey = apiKey;
+  },
+
+  infuraApiKey,
+};

@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import * as IPFSOnlyHash from "ipfs-only-hash";
+import IPFSOnlyHash from "ipfs-only-hash";
 import { TokenScript } from "../tokenscript";
 import { IOriginSecurityInfo, Origin } from "../tokenScript/Origin";
 import { DSigValidator } from "./DSigValidator";

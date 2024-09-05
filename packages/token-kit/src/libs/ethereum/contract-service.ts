@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  Chain,
   createPublicClient,
   defineChain,
   erc721Abi,
@@ -14,7 +15,7 @@ import {
   setERC5169ScriptURICache,
 } from "./erc5169-scriptURI-cache";
 
-const customChains: chains.Chain[] = [
+const customChains: Chain[] = [
   defineChain({
     id: 185,
     name: "Mint Mainnet",
@@ -51,31 +52,9 @@ const customChains: chains.Chain[] = [
   }),
 ];
 
-export async function getERC721Metadata(
-  chainId: number,
-  contract: `0x${string}`,
-  tokenId: bigint
-) {
-  try {
-    const client = getBatchClient(chainId);
-
-    const tokenURI = await client.readContract({
-      address: contract,
-      abi: erc721Abi,
-      functionName: "tokenURI",
-      args: [BigInt(tokenId)],
-    });
-
-    return (await axios.get(tokenURI)).data;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
-}
-
 export async function getERC5169ScriptURISingle(
   chainId: number,
-  contract: `0x${string}`
+  contract: `0x${string}`,
 ): Promise<string[] | "not implemented"> {
   let cachedValue = getERC5169ScriptURICache(chainId, contract);
   if (cachedValue !== null) {
@@ -94,7 +73,7 @@ export async function getERC5169ScriptURISingle(
 
 export async function getERC5169ScriptURIBatched(
   chainId: number,
-  contractAddresses: `0x${string}`[]
+  contractAddresses: `0x${string}`[],
 ): Promise<Record<string, string[] | "not implemented">> {
   const cachedScriptURIs: Record<string, string[] | "not implemented"> = {};
   for (const each of contractAddresses) {
@@ -137,7 +116,7 @@ export async function getERC5169ScriptURIBatched(
 
 async function getERC5169ScriptURI(
   chainId: number,
-  contractAddress: `0x${string}`
+  contractAddress: `0x${string}`,
 ) {
   try {
     const client = getBatchClient(chainId);
@@ -177,4 +156,26 @@ function getBatchClient(chainId: any) {
   }
 
   return clientCache[chainId];
+}
+
+export async function getERC721Metadata(
+  chainId: number,
+  contract: `0x${string}`,
+  tokenId: bigint,
+) {
+  try {
+    const client = getBatchClient(chainId);
+
+    const tokenURI = await client.readContract({
+      address: contract,
+      abi: erc721Abi,
+      functionName: "tokenURI",
+      args: [BigInt(tokenId)],
+    });
+
+    return (await axios.get(tokenURI)).data;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 }

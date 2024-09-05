@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import * as x509 from "@peculiar/x509";
 import * as xmldsigjs from "@tokenscript/xmldsigjs";
 import {
@@ -7,11 +5,11 @@ import {
   KeyValue,
   X509Certificate,
 } from "@tokenscript/xmldsigjs";
-import { Crypto, CryptoKey } from "webcrypto-liner/build";
+import { Crypto, CryptoKey } from "webcrypto-liner";
 import { uint8tohex } from "../../../../utils/crypto";
 import { TokenScript } from "../tokenscript";
 
-const crypto = new Crypto();
+const crypto: Crypto = new Crypto();
 xmldsigjs.Application.setEngine("WebCryptoLiner", crypto);
 x509.cryptoProvider.set(crypto);
 

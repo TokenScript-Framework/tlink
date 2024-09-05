@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { TokenScript } from "../../tokenscript";
 import { AttestationDefinition } from "./AttestationDefinition";
 
@@ -36,7 +34,7 @@ export class AttestationDefinitions {
   getOriginDefinitions() {
     const definitions = this.getDefinitions();
     const origins = this.tokenScript.getOrigins();
-    const originAttestations = {};
+    const originAttestations: Record<string, any> = {};
 
     for (const name in definitions) {
       if (origins[name]) originAttestations[name] = definitions[name];

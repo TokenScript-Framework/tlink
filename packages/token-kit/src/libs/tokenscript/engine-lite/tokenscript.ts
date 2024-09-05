@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { SecurityInfo } from "./security/SecurityInfo";
 import { Card } from "./tokenScript/Card";
 import { Contracts } from "./tokenScript/Contracts";
@@ -29,6 +27,12 @@ export interface ITokenIdContext {
  * executing transactions
  */
 export class TokenScript {
+  getTokenContextData(tokenContext: ITokenIdContext) {
+    throw new Error("Method not implemented.");
+  }
+  getViewController() {
+    throw new Error("Method not implemented.");
+  }
   private label?: Label;
 
   private meta?: Meta;
@@ -45,7 +49,10 @@ export class TokenScript {
 
   private securityInfo: SecurityInfo;
 
-  constructor(public readonly xmlStr: string, public readonly tokenDef: XMLDocument) {
+  constructor(
+    public readonly xmlStr: string,
+    public readonly tokenDef: XMLDocument,
+  ) {
     this.securityInfo = new SecurityInfo(this);
   }
 
@@ -235,8 +242,21 @@ export class TokenScript {
    * Currently it is only used for ethereum event decoding, but it will be used later for attestations (off-chain tokens)
    * @param name
    */
-  public getAsnModuleDefinition(name) {
+  public getAsnModuleDefinition(name: string) {
     const modules = this.tokenDef.getElementsByTagName("asnx:module")[0];
     return modules.querySelector("[name=" + name + "]");
+  }
+
+  /**
+   * Returns the CSS string for the TokenScript
+   * This value is extracted from the <ts:style> tag in the XML
+   * We don't parse the CSS, but rather return the raw string
+   */
+  public getCssStr(): string {
+    return Array.from(
+      this.tokenDef.documentElement.getElementsByTagName("ts:style"),
+    )
+      .map((style) => style.textContent)
+      .join("\n");
   }
 }

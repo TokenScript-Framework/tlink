@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { TokenScript } from "../../tokenscript";
 import { Selection } from "./Selection";
 

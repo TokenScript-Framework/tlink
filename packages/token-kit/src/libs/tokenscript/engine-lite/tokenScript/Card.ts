@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { ITokenIdContext, TokenScript } from "../tokenscript";
 import { Label } from "./Label";
 import { Transaction } from "./Transaction";

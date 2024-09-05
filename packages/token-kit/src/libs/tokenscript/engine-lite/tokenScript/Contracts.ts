@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { TokenScript } from "../tokenscript";
 import { Contract } from "./Contract";
 
@@ -26,7 +24,7 @@ export class Contracts implements Iterable<Contract | undefined> {
 
         const contract = new Contract(contractXml[i]);
 
-        this.contracts[contract.getName()] = contract;
+        this.contracts[contract.getName() as string] = contract;
       }
     }
 
@@ -58,15 +56,15 @@ export class Contracts implements Iterable<Contract | undefined> {
   }
 
   getContractViewData() {
-    const contractData = {};
+    const contractData: Record<string, any> = {};
 
     for (const contract of this) {
-      const addresses = {};
+      const addresses: Record<number, any> = {};
       for (const chain in contract!.getAddresses()) {
         addresses[chain] = contract!.getAddresses()[chain].address;
       }
 
-      contractData[contract!.getName()] = {
+      contractData[contract!.getName() as string] = {
         addresses,
         abi: contract!.getAbi(),
       };

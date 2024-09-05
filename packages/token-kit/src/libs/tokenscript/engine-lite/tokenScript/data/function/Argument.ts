@@ -1,17 +1,14 @@
 // @ts-nocheck
-
-import { EthUtils, IEthersArgument } from '../../../ethereum/EthUtils'
-import { ITokenContextData } from '../../../tokens/ITokenContextData'
-import { ITokenIdContext, TokenScript } from '../../../tokenscript'
-// import { Attributes } from "../../Attributes";
-import { AbstractDependencyBranch } from '../AbstractDependencyBranch'
-type Attributes = any
+import { EthUtils, IEthersArgument } from "../../../ethereum/EthUtils";
+import { ITokenContextData } from "../../../tokens/ITokenContextData";
+import { ITokenIdContext, TokenScript } from "../../../tokenscript";
+import { AbstractDependencyBranch } from "../AbstractDependencyBranch";
 
 export interface IArgument {
-  type: string
-  content?: string
-  ref?: string
-  localRef?: string
+  type: string;
+  content?: string;
+  ref?: string;
+  localRef?: string;
 }
 
 /**
@@ -19,22 +16,22 @@ export interface IArgument {
  * They can be static or use the value of a special reference or another attribute.
  */
 export class Argument extends AbstractDependencyBranch implements IArgument {
-  type: string
-  content?: string
-  ref?: string
-  localRef?: string
+  type: string;
+  content?: string;
+  ref?: string;
+  localRef?: string;
 
   constructor(
     tokenScript: TokenScript,
     argDef: Element,
     type?: string,
-    localAttrContext?: Attributes,
+    localAttrContext?: any, // TODO: import { Attributes } from "../../Attributes";
   ) {
-    super(tokenScript, localAttrContext)
-    this.type = type ? type : argDef.tagName.split(':')[1]
-    this.content = argDef.textContent
-    this.ref = argDef.getAttribute('ref')
-    this.localRef = argDef.getAttribute('local-ref')
+    super(tokenScript, localAttrContext);
+    this.type = type ?? argDef.tagName.split(":")[1];
+    this.content = argDef.textContent ?? undefined;
+    this.ref = argDef.getAttribute("ref") ?? undefined;
+    this.localRef = argDef.getAttribute("local-ref") ?? undefined;
   }
 
   /**
@@ -42,43 +39,44 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
    */
   public async getEthersArgument(
     tokenContext: ITokenIdContext,
-    name: string = '',
+    name: string = "",
   ) {
     let arg: Partial<IEthersArgument> = {
       name,
       value: await this.getValue(tokenContext),
-    }
+    };
 
-    if (this.type === 'struct') {
+    if (this.type === "struct") {
       switch (this.ref) {
-        case 'attestation':
-          const data = await this.tokenScript.getTokenContextData(tokenContext)
+        case "attestation":
+          const data: any =
+            await this.tokenScript.getTokenContextData(tokenContext);
 
-          arg.type = 'tuple'
-          arg.internalType = 'struct EasTicketVerify.AttestationCoreData'
+          arg.type = "tuple";
+          arg.internalType = "struct EasTicketVerify.AttestationCoreData";
           arg.components = data.tokenInfo.data.decodedToken.types.Attest.map(
-            (field) => {
+            (field: { name: any; type: any }) => {
               return {
                 name: field.name,
                 type: field.type,
                 internalType: field.type,
-              }
+              };
             },
-          )
+          );
 
-          break
+          break;
 
         default:
           throw new Error(
-            'Struct encoding is not defined for ' + this.ref + ' attribute.',
-          )
+            "Struct encoding is not defined for " + this.ref + " attribute.",
+          );
       }
     } else {
-      arg.type = this.type
-      arg.internalType = this.type
+      arg.type = this.type;
+      arg.internalType = this.type;
     }
 
-    return arg
+    return arg;
   }
 
   /**
@@ -87,71 +85,75 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
    * @protected
    */
   protected async resolveValue(tokenContext?: ITokenIdContext) {
-    let value
+    let value;
 
     if (this.ref || this.localRef) {
       if (tokenContext)
-        value = await this.resolveUsingTokenContext(tokenContext)
+        value = await this.resolveUsingTokenContext(tokenContext);
 
-      if (!value) value = await this.resolveFromAttribute(tokenContext)
+      if (!value) value = await this.resolveFromAttribute(tokenContext);
     } else {
-      value = this.content
+      value = this.content;
     }
 
-    return EthUtils.encodeTransactionParameter(this.type, value)
+    return EthUtils.encodeTransactionParameter(this.type, value);
   }
 
   private async resolveUsingTokenContext(tokenContext?: ITokenIdContext) {
-    const contextData = await this.tokenScript.getTokenContextData(tokenContext)
+    const contextData =
+      await this.tokenScript.getTokenContextData(tokenContext);
 
     // TODO: support dot notation to access nested data in transactions
-    if (!contextData[this.ref]) return null
+    if (!contextData[this.ref]) return null;
 
     // Special case for encoding attestations into struct argument
-    if (this.type === 'struct') {
-      return this.encodeStruct(this.ref, contextData)
+    if (this.type === "struct") {
+      return this.encodeStruct(this.ref, contextData);
     } else {
-      return contextData[this.ref]
+      return contextData[this.ref];
     }
   }
 
   private async encodeStruct(name: string, contextData: ITokenContextData) {
     switch (name) {
-      case 'attestation':
-        const signedAttestation = contextData.tokenInfo.data.decodedToken
-        const attestStructData = {}
+      case "attestation":
+        const signedAttestation = contextData.tokenInfo.data.decodedToken;
+        const attestStructData = {};
 
         for (const field of signedAttestation.types.Attest) {
-          attestStructData[field.name] = signedAttestation.message[field.name]
+          attestStructData[field.name] = signedAttestation.message[field.name];
         }
 
-        return attestStructData
+        return attestStructData;
 
       default:
         throw new Error(
-          'Struct encoding is not defined for ' + this.ref + ' attribute.',
-        )
+          "Struct encoding is not defined for " + this.ref + " attribute.",
+        );
     }
   }
 
   private async resolveFromAttribute(tokenContext?: ITokenIdContext) {
-    let attr
+    let attr;
 
     // TODO: Rework this to avoid exception and put into getBackingAttribute function to cover filter values
     try {
-      attr = this.getBackingAttribute()
-      return await attr.getValue(true, false, tokenContext)
+      attr = this.getBackingAttribute();
+      return await attr.getValue(true, false, tokenContext);
     } catch (e) {
       // local-ref can be used to get attributes defined by a view that aren't explicitly defined in the tokenscript
       const value = this.tokenScript
         .getViewController()
-        .getUserEntryValue(this.localRef, tokenContext?.selectedTokenId ?? '-1')
+        .getUserEntryValue(
+          this.localRef,
+          tokenContext?.selectedTokenId ?? "-1",
+        );
 
       if (!value) {
-        throw e
+        throw e;
       }
 
-      return value
+      return value;
     }
   }
 }

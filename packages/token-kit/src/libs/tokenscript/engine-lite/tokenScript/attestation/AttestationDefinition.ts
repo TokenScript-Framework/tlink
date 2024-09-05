@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { computeAddress, keccak256 } from "ethers";
 import { TokenScript } from "../../tokenscript";
 
@@ -76,7 +74,7 @@ export class AttestationDefinition {
     return this.elem.getElementsByTagName("ts:eventId")?.[0]?.innerHTML ?? null;
   }
 
-  get collectionFields(): { name: string; value }[] {
+  get collectionFields(): { name: string; value: any }[] {
     const collectionFields = this.elem.getElementsByTagName(
       "ts:collectionFields",
     )?.[0];

@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { ITokenIdContext, TokenScript } from "../../tokenscript";
 
 /**
@@ -21,7 +20,8 @@ export class SelectionFilter {
 
     const matches = filter.match(/([a-zA-Z0-9]*)([=<>]*)([a-zA-Z0-9]*)/);
 
-    if (!matches || matches.length < 4) throw new Error("Malformed selection filter");
+    if (!matches || matches.length < 4)
+      throw new Error("Malformed selection filter");
 
     this.attributeName = matches[1];
     this.conditionOperator = matches[2];
