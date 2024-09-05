@@ -1,7 +1,7 @@
 // import { getERC721Metadata } from '@/app/libs/ethereum'
 // import { getMetadata } from '@/app/service/externalApi'
 import { ACTIONS_CORS_HEADERS } from '@repo/actions';
-import { getERC721Metadata, getMetadata } from '@repo/token-kit';
+import { getERC721Metadata, getTokenscriptMetadata } from '@repo/token-kit';
 import { encodeFunctionData } from 'viem';
 
 type ChainId = string;
@@ -30,7 +30,7 @@ function buildGet() {
     { params }: { params: { tlink: TLinkGetParams } },
   ) => {
     const [chainId, contract, tokenId] = params.tlink;
-    const tsMetaData = await getMetadata(Number(chainId), contract);
+    const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract);
     const tokenMetadata = await getERC721Metadata(
       Number(chainId),
       contract,

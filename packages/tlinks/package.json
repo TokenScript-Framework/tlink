@@ -27,15 +27,15 @@
       "import": "./dist/hooks/index.js",
       "require": "./dist/hooks/index.cjs"
     },
-    "./hooks/solana": {
-      "types": "./dist/hooks/solana/index.d.ts",
-      "import": "./dist/hooks/solana/index.js",
-      "require": "./dist/hooks/solana/index.cjs"
-    },
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./createTlink": {
+      "types": "./dist/createTlink.d.ts",
+      "import": "./dist/createTlink.js",
+      "require": "./dist/createTlink.js"
     },
     "./index.css": "./dist/index.css"
   },

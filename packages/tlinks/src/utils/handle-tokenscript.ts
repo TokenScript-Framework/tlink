@@ -1,4 +1,4 @@
-import { getERC721Metadata, getMetadata } from '@repo/token-kit';
+import { getERC721Metadata, getTokenscriptMetadata } from '@repo/token-kit';
 import { encodeFunctionData } from 'viem';
 import type { ActionPostResponse } from '../api/actions-spec';
 
@@ -16,7 +16,7 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     throw new Error('invalid tokenscript link');
   }
 
-  const tsMetaData = await getMetadata(Number(chainId), contract);
+  const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract);
   const tokenMetadata = await getERC721Metadata(
     Number(chainId),
     contract,
