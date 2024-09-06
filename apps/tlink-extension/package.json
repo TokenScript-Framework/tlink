@@ -26,18 +26,6 @@
     "typescript": "5.3.3"
   },
   "manifest": {
-    "web_accessible_resources": [
-      {
-        "matches": [
-          "<all_urls>"
-        ],
-        "resources": [
-          "**/*",
-          "*"
-        ],
-        "use_dynamic_url": true
-      }
-    ],
     "host_permissions": [
       "https://twitter.com/*",
       "https://x.com/*"
