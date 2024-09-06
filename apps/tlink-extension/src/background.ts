@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
     chrome.tabs.create({
       url: `https://viewer.tokenscript.org/?chain=${msg.payload.chainId}&contract=${contract}&tokenId=${tokenId}#card=${actionName}`
     })
-    return
+    return sendResponse({ signature: "done" })
   }
 
   handleWalletCommunication(sender.tab.id, msg.type, msg.wallet, msg.payload)
