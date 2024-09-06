@@ -6,7 +6,14 @@
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
-    "package": "plasmo package"
+    "package": "plasmo package",
+    "package:chrome": "plasmo build --target=chrome-mv3 --zip",
+    "package:firefox-mv2": "plasmo build --target=firefox-mv2 --zip",
+    "package:firefox-mv3": "plasmo build --target=firefox-mv3 --zip",
+    "package:edge": "plasmo build --target=edge-mv3 --zip",
+    "package:brave": "plasmo build --target=brave-mv3 --zip",
+    "package:opera": "plasmo build --target=opera-mv3 --zip",
+    "package:all": "npm run package:chrome && npm run package:firefox-mv2 && npm run package:firefox-mv3 && npm run package:edge && npm run package:brave && npm run package:opera"
   },
   "dependencies": {
     "plasmo": "0.89.1",
