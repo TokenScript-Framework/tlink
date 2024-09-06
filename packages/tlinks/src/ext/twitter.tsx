@@ -149,7 +149,6 @@ async function handleNewNode(
 
   const shortenedUrl = anchor.href;
   const actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
-  console.log('actionUrl', actionUrl);
   const interstitialData = isInterstitial(actionUrl);
 
   let actionApiUrl: string | null;

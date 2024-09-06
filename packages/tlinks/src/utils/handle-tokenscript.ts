@@ -25,7 +25,6 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     BigInt(tokenId),
   );
 
-  console.log(tsMetaData, 'debug here');
   return {
     type: 'action',
     icon:
