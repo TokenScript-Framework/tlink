@@ -179,6 +179,11 @@ export interface ActionPostRequest<T = string> {
 export interface TransactionPayload {
   txData: TransactionData;
   chainId: string;
+  metadata?: {
+    contract: string;
+    tokenId?: string;
+    actionName: string;
+  };
 }
 
 export interface TransactionData {
@@ -197,6 +202,11 @@ export interface TransactionData {
 export interface ActionPostResponse {
   transactionData: TransactionData;
   chainId: string;
+  metadata?: {
+    contract: string;
+    tokenId?: string;
+    actionName: string;
+  };
   /** describes the nature of the transaction */
   message?: string;
   links?: {

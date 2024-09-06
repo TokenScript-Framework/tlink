@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 
+import { useStorage } from "@plasmohq/storage/hook"
+
 import { TokenScriptWebsite } from "~constant"
+import { Checkbox } from "~popup/components/Checkbox"
 import { Header } from "~popup/components/Header"
 import { WalletSelector } from "~popup/components/WalletSelector"
 
@@ -9,6 +12,7 @@ import "~style.css"
 const Popup = () => {
   const [isLoading, setLoading] = useState(true)
   const [selectedWallet, setSelectedWallet] = useState<string | null>()
+  const [openInTsViewer, setOpenInTsViewer] = useStorage("openInTsViewer")
 
   useEffect(() => {
     chrome.storage.local.get(["selectedWallet"], (result) => {
@@ -17,6 +21,19 @@ const Popup = () => {
       setLoading(false)
     })
   }, [])
+
+  const handleOpenInTsViewerChange = () => {
+    setOpenInTsViewer(!openInTsViewer)
+  }
+
+  const handleWalletChange = (wallet: string | null) => {
+    setSelectedWallet(wallet)
+    if (wallet) {
+      chrome.storage.local.set({ selectedWallet: wallet })
+    } else {
+      chrome.storage.local.remove("selectedWallet")
+    }
+  }
 
   if (isLoading) return null
   return (
@@ -36,21 +53,39 @@ const Popup = () => {
           </p>
           <WalletSelector
             selectedWallet={selectedWallet}
-            setSelectedWallet={setSelectedWallet}
+            setSelectedWallet={handleWalletChange}
           />
 
-          {/* {selectedWallet && (
-          <div className="bg-accent-brand/10 rounded-lg p-2 flex items-center gap-2 w-full">
-            <div className="flex-0 text-accent-brand">
-              <CircleExclamationIcon />
+          <label
+            className="cursor-pointer items-center w-full mt-4"
+            onClick={handleOpenInTsViewerChange}>
+            <input
+              type="hidden"
+              checked={openInTsViewer}
+              onChange={handleOpenInTsViewerChange}
+            />
+            <div className="px-4 py-3 flex flex-row items-center justify-center gap-3 rounded-lg group">
+              <div className="flex flex-col flex-1">
+                <span className="text-subtext font-medium">
+                  Open TokenScript viewer in new tab
+                </span>
+              </div>
+              <Checkbox checked={openInTsViewer} />
             </div>
-            <span className="text-caption font-normal text-start">
-              Tlinks should only be enabled for one wallet at a time. Before
-              enabling support here, be sure you haven’t enabled native Tlinks
-              in any wallets.
-            </span>
-          </div>
-        )} */}
+          </label>
+
+          {/* {selectedWallet && (
+            <div className="bg-accent-brand/10 rounded-lg p-2 flex items-center gap-2 w-full">
+              <div className="flex-0 text-accent-brand">
+                <CircleExclamationIcon />
+              </div>
+              <span className="text-caption font-normal text-start">
+                Tlinks should only be enabled for one wallet at a time. Before
+                enabling support here, be sure you haven’t enabled native Tlinks
+                in any wallets.
+              </span>
+            </div>
+          )} */}
         </div>
       </div>
     </div>

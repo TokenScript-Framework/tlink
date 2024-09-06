@@ -90,12 +90,10 @@ export const WalletSelector = ({
 }) => {
   function selectWallet(wallet: string) {
     setSelectedWallet(wallet)
-    chrome.storage.local.set({ selectedWallet: wallet })
   }
 
   function unselectWallet() {
     setSelectedWallet(null)
-    chrome.storage.local.remove("selectedWallet")
   }
   const isWalletMetaMask = selectedWallet === Wallets.MetaMask
   return (

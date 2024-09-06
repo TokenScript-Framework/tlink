@@ -64,6 +64,11 @@ export function handlePostTokenScriptAction(
 
   return {
     chainId,
+    metadata: {
+      contract,
+      tokenId,
+      actionName,
+    },
     transactionData: {
       from: account,
       to: contract,

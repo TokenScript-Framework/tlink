@@ -438,6 +438,7 @@ export const ActionContainer = ({
         {
           txData: payload.transactionData,
           chainId: payload.chainId,
+          metadata: payload.metadata,
         },
         context,
       );
