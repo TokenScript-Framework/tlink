@@ -1,8 +1,8 @@
 {
   "name": "tlink-extension",
-  "displayName": "Tlink extension",
-  "version": "0.0.1",
-  "description": "Enable TLinks on Twitter",
+  "displayName": "Tlink",
+  "version": "0.0.2",
+  "description": "Enable Tlinks on Twitter",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
