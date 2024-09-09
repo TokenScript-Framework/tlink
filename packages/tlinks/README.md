@@ -1,6 +1,5 @@
 - [ ] https://proxy.dial.to
 - [ ] isInterstitial
-- [ ] // TODO: search https://
 
 ## Usage
 
