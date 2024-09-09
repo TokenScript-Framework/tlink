@@ -1,15 +1,10 @@
-import { BlockchainIds, getShortBlockchainName } from '../../utils/caip-2.ts';
+import { BlockchainIds } from '../../utils/caip-2.ts';
 import type { Action } from './Action.ts';
 
 /**
  * Max spec version the tlink client supports.
  */
 export const MAX_SUPPORTED_ACTION_VERSION = '1';
-
-export const DEFAULT_SUPPORTED_BLOCKCHAIN_IDS = [
-  BlockchainIds.SOLANA_MAINNET,
-  BlockchainIds.SOLANA_DEVNET,
-];
 
 /**
  * Baseline action version to be used when not set by action provider.
@@ -51,7 +46,6 @@ export type ActionSupportStrategy = (
  * @param action Action.
  *
  * @see {isVersionSupported}
- * @see {isBlockchainSupported}
  */
 export const defaultActionSupportStrategy: ActionSupportStrategy = async (
   action,
@@ -73,35 +67,16 @@ export const defaultActionSupportStrategy: ActionSupportStrategy = async (
   }
 
   const supportedActionVersion = MAX_SUPPORTED_ACTION_VERSION;
-  const supportedBlockchainIds = !action.adapterUnsafe
-    ? actionBlockchainIds // Assuming action is supported if adapter absent for optimistic compatibility
-    : action.adapterUnsafe.metadata.supportedBlockchainIds;
 
   const versionSupported = isVersionSupported({
     actionVersion,
     supportedActionVersion,
   });
-  const blockchainSupported = isBlockchainSupported({
-    actionBlockchainIds,
-    supportedBlockchainIds,
-  });
 
-  const notSupportedBlockchainIds = actionBlockchainIds.filter(
-    (id) => !supportedBlockchainIds.includes(id),
-  );
-
-  const notSupportedActionBlockchainNames = notSupportedBlockchainIds.map(
-    getShortBlockchainName,
-  );
-
-  if (!versionSupported && !blockchainSupported) {
-    const blockchainMessage =
-      notSupportedActionBlockchainNames.length === 1
-        ? `blockchain ${notSupportedActionBlockchainNames[0]}`
-        : `blockchains ${notSupportedActionBlockchainNames.join(', ')}`;
+  if (!versionSupported) {
     return {
       isSupported: false,
-      message: `Action version ${actionVersion} and ${blockchainMessage} are not supported by your tlink client.`,
+      message: `Action version ${actionVersion} are not supported by your tlink client.`,
     };
   }
 
@@ -112,17 +87,6 @@ export const defaultActionSupportStrategy: ActionSupportStrategy = async (
     };
   }
 
-  if (!blockchainSupported) {
-    const blockchainMessage =
-      notSupportedActionBlockchainNames.length === 1
-        ? `Action blockchain ${notSupportedActionBlockchainNames[0]} is not supported by your tlink client.`
-        : `Action blockchains ${notSupportedActionBlockchainNames.join(', ')} are not supported by your tlink client.`;
-
-    return {
-      isSupported: false,
-      message: blockchainMessage,
-    };
-  }
   return {
     isSupported: true,
   };
@@ -153,32 +117,4 @@ function compareSemverIgnoringPatch(v1: string, v2: string): number {
     return minor1 - minor2;
   }
   return 0;
-}
-
-/**
- * Check if action blockchain IDs are supported by the tlink.
- *
- * @param supportedBlockchainIds List of CAIP-2 blockchain IDs the client supports.
- * @param actionBlockchainIds List of CAIP-2 blockchain IDs the action supports.
- *
- * @returns `true` if all action blockchain IDs are supported by tlink, `false` otherwise.
- *
- * @see BlockchainIds
- */
-export function isBlockchainSupported({
-  supportedBlockchainIds,
-  actionBlockchainIds,
-}: IsBlockchainIdSupportedParams): boolean {
-  if (actionBlockchainIds.length === 0 || supportedBlockchainIds.length === 0) {
-    return false;
-  }
-  const sanitizedSupportedBlockchainIds = supportedBlockchainIds.map((it) =>
-    it.trim(),
-  );
-  const sanitizedActionBlockchainIds = actionBlockchainIds.map((it) =>
-    it.trim(),
-  );
-  return sanitizedActionBlockchainIds.every((chain) =>
-    sanitizedSupportedBlockchainIds.includes(chain),
-  );
 }

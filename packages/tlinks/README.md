@@ -1,4 +1,3 @@
-- [ ] DEFAULT_SUPPORTED_BLOCKCHAIN_IDS
 - [ ] https://proxy.dial.to
 - [ ] isInterstitial
 - [ ] // TODO: search https://
@@ -95,9 +94,7 @@ import { setupTwitterObserver } from "@repo/tlinks/ext/twitter";
 import { ActionConfig } from "@repo/tlinks";
 
 setupTwitterObserver(new ActionConfig({
-  metadata: {
-    supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET]
-  },
+  metadata: { },
   connect: async () => { ... },
   signTransaction: async (payload: TransactionPayload) => { ... }
 }))
@@ -110,9 +107,7 @@ class MyActionAdapter implements ActionAdapter {
   async connect() { ... }
   async signTransaction(payload: TransactionPayload) { ... }
   get metadata(): ActionAdapterMetadata {
-    return {
-      supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET],
-    };
+    return { };
   }
 }
 

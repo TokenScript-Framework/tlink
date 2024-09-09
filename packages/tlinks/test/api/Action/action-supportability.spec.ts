@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { isBlockchainSupported, isVersionSupported } from '../../../src';
+import { isVersionSupported } from '../../../src';
 
 describe('isVersionSupported', () => {
   test('returns true when action version is less than client version', () => {
@@ -103,56 +103,6 @@ describe('isVersionSupported', () => {
       isVersionSupported({
         actionVersion: 'invalid.version',
         supportedActionVersion: 'invalid.version',
-      }),
-    ).toBe(false);
-  });
-});
-
-describe('isBlockchainSupported', () => {
-  test('returns true when all actionBlockchainIds are supported', () => {
-    expect(
-      isBlockchainSupported({
-        supportedBlockchainIds: [
-          'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
-          'ethereum:1',
-        ],
-        actionBlockchainIds: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-      }),
-    ).toBe(true);
-  });
-
-  test('returns false when some actionBlockchainIds are not supported', () => {
-    expect(
-      isBlockchainSupported({
-        supportedBlockchainIds: ['ethereum:1'],
-        actionBlockchainIds: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-      }),
-    ).toBe(false);
-  });
-
-  test('returns false when both blockchainIds and actionBlockchainIds are empty', () => {
-    expect(
-      isBlockchainSupported({
-        supportedBlockchainIds: [],
-        actionBlockchainIds: [],
-      }),
-    ).toBe(false);
-  });
-
-  test('returns false when supportedBlockchainIds is empty and actionBlockchainIds is not', () => {
-    expect(
-      isBlockchainSupported({
-        supportedBlockchainIds: [],
-        actionBlockchainIds: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-      }),
-    ).toBe(false);
-  });
-
-  test('returns false when actionBlockchainIds is empty and actionBlockchainIds is not', () => {
-    expect(
-      isBlockchainSupported({
-        supportedBlockchainIds: ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp'],
-        actionBlockchainIds: [],
       }),
     ).toBe(false);
   });

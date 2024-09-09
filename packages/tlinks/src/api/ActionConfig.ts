@@ -1,5 +1,4 @@
 import { AbstractActionComponent } from './Action/action-components/index.ts';
-import { DEFAULT_SUPPORTED_BLOCKCHAIN_IDS } from './Action/action-supportability.ts';
 import { type Action } from './Action/index.ts';
 import type { TransactionPayload } from './actions-spec.ts';
 
@@ -18,16 +17,10 @@ export interface IncomingActionConfig {
 /**
  * Metadata for an action adapter.
  *
- * @property supportedBlockchainIds List of CAIP-2 blockchain IDs the adapter supports.
  *
  * @see {BlockchainIds}
  */
-export interface ActionAdapterMetadata {
-  /**
-   * List of CAIP-2 blockchain IDs the adapter supports.
-   */
-  supportedBlockchainIds: string[];
-}
+export interface ActionAdapterMetadata {}
 
 export interface ActionAdapter {
   metadata: ActionAdapterMetadata;
@@ -39,9 +32,7 @@ export interface ActionAdapter {
 }
 
 export class ActionConfig implements ActionAdapter {
-  private static readonly DEFAULT_METADATA: ActionAdapterMetadata = {
-    supportedBlockchainIds: DEFAULT_SUPPORTED_BLOCKCHAIN_IDS,
-  };
+  private static readonly DEFAULT_METADATA: ActionAdapterMetadata = {};
 
   constructor(private adapter: IncomingActionConfig['adapter']) {
     this.adapter = adapter;

@@ -1,8 +1,4 @@
-import {
-  ActionConfig,
-  BlockchainIds,
-  type TransactionPayload
-} from "@repo/tlinks"
+import { ActionConfig, type TransactionPayload } from "@repo/tlinks"
 import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import styleText from "@repo/tlinks/index.css"
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
@@ -30,7 +26,7 @@ const adapter = (wallet: string) =>
         payload
       }),
     connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
-    metadata: { supportedBlockchainIds: [BlockchainIds.SOLANA_MAINNET] }
+    metadata: {}
   })
 
 function initTwitterObserver() {
