@@ -1,4 +1,3 @@
-import { SOLANA_ACTION_PREFIX } from './constants';
 import { isInterstitial } from './interstitial-url';
 import { proxify } from './proxify';
 
@@ -89,19 +88,14 @@ export async function unfurlUrlToActionApiUrl(
   actionUrl: URL | string,
 ): Promise<string | null> {
   const url = new URL(actionUrl);
-  const strUrl = actionUrl.toString();
-  // case 1: if the URL is a solana action URL
-  if (SOLANA_ACTION_PREFIX.test(strUrl)) {
-    return strUrl.replace(SOLANA_ACTION_PREFIX, '');
-  }
 
-  // case 2: if the URL is an interstitial URL
+  // if the URL is an interstitial URL
   const interstitialData = isInterstitial(url);
   if (interstitialData.isInterstitial) {
     return interstitialData.decodedActionUrl;
   }
 
-  // case 3: if the URL is a website URL which has action.json
+  // if the URL is a website URL which has action.json
 
   const actionsJsonUrl = url.origin + '/actions.json';
   const actionsJson = await fetch(proxify(actionsJsonUrl)).then(

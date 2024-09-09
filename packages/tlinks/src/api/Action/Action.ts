@@ -51,7 +51,7 @@ export class Action {
     private _adapter?: ActionAdapter,
     private readonly _chainMetadata: ActionChainMetadata = { isChained: false },
   ) {
-    // if no links present or completed, fallback to original solana pay spec (or just using the button as a placeholder)
+    // if no links present or completed, fallback
     if (_data.type === 'completed' || !_data.links?.actions) {
       this._actions = [new ButtonActionComponent(this, _data.label, _url)];
       return;

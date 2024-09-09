@@ -114,10 +114,9 @@ describe('ActionsURLMapper', () => {
         rules: [{ pathPattern: '/trade/**', apiPath: '/api/trade/**' }],
       };
       const actionsUrlMapper = new ActionsURLMapper(actionsConfig);
-      const input =
-        'https://example.com/trade/solana_monkey_business?param=value';
+      const input = 'https://example.com/trade/monkey_business?param=value';
       const expected =
-        'https://example.com/api/trade/solana_monkey_business?param=value';
+        'https://example.com/api/trade/monkey_business?param=value';
 
       // act
       const result = actionsUrlMapper.mapUrl(input);

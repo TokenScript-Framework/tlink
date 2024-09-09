@@ -1,15 +1,4 @@
 /**
- * Protocol identifier for the Solana Actions protocol
- */
-export type SOLANA_ACTIONS_PROTOCOL = 'solana-action:';
-
-/**
- * @internal
- * Protocol identifier for the Solana Pay protocol
- */
-export type SOLANA_PAY_PROTOCOL = 'solana:';
-
-/**
  * The `actions.json` instruct clients on what website URLs support
  */
 export interface ActionsJson {
@@ -46,7 +35,7 @@ export interface ActionGetResponse extends Omit<TypedAction, 'type'> {
 }
 
 /**
- * A single Solana Action
+ * A single tlink Action
  */
 export interface TypedAction<T extends ActionType = 'action'> {
   /** type of Action to present to the user */

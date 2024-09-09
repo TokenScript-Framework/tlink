@@ -1,5 +1,3 @@
-import { SOLANA_ACTION_PREFIX } from './constants';
-
 export type IsInterstitialResult =
   | {
       isInterstitial: true;
@@ -19,17 +17,8 @@ export function isInterstitial(url: string | URL): IsInterstitialResult {
     }
     const urlDecodedActionUrl = decodeURIComponent(actionUrl);
 
-    if (!SOLANA_ACTION_PREFIX.test(urlDecodedActionUrl)) {
-      return { isInterstitial: false };
-    }
-
-    const decodedActionUrl = urlDecodedActionUrl.replace(
-      SOLANA_ACTION_PREFIX,
-      '',
-    );
-
     // Validate the decoded action URL
-    const decodedActionUrlObj = new URL(decodedActionUrl);
+    const decodedActionUrlObj = new URL(urlDecodedActionUrl);
 
     return {
       isInterstitial: true,
