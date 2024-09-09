@@ -8,24 +8,10 @@ export const ACTIONS_CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS',
   'Access-Control-Allow-Headers':
-    'Content-Type, Authorization, Content-Encoding, Accept-Encoding, X-Accept-Action-Version, X-Accept-Blockchain-Ids',
-  'Access-Control-Expose-Headers': 'X-Action-Version, X-Blockchain-Ids',
+    'Content-Type, Authorization, Content-Encoding, Accept-Encoding, X-Accept-Action-Version',
+  'Access-Control-Expose-Headers': 'X-Action-Version',
   'Content-Type': 'application/json',
 }
-
-/**
- * Protocol identifier for the Solana Actions protocol
- */
-export type SOLANA_ACTIONS_PROTOCOL = 'solana-action:'
-
-/**
- * @internal
- * Protocol identifier for the Solana Pay protocol
- */
-export type SOLANA_PAY_PROTOCOL = 'solana:'
-
-/** @internal */
-export type SupportedProtocols = SOLANA_ACTIONS_PROTOCOL | SOLANA_PAY_PROTOCOL
 
 /**
  * The `actions.json` instruct clients on what website URLs support
@@ -62,7 +48,7 @@ export type ActionType = 'action' | 'completed'
 export type ActionGetResponse = Action<'action'>
 
 /**
- * A single Solana Action
+ * A single tlink Action
  */
 export interface Action<T extends ActionType = 'action'> {
   /** type of Action to present to the user */

@@ -1,8 +1,4 @@
 /**
- * Solana Actions and tlinks specification - v2.0
- */
-
-/**
  * Protocol identifier for the Solana Actions protocol
  */
 export type SOLANA_ACTIONS_PROTOCOL = 'solana-action:';
@@ -12,9 +8,6 @@ export type SOLANA_ACTIONS_PROTOCOL = 'solana-action:';
  * Protocol identifier for the Solana Pay protocol
  */
 export type SOLANA_PAY_PROTOCOL = 'solana:';
-
-/** @internal */
-export type SupportedProtocols = SOLANA_ACTIONS_PROTOCOL | SOLANA_PAY_PROTOCOL;
 
 /**
  * The `actions.json` instruct clients on what website URLs support

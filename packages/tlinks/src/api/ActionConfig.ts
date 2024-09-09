@@ -18,7 +18,6 @@ export interface IncomingActionConfig {
  * Metadata for an action adapter.
  *
  *
- * @see {BlockchainIds}
  */
 export interface ActionAdapterMetadata {}
 

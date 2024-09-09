@@ -1,4 +1,3 @@
-import { BlockchainIds } from '../../utils/caip-2.ts';
 import type { Action } from './Action.ts';
 
 /**
@@ -11,20 +10,10 @@ export const MAX_SUPPORTED_ACTION_VERSION = '1';
  * Defaults to latest release that doesn't support versioning.
  */
 export const BASELINE_ACTION_VERSION = '2.2';
-/**
- * Baseline blockchain IDs to be used when not set by action provider.
- * Defaults to Solana mainnet.
- */
-export const BASELINE_ACTION_BLOCKCHAIN_IDS = [BlockchainIds.SOLANA_MAINNET];
 
 type IsVersionSupportedParams = {
   actionVersion: string;
   supportedActionVersion: string;
-};
-
-type IsBlockchainIdSupportedParams = {
-  actionBlockchainIds: string[];
-  supportedBlockchainIds: string[];
 };
 
 export type ActionSupportability =
@@ -50,15 +39,10 @@ export type ActionSupportStrategy = (
 export const defaultActionSupportStrategy: ActionSupportStrategy = async (
   action,
 ) => {
-  const { version: actionVersion, blockchainIds: actionBlockchainIds } =
-    action.metadata;
+  const { version: actionVersion } = action.metadata;
 
   // Will be displayed in the future once we remove backward compatibility fallbacks for blockchains and version
-  if (
-    !actionVersion ||
-    !actionBlockchainIds ||
-    actionBlockchainIds.length === 0
-  ) {
+  if (!actionVersion) {
     return {
       isSupported: false,
       message:

@@ -21,7 +21,6 @@ import {
 } from './action-components/index.ts';
 import {
   type ActionSupportStrategy,
-  BASELINE_ACTION_BLOCKCHAIN_IDS,
   BASELINE_ACTION_VERSION,
   defaultActionSupportStrategy,
 } from './action-supportability.ts';
@@ -29,7 +28,6 @@ import {
 const MULTI_VALUE_TYPES: ActionParameterType[] = ['checkbox'];
 
 interface ActionMetadata {
-  blockchainIds?: string[];
   version?: string;
 }
 
@@ -113,10 +111,7 @@ export class Action {
   }
 
   public get metadata(): ActionMetadata {
-    // TODO: Remove fallback to baseline version after a few weeks after compatibility is adopted
     return {
-      blockchainIds:
-        this._metadata.blockchainIds ?? BASELINE_ACTION_BLOCKCHAIN_IDS,
       version: this._metadata.version ?? BASELINE_ACTION_VERSION,
     };
   }
@@ -237,7 +232,7 @@ export class Action {
       return new Action(
         apiUrl,
         { ...data, type: 'action' },
-        { blockchainIds: undefined, version: undefined },
+        { version: undefined },
         supportStrategy,
         adapter,
       );
@@ -270,14 +265,9 @@ export class Action {
 }
 
 const getActionMetadata = (response: Response): ActionMetadata => {
-  const blockchainIds = response.headers
-    .get('x-blockchain-ids')
-    ?.split(',')
-    .map((id) => id.trim());
   const version = response.headers.get('x-action-version')?.trim();
 
   return {
-    blockchainIds,
     version,
   };
 };
