@@ -10,9 +10,9 @@
 
 `Tlink` component contains a `stylePreset` prop that accepts the following values:
 
-- `default` - [dial.to](https://dial.to)-styled tlink (light)
-- `x-dark` - [X](https://x.com/)-styled tlink (dark)
-- `x-light` - [X](https://x.com/)-styled tlink (light)
+- `default` - styled tlink (light)
+- `x-dark` - styled tlink (dark)
+- `x-light` - styled tlink (light)
 - `custom` - clean slate, no colors, radii at all, use CSS Variables to style. See [Overriding Theme](#overriding-theme).
 
 ```tsx
@@ -124,7 +124,3 @@ setupTwitterObserver(new MyActionAdapter());
     }
   ]
 ```
-
-## Learn More:
-
-- [Join our Discord](https://discord.gg/saydialect) - join the community and ask us a question

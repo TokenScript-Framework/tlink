@@ -4,14 +4,9 @@ import type {
   ActionSupportability,
   ExtendedActionState,
 } from '../api/index.ts';
-import { Badge } from './Badge.tsx';
 import { Snackbar } from './Snackbar.tsx';
 import ConfigIcon from './icons/ConfigIcon.tsx';
-import {
-  ExclamationShieldIcon,
-  InfoShieldIcon,
-  LinkIcon,
-} from './icons/index.ts';
+import { LinkIcon } from './icons/index.ts';
 import { ActionCheckboxGroup } from './inputs/ActionCheckboxGroup.tsx';
 import { ActionTextArea } from './inputs/ActionTextArea.tsx';
 import {
@@ -150,7 +145,7 @@ const DisclaimerBlock = ({
             action, & has been blocked. If you believe this action has been
             blocked in error, please{' '}
             <a
-              href="https://discord.gg/saydialect"
+              href="TODO: "
               className="cursor-pointer underline"
               target="_blank"
               rel="noopener noreferrer"
@@ -186,7 +181,7 @@ const DisclaimerBlock = ({
           </p>
           <a
             className="mt-3 inline-block font-semibold transition-colors hover:text-text-warning-hover motion-reduce:transition-none"
-            href="https://discord.gg/saydialect"
+            href="TODO:"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -253,8 +248,8 @@ export const ActionLayout = ({
                 {websiteText}
               </span>
             )}
-            <a
-              href="https://docs.dialect.to/documentation/actions/security"
+            {/* <a
+              href="TODO: about security"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center"
@@ -279,7 +274,7 @@ export const ActionLayout = ({
                   icon={<InfoShieldIcon width={13} height={13} />}
                 />
               )}
-            </a>
+            </a> */}
           </div>
           <span className="mb-0.5 text-text font-semibold text-text-primary">
             {title}
