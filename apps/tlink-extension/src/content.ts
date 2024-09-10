@@ -12,7 +12,6 @@ export const getStyle: PlasmoGetStyle = () => {
   style.textContent = styleText as any
   return style
 }
-console.log("content.ts")
 
 const adapter = (wallet: string) =>
   new ActionConfig({
@@ -27,16 +26,11 @@ const adapter = (wallet: string) =>
   })
 
 async function initTwitterObserver() {
-  console.log("1111111111")
   chrome.runtime.sendMessage({ type: "getSelectedWallet" }, (wallet) => {
-    console.log("2222222222", wallet)
     if (wallet) {
-      console.log("33333333")
-      console.log("setupTwitterObserver", wallet)
       setupTwitterObserver(adapter(wallet))
     }
   })
-  console.log("44444444444")
 }
 
 initTwitterObserver()

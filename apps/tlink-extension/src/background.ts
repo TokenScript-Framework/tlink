@@ -1,6 +1,5 @@
-import { Storage } from "@plasmohq/storage"
-
-chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
+// never mark the function here async
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   console.log("on message", msg, sender)
   if (!sender.tab || !sender.tab.id) {
     return null
@@ -14,28 +13,31 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
 
   if (!msg.wallet) return false
 
-  const storage = new Storage()
-
-  const openInTsViewer = await storage.get("openInTsViewer")
-  if (openInTsViewer && msg.type !== "connect") {
-    const metadata = msg.payload.metadata
-    if (!metadata) {
-      return
+  new Promise((resolve) => {
+    chrome.storage.local.get(["openInTsViewer"], (storage) => {
+      resolve(storage.openInTsViewer)
+    })
+  }).then((openInTsViewer) => {
+    if (openInTsViewer && msg.type !== "connect") {
+      const metadata = msg.payload.metadata
+      if (!metadata) {
+        return
+      }
+      const { contract, tokenId, actionName } = metadata
+      chrome.tabs.create({
+        url: `https://viewer.tokenscript.org/?chain=${msg.payload.chainId}&contract=${contract}&tokenId=${tokenId}#card=${actionName}`
+      })
+      return sendResponse({ signature: "done" })
     }
-    const { contract, tokenId, actionName } = metadata
-    chrome.tabs.create({
-      url: `https://viewer.tokenscript.org/?chain=${msg.payload.chainId}&contract=${contract}&tokenId=${tokenId}#card=${actionName}`
-    })
-    return sendResponse({ signature: "done" })
-  }
 
-  handleWalletCommunication(sender.tab.id, msg.type, msg.wallet, msg.payload)
-    .then((res) => {
-      sendResponse(res)
-    })
-    .catch((err) => {
-      console.error("error handling message", err)
-    })
+    handleWalletCommunication(sender.tab.id, msg.type, msg.wallet, msg.payload)
+      .then((res) => {
+        sendResponse(res)
+      })
+      .catch((err) => {
+        console.error("error handling message", err)
+      })
+  })
 
   return true
 })
