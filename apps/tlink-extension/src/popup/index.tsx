@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
 import { TokenScriptWebsite } from "~constant"
 import { Checkbox } from "~popup/components/Checkbox"
 import { Header } from "~popup/components/Header"
@@ -12,27 +10,20 @@ import "~style.css"
 const Popup = () => {
   const [isLoading, setLoading] = useState(true)
   const [selectedWallet, setSelectedWallet] = useState<string | null>()
-  const [openInTsViewer, setOpenInTsViewer] = useStorage("openInTsViewer")
+  const [openInTsViewer, setOpenInTsViewer] = useState<boolean>(false)
 
   useEffect(() => {
-    chrome.storage.local.get(["selectedWallet"], (result) => {
+    chrome.storage.local.get(["selectedWallet", "openInTsViewer"], (result) => {
       const storedWallet = result.selectedWallet ?? null
       setSelectedWallet(storedWallet)
+      setOpenInTsViewer(result.openInTsViewer || false)
       setLoading(false)
     })
   }, [])
 
   const handleOpenInTsViewerChange = () => {
     setOpenInTsViewer(!openInTsViewer)
-  }
-
-  const handleWalletChange = (wallet: string | null) => {
-    setSelectedWallet(wallet)
-    if (wallet) {
-      chrome.storage.local.set({ selectedWallet: wallet })
-    } else {
-      chrome.storage.local.remove("selectedWallet")
-    }
+    chrome.storage.local.set({ openInTsViewer: !openInTsViewer })
   }
 
   if (isLoading) return null
@@ -53,7 +44,7 @@ const Popup = () => {
           </p>
           <WalletSelector
             selectedWallet={selectedWallet}
-            setSelectedWallet={handleWalletChange}
+            setSelectedWallet={setSelectedWallet}
           />
 
           <label

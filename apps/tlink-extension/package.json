@@ -16,7 +16,6 @@
     "package:all": "npm run package:chrome && npm run package:firefox-mv2 && npm run package:firefox-mv3 && npm run package:edge && npm run package:brave && npm run package:opera"
   },
   "dependencies": {
-    "@plasmohq/storage": "^1.12.0",
     "@repo/tlinks": "workspace:*",
     "plasmo": "0.89.1",
     "react": "18.2.0",
