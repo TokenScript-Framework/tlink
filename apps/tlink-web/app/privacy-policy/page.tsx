@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
       </Link>
 
       <h1 className="text-3xl font-bold mb-6">Privacy Policy for Tlink</h1>
-      <p className="mb-4">Last updated: April 17, 2024</p>
+      <p className="mb-4">Last updated: September 10, 2024</p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-3">1. Introduction</h2>
       <p className="mb-4">
@@ -35,14 +35,7 @@ const PrivacyPolicy: React.FC = () => {
       <p className="mb-4">Tlink does not collect any data from children.</p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-3">
-        5. Updates to the Privacy Policy
-      </h2>
-      <p className="mb-4">
-        Users will be notified of any updates to this privacy policy via email.
-      </p>
-
-      <h2 className="text-2xl font-semibold mt-6 mb-3">
-        6. Contact Information
+        5. Contact Information
       </h2>
       <p className="mb-4">
         For any questions or concerns regarding this privacy policy, please
