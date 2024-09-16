@@ -6,8 +6,12 @@ export const GET = (req: Request) => {
       rules: [
         {
           pathPattern: '/**',
-          apiPath: 'http://localhost:3000/api/tokenscript/**',
+          apiPath: 'http://localhost:3001/api/charity',
         },
+        // {
+        //   pathPattern: '/**',
+        //   apiPath: 'http://localhost:3000/api/tokenscript/**',
+        // },
       ],
     },
     {

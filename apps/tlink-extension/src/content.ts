@@ -22,6 +22,8 @@ const adapter = (wallet: string) =>
         payload
       }),
     connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
+    getConnectedAccount: () =>
+      chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
     metadata: {}
   })
 

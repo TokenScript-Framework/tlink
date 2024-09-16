@@ -194,8 +194,12 @@ async function handleNewNode(
     return;
   }
 
+  const account = await config.getConnectedAccount();
+  const actionApiUrlWithAccount = new URL(actionApiUrl);
+  actionApiUrlWithAccount.searchParams.append('account', account || '');
+
   const action = await Action.fetch(
-    actionApiUrl,
+    actionApiUrlWithAccount.toString(),
     config,
     options.supportStrategy,
   ).catch(noop);

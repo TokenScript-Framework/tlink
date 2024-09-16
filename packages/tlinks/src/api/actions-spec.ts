@@ -148,7 +148,7 @@ export interface ActionParameterSelectable<T extends ActionParameterType>
  * Response body payload sent via the Action POST Request
  */
 export interface ActionPostRequest<T = string> {
-  /** base58-encoded public key of an account that may sign the transaction */
+  /** user's wallet address */
   account: string;
   /**
    * Key-value map of parameter values from user's input

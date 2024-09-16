@@ -53,6 +53,20 @@ async function handleWalletCommunication(
   console.log("payload", payload)
 
   switch (type) {
+    case "getConnectedAccount":
+      const connectedAccountRes = await chrome.scripting.executeScript({
+        world: "MAIN",
+        target: { tabId },
+        func: async () => {
+          // @ts-ignore
+          const provider = window.ethereum
+          const accounts = await provider.request({
+            method: "eth_accounts"
+          })
+          return accounts[0] || ""
+        }
+      })
+      return connectedAccountRes[0].result
     case "connect":
       console.log("connecting wallet", wallet)
       const connectRes = await chrome.scripting.executeScript({

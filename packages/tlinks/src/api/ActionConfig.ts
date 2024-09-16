@@ -10,7 +10,10 @@ export interface ActionContext {
 }
 
 export interface IncomingActionConfig {
-  adapter: Pick<ActionAdapter, 'connect' | 'signTransaction'> &
+  adapter: Pick<
+    ActionAdapter,
+    'connect' | 'signTransaction' | 'getConnectedAccount'
+  > &
     Partial<Pick<ActionAdapter, 'metadata'>>;
 }
 
@@ -24,6 +27,7 @@ export interface ActionAdapterMetadata {}
 export interface ActionAdapter {
   metadata: ActionAdapterMetadata;
   connect: (context: ActionContext) => Promise<string | null>;
+  getConnectedAccount: () => Promise<string | null>;
   signTransaction: (
     payload: TransactionPayload,
     context: ActionContext,
@@ -48,6 +52,14 @@ export class ActionConfig implements ActionAdapter {
   async connect(context: ActionContext) {
     try {
       return await this.adapter.connect(context);
+    } catch {
+      return null;
+    }
+  }
+
+  async getConnectedAccount() {
+    try {
+      return await this.adapter.getConnectedAccount();
     } catch {
       return null;
     }
