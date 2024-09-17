@@ -20,6 +20,7 @@ export function setProxyUrl(url: string): void {
 }
 
 export function proxify(url: string): URL {
+  rewriteUrlIfIpfsUrl(url);
   const baseUrl = new URL(url);
   if (shouldIgnoreProxy(baseUrl)) {
     return baseUrl;
@@ -30,6 +31,7 @@ export function proxify(url: string): URL {
 }
 
 export function proxifyImage(url: string): URL {
+  url = rewriteUrlIfIpfsUrl(url);
   const baseUrl = new URL(url);
   if (shouldIgnoreProxy(baseUrl)) {
     return baseUrl;
@@ -47,4 +49,20 @@ function shouldIgnoreProxy(url: URL): boolean {
     return true;
   }
   return false;
+}
+
+function rewriteUrlIfIpfsUrl(url: string) {
+  if (!url) {
+    return '';
+  } else if (url.toLowerCase().startsWith('https://ipfs.io/ipfs')) {
+    return url.replace(
+      'https://ipfs.io/ipfs',
+      'https://gateway.pinata.cloud/ipfs',
+    );
+  } else if (url.toLowerCase().startsWith('ipfs://ipfs')) {
+    return url.replace('ipfs://ipfs', 'https://gateway.pinata.cloud/ipfs');
+  } else if (url.toLowerCase().startsWith('ipfs://')) {
+    return url.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
+  }
+  return url;
 }

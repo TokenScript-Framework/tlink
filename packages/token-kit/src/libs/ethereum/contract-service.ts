@@ -172,9 +172,25 @@ export async function getERC721Metadata(
       args: [BigInt(tokenId)],
     })
 
-    return (await axios.get(tokenURI)).data
+    return (await axios.get(rewriteUrlIfIpfsUrl(tokenURI))).data
   } catch (e) {
     console.log(e)
     return null
   }
+}
+
+function rewriteUrlIfIpfsUrl(url: string) {
+  if (!url) {
+    return ''
+  } else if (url.toLowerCase().startsWith('https://ipfs.io/ipfs')) {
+    return url.replace(
+      'https://ipfs.io/ipfs',
+      'https://gateway.pinata.cloud/ipfs',
+    )
+  } else if (url.toLowerCase().startsWith('ipfs://ipfs')) {
+    return url.replace('ipfs://ipfs', 'https://gateway.pinata.cloud/ipfs')
+  } else if (url.toLowerCase().startsWith('ipfs://')) {
+    return url.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/')
+  }
+  return url
 }
