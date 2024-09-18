@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
   if (msg.type === "getSelectedWallet") {
     chrome.storage.local.get(["selectedWallet"], (storage) => {
+      console.log("selectedWallet", storage.selectedWallet)
       sendResponse(storage.selectedWallet)
     })
     return true
@@ -48,6 +49,7 @@ async function handleWalletCommunication(
   wallet: string,
   payload: object
 ) {
+  payload = payload || {}
   console.log("type", type)
   console.log("wallet", wallet)
   console.log("payload", payload)
@@ -57,9 +59,13 @@ async function handleWalletCommunication(
       const connectedAccountRes = await chrome.scripting.executeScript({
         world: "MAIN",
         target: { tabId },
-        func: async () => {
+        args: [payload, wallet],
+        func: async (payload, wallet) => {
           // @ts-ignore
           const provider = window.ethereum
+          if (wallet === "rabby" && !provider.isRabby) {
+            return
+          }
           const accounts = await provider.request({
             method: "eth_accounts"
           })
@@ -72,9 +78,13 @@ async function handleWalletCommunication(
       const connectRes = await chrome.scripting.executeScript({
         world: "MAIN",
         target: { tabId: tabId },
-        func: async () => {
+        args: [payload, wallet],
+        func: async (payload, wallet) => {
           // @ts-ignore
           const provider = window.ethereum
+          if (wallet === "rabby" && !provider.isRabby) {
+            return
+          }
           const accounts = await provider.request({
             method: "eth_requestAccounts"
           })
@@ -92,6 +102,9 @@ async function handleWalletCommunication(
           try {
             // @ts-ignore
             const provider = window.ethereum
+            if (wallet === "rabby" && !provider.isRabby) {
+              return
+            }
             const currentChainId = await provider.request({
               method: "eth_chainId"
             })

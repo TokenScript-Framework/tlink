@@ -1,11 +1,14 @@
 import type { ReactNode } from "react"
 
+import RabbyLogo from "~popup/components/RabbyLogo"
+
 import ArrowFromSquareIcon from "../icons/ArrowFromSquareIcon"
 import { Checkbox } from "./Checkbox"
 import MetaMaskLogo from "./MetaMaskLogo"
 
 enum Wallets {
-  MetaMask = "metamask"
+  MetaMask = "metamask",
+  Rabby = "rabby"
 }
 interface WalletProps {
   title: string
@@ -97,16 +100,25 @@ export const WalletSelector = ({
     setSelectedWallet(null)
     chrome.storage.local.remove("selectedWallet")
   }
-  const isWalletMetaMask = selectedWallet === Wallets.MetaMask
+
   return (
     <div className="flex flex-col flex-1 gap-2 w-full">
       <WalletSelect
-        isSelected={isWalletMetaMask}
+        isSelected={selectedWallet === Wallets.MetaMask}
         title="MetaMask"
         subtitle="The most popular wallet for Ethereum"
         icon={<MetaMaskLogo className="w-8 h-8" />}
         onChange={(isChecked: boolean) =>
           isChecked ? selectWallet(Wallets.MetaMask) : unselectWallet()
+        }
+      />
+      <WalletSelect
+        isSelected={selectedWallet === Wallets.Rabby}
+        title="Rabby Wallet"
+        subtitle="The game-changing wallet"
+        icon={<RabbyLogo className="w-8 h-8" />}
+        onChange={(isChecked: boolean) =>
+          isChecked ? selectWallet(Wallets.Rabby) : unselectWallet()
         }
       />
     </div>
