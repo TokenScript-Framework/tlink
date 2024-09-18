@@ -1,4 +1,4 @@
-let proxyUrl: string | null = 'https://proxy.dial.to';
+let proxyUrl: string | null = '';
 
 export function setProxyUrl(url: string): void {
   if (!url) {
@@ -20,7 +20,7 @@ export function setProxyUrl(url: string): void {
 }
 
 export function proxify(url: string): URL {
-  rewriteUrlIfIpfsUrl(url);
+  url = rewriteUrlIfIpfsUrl(url);
   const baseUrl = new URL(url);
   if (shouldIgnoreProxy(baseUrl)) {
     return baseUrl;
