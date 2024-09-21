@@ -19,8 +19,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       resolve(storage.openInTsViewer)
     })
   }).then((openInTsViewer) => {
-    if (openInTsViewer && msg.type !== "connect") {
-      const metadata = msg.payload.metadata
+    if (
+      openInTsViewer &&
+      msg.type !== "connect" &&
+      msg.type !== "getConnectedAccount"
+    ) {
+      const metadata = msg.payload?.metadata
       if (!metadata) {
         return
       }
