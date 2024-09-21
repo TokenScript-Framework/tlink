@@ -11,14 +11,22 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   const chainId = params.get('chain');
   const contract = params.get('contract') as `0x${string}`;
   const tokenId = params.get('tokenId') || hashParams.get('tokenId');
+  const scriptId = params.get('scriptId') || hashParams.get('scriptId'); // 7738_2
+  const scriptIndex = scriptId ? scriptId.split('_')[1] : undefined; // get the index for example 2
 
   if (!chainId || !contract || !tokenId) {
     throw new Error('invalid tokenscript link');
   }
 
-  const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract, {
-    actions: true,
-  });
+  const tsMetaData = await getTokenscriptMetadata(
+    Number(chainId),
+    contract,
+    {
+      actions: true,
+    },
+    0,
+    scriptIndex ? Number(scriptIndex) : undefined,
+  );
   const tokenMetadata = await getERC721Metadata(
     Number(chainId),
     contract,

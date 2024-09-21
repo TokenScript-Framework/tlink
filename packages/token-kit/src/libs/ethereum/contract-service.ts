@@ -1,3 +1,5 @@
+import { erc7738ABI } from '@/libs/ethereum/abi/erc7738'
+import { proxify } from '@/libs/ethereum/proxify'
 import axios from 'axios'
 import {
   Chain,
@@ -68,6 +70,34 @@ export async function getERC5169ScriptURISingle(
   } catch {
     setERC5169ScriptURICache(chainId, contract, 'not implemented')
     return 'not implemented'
+  }
+}
+
+export async function getErc7738scriptURI(
+  chainId: number,
+  contract: `0x${string}`,
+  entry?: number,
+) {
+  const client = getBatchClient(chainId)
+  // the registry contract, same address across chains
+  const registryContract = `0x0077380bcdb2717c9640e892b9d5ee02bb5e0682`
+
+  if (entry === undefined) {
+    return (
+      await client.readContract({
+        address: registryContract,
+        abi: erc7738ABI,
+        functionName: 'scriptURI',
+        args: [contract],
+      })
+    )[0]
+  } else {
+    return client.readContract({
+      address: registryContract,
+      abi: erc7738ABI,
+      functionName: 'getScriptURI',
+      args: [BigInt(entry)],
+    })
   }
 }
 
@@ -172,25 +202,10 @@ export async function getERC721Metadata(
       args: [BigInt(tokenId)],
     })
 
-    return (await axios.get(rewriteUrlIfIpfsUrl(tokenURI))).data
+    return (await axios.get(proxify(tokenURI).toString())).data
   } catch (e) {
     console.log(e)
+    console.log('error -here in getERC721Metadata')
     return null
   }
-}
-
-function rewriteUrlIfIpfsUrl(url: string) {
-  if (!url) {
-    return ''
-  } else if (url.toLowerCase().startsWith('https://ipfs.io/ipfs')) {
-    return url.replace(
-      'https://ipfs.io/ipfs',
-      'https://gateway.pinata.cloud/ipfs',
-    )
-  } else if (url.toLowerCase().startsWith('ipfs://ipfs')) {
-    return url.replace('ipfs://ipfs', 'https://gateway.pinata.cloud/ipfs')
-  } else if (url.toLowerCase().startsWith('ipfs://')) {
-    return url.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/')
-  }
-  return url
 }

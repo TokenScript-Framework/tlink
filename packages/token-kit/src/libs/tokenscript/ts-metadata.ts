@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getERC5169ScriptURISingle } from '../ethereum'
+import { getERC5169ScriptURISingle, getErc7738scriptURI } from '../ethereum'
 import { TokenScript } from './engine-lite/tokenscript'
 import { Card } from './engine-lite/tokenScript/Card'
 import { Meta } from './engine-lite/tokenScript/Meta'
@@ -33,12 +33,17 @@ export async function getTokenscriptMetadata(
   contract: `0x${string}`,
   options: TsOptions = defaultTsOptions,
   index = 0,
+  entry?: number,
 ): Promise<TsMetadata> {
   const scriptURIs = await getERC5169ScriptURISingle(chainId, contract)
-  const scriptURI = scriptURIs[index]
+  let scriptURI = scriptURIs[index]
   if (scriptURIs === 'not implemented' || !scriptURI) {
-    console.log('Script URI not exist')
-    throw new Error('Some errors for import, please check the server log')
+    scriptURI = await getErc7738scriptURI(chainId, contract, entry)
+    console.log('erc7738 scriptURI', scriptURI)
+    if (scriptURI === 'not implemented' || !scriptURI) {
+      console.log('Script URI not exist')
+      throw new Error('Some errors for import, please check the server log')
+    }
   }
 
   const tokenscript = await loadTokenscript(scriptURI)
