@@ -1,4 +1,3 @@
-- [ ] https://proxy.dial.to
 - [ ] isInterstitial
 
 ## Usage
