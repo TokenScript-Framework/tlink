@@ -1,22 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import { TlinkCard } from '@/components/tlink-card'
 /* eslint-disable @next/next/no-img-element */
-import { ActionConfig, ActionContainer, useAction } from '@repo/tlinks'
 import '@repo/tlinks/index.css'
 import React from 'react'
 
 const Page: React.FC = () => {
-  const { action } = useAction({
-    url: 'https://viewer.tokenscript.org/?chain=8453&contract=0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a&scriptId=7738_2#card=Info&tokenId=109541814075604622605202872494250821275866922285415705885847926644579782560125',
-    adapter: new ActionConfig({
-      signTransaction: () => {},
-      connect: () => {},
-      getConnectedAccount: () => {},
-      metadata: {},
-    } as any),
-  })
-  console.log('action', action)
-
   return (
     <main className="mx-auto mt-32 flex min-h-screen w-full max-w-[1440px] flex-col justify-between gap-10 px-4 pb-40 md:flex-row md:px-8">
       <div className="mx-auto flex min-h-screen flex-col justify-between gap-10 md:flex-row">
@@ -47,18 +36,11 @@ const Page: React.FC = () => {
                   <span>Tlinks</span>
                 </h3>
               </div>
-              <div className="columns-1 p-4 xl:columns-2">
-                {action && (
-                  <div className="min-w-96">
-                    <ActionContainer
-                      action={action}
-                      websiteUrl="https://x.com/ddwchen"
-                      websiteText="ddwchen"
-                    />
-                  </div>
-                )}
-
-                <div></div>
+              <div className="columns-1 md:columns-2 gap-4 space-y-4">
+                <TlinkCard url="https://viewer.tokenscript.org/?chain=8453&contract=0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a&scriptId=7738_2#card=Info&tokenId=109541814075604622605202872494250821275866922285415705885847926644579782560125" />
+                <TlinkCard url="https://viewer.tokenscript.org/?chain=11155111&contract=0x31fc7840fA14F5e228E31D190b543deBDA13cCDA#card=Play&tokenId=28" />
+                <TlinkCard url="https://viewer.tokenscript.org/?chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=1649017156#" />
+                <TlinkCard url="https://viewer.tokenscript.org/?chain=8453&contract=0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a&tokenId=58503391225487282208626053630429829948557126871097022021950596275817446427680&scriptId=7738_2" />
               </div>
             </section>
           </div>
