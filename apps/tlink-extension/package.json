@@ -41,6 +41,18 @@
       "storage",
       "activeTab",
       "scripting"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "sandboxes/frame.html"
+        ],
+        "matches": [
+          "https://twitter.com/*",
+          "https://x.com/*",
+          "https://pro.x.com/*"
+        ]
+      }
     ]
   }
 }
