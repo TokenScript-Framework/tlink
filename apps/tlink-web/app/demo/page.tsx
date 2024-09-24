@@ -66,28 +66,8 @@ const ProfileCard: React.FC = () => {
         />
       </figure>
       <span className="overflow-y-hidden text-ellipsis whitespace-nowrap transition-all duration-700 ease-in-out text-3xl pl-0 mt-20">
-        treegirl.base.eth
+        victor928.base.eth
       </span>
-      <div className="absolute right-4 top-4">
-        <div>
-          <span>
-            <span className="inline-block p-2 opacity-50 hover:opacity-100">
-              <svg
-                width="1.5rem"
-                height="1.5rem"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.4199 7.52002L11.9999 14.94L4.57994 7.52002L2.80994 9.29002L11.9999 18.48L21.1899 9.29002L19.4199 7.52002Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-          </span>
-        </div>
-      </div>
     </div>
   )
 }
@@ -99,12 +79,12 @@ const SkillsList: React.FC = () => {
       <ul className="mt-4 flex flex-wrap gap-2">
         <li>
           <span className="flex items-center gap-2 rounded-xl border  px-3 py-2 text-sm font-bold transition-all border-[#45E1E5] bg-[#45E1E5]/20 text-[#004774]">
-            Marketing
+            TokenScript
           </span>
         </li>
         <li>
           <span className="flex items-center gap-2 rounded-xl border  px-3 py-2 text-sm font-bold transition-all border-[#45E1E5] bg-[#45E1E5]/20 text-[#004774]">
-            Strategy
+            Web3
           </span>
         </li>
         <li>
@@ -126,14 +106,14 @@ const SocialLinks: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-gray-40/20 p-8">
       <p className="break-words font-bold text-illoblack">
-        experimenting onchain at rehashweb3.xyz
+        experimenting onchain at tokenscript.org
       </p>
       <ul className="flex flex-col gap-2">
         <li>
           <a
             target="_blank"
             className="flex items-center gap-2 text-palette-foregroundMuted hover:text-blue-500"
-            href="https://x.com/ddwchen"
+            href="https://x.com/Victor928"
           >
             <span>
               <svg
@@ -151,38 +131,7 @@ const SocialLinks: React.FC = () => {
                 />
               </svg>
             </span>
-            <span className="overflow-hidden text-ellipsis">ddwchen</span>
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            className="flex items-center gap-2 text-palette-foregroundMuted hover:text-blue-500"
-            href="https://warpcast.com/treegirl"
-          >
-            <span>
-              <svg
-                width="1rem"
-                height="1rem"
-                viewBox="0 0 24 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.11859 0.043457H19.5979V21.9565H17.3257V11.9189H17.3034C17.0523 9.14476 14.7103 6.97081 11.8582 6.97081C9.00619 6.97081 6.66419 9.14476 6.41307 11.9189H6.39078V21.9565H4.11859V0.043457Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M0.000244141 3.1537L0.923321 6.26393H1.70439V18.8463C1.31223 18.8463 0.994327 19.1627 0.994327 19.5531V20.4014H0.852315C0.46016 20.4014 0.142256 20.7179 0.142256 21.1083V21.9565H8.09492V21.1083C8.09492 20.7179 7.77702 20.4014 7.38486 20.4014H7.24285V19.5531C7.24285 19.1627 6.92494 18.8463 6.53279 18.8463H5.68072V3.1537H0.000244141Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M17.4677 18.8463C17.0755 18.8463 16.7576 19.1627 16.7576 19.5531V20.4014H16.6156C16.2235 20.4014 15.9056 20.7179 15.9056 21.1083V21.9565H23.8582V21.1083C23.8582 20.7179 23.5403 20.4014 23.1482 20.4014H23.0062V19.5531C23.0062 19.1627 22.6883 18.8463 22.2961 18.8463V6.26393H23.0772L24.0002 3.1537H18.3198V18.8463H17.4677Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            <span className="overflow-hidden text-ellipsis">treegirl</span>
+            <span className="overflow-hidden text-ellipsis">@Victor928</span>
           </a>
         </li>
       </ul>
