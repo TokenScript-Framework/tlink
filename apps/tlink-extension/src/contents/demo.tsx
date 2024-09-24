@@ -13,9 +13,7 @@ export const getStyle = () => {
 
 const PlasmoOverlay = () => {
   return (
-    <div className="z-50 flex fixed top-32 right-8 bg-red-400">
-      <button>hello</button>
-
+    <div className="z-50 flex fixed top-32 right-8 bg-gray-300 h-[800px]">
       <iframe src={chrome.runtime.getURL("/sandboxes/frame.html")} />
     </div>
   )
