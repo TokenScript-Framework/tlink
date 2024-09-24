@@ -76,8 +76,8 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     description: tsMetadata.meta.description || '',
     links: {
       actions: (tsMetadata.actions || []).map(({ name, label }) => ({
-        label: name,
-        href: `/api/tokenscript/${input.chainId}/${input.contract}/${input.tokenId}/${label}`,
+        label: label,
+        href: `/api/tokenscript/${input.chainId}/${input.contract}/${input.tokenId}/${name}`,
       })),
     },
   };
