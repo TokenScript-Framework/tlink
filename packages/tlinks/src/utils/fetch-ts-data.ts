@@ -26,7 +26,10 @@ type FetchTsDataOutput = {
       imageUrl: string | null;
       backgroundImageUrl: string | null;
     };
-    actions: string[];
+    actions: Array<{
+      name: string;
+      label: string;
+    }>;
   };
 };
 
@@ -72,19 +75,10 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     title: tsMetadata?.name,
     description: tsMetadata.meta.description || '',
     links: {
-      actions: (tsMetadata.actions || []).map((actionName: string) => ({
-        label: camelCaseToWords(actionName),
-        href: `/api/tokenscript/${input.chainId}/${input.contract}/${input.tokenId}/${actionName}`,
+      actions: (tsMetadata.actions || []).map(({ name, label }) => ({
+        label: name,
+        href: `/api/tokenscript/${input.chainId}/${input.contract}/${input.tokenId}/${label}`,
       })),
     },
   };
-}
-
-function camelCaseToWords(str: string) {
-  return str
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, function (str) {
-      return str.toUpperCase();
-    })
-    .trim();
 }
