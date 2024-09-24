@@ -44,7 +44,7 @@ const Page: React.FC = () => {
                       <circle cx="7.5" cy="7.5" r="7.5" fill="currentColor" />
                     </svg>
                   </span>
-                  <span>Frames</span>
+                  <span>Tlinks</span>
                 </h3>
               </div>
               <div className="columns-1 p-4 xl:columns-2">
