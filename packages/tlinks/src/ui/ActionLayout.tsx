@@ -170,6 +170,8 @@ const DisclaimerBlock = ({
   }
 
   if (type === DisclaimerType.UNKNOWN) {
+    // TODO:
+    return null;
     return (
       <div className={className}>
         <Snackbar variant="warning">

@@ -1,4 +1,5 @@
 import { isInterstitial } from './interstitial-url';
+import { isTokenScriptViewerUrl } from './is-tokenscript-viewer-url';
 import { proxify } from './proxify';
 
 type Action = {
@@ -88,6 +89,9 @@ export async function unfurlUrlToActionApiUrl(
   actionUrl: URL | string,
 ): Promise<string | null> {
   const url = new URL(actionUrl);
+  if (isTokenScriptViewerUrl(url)) {
+    return actionUrl.toString();
+  }
 
   // if the URL is an interstitial URL
   const interstitialData = isInterstitial(url);
