@@ -1,6 +1,6 @@
-import { getERC721Metadata, getTokenscriptMetadata } from '@repo/token-kit';
 import { encodeFunctionData } from 'viem';
 import type { ActionPostResponse } from '../api/actions-spec';
+import { fetchTlinkData } from './fetch-ts-data';
 
 export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   // example:
@@ -18,47 +18,13 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     throw new Error('invalid tokenscript link');
   }
 
-  const tsMetaData = await getTokenscriptMetadata(
-    Number(chainId),
+  return fetchTlinkData({
+    chainId: Number(chainId),
     contract,
-    {
-      actions: true,
-    },
-    0,
-    scriptIndex ? Number(scriptIndex) : undefined,
-  );
-  const tokenMetadata = await getERC721Metadata(
-    Number(chainId),
-    contract,
-    BigInt(tokenId),
-  );
-
-  return {
-    type: 'action',
-    icon:
-      tokenMetadata.image ||
-      tsMetaData.meta.imageUrl ||
-      tsMetaData.meta.iconUrl,
-    label: tsMetaData.name,
-    title: tsMetaData.name,
-    description: tsMetaData.meta.description,
-    links: {
-      actions: (tsMetaData.actions || []).map((actionName: string) => ({
-        label: camelCaseToWords(actionName),
-        href: `/api/tokenscript/${chainId}/${contract}/${tokenId}/${actionName}`,
-      })),
-    },
-  };
+    tokenId,
+    entry: scriptIndex || undefined,
+  });
 };
-
-function camelCaseToWords(str: string) {
-  return str
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, function (str) {
-      return str.toUpperCase();
-    })
-    .trim();
-}
 
 export function handlePostTokenScriptAction(
   actionUrl: string,

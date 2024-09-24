@@ -11,7 +11,6 @@
   "dependencies": {
     "@repo/actions": "workspace:*",
     "@repo/tlinks": "workspace:*",
-    "@repo/token-kit": "workspace:*",
     "next": "14.2.6",
     "react": "^18",
     "react-dom": "^18",

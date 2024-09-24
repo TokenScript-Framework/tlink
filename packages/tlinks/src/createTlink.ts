@@ -1,8 +1,8 @@
 // import { getERC721Metadata } from '@/app/libs/ethereum'
 // import { getMetadata } from '@/app/service/externalApi'
 import { ACTIONS_CORS_HEADERS } from '@repo/actions';
-import { getERC721Metadata, getTokenscriptMetadata } from '@repo/token-kit';
 import { encodeFunctionData } from 'viem';
+import { fetchTlinkData } from './utils/fetch-ts-data';
 
 type ChainId = string;
 type Contract = `0x${string}`;
@@ -15,43 +15,19 @@ export const createTLink = () => {
   return { GET: buildGet(), POST: buildPost(), OPTIONS };
 };
 
-function camelCaseToWords(str: string) {
-  return str
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, function (str) {
-      return str.toUpperCase();
-    })
-    .trim();
-}
-
 function buildGet() {
   return async (
     _req: Request,
     { params }: { params: { tlink: TLinkGetParams } },
   ) => {
     const [chainId, contract, tokenId] = params.tlink;
-    const tsMetaData = await getTokenscriptMetadata(Number(chainId), contract, {
-      actions: true,
-    });
-    const tokenMetadata = await getERC721Metadata(
-      Number(chainId),
-      contract,
-      BigInt(tokenId),
-    );
 
-    const payload: any = {
-      type: 'action',
-      icon: tokenMetadata.image || tsMetaData.meta.imageUrl,
-      label: tsMetaData.name,
-      title: tsMetaData.name,
-      description: tsMetaData.meta.description,
-      links: {
-        actions: (tsMetaData.actions || []).map((actionName) => ({
-          label: camelCaseToWords(actionName),
-          href: `/api/tokenscript/${chainId}/${contract}/${tokenId}/${actionName}`,
-        })),
-      },
-    };
+    const payload = await fetchTlinkData({
+      chainId: Number(chainId),
+      contract,
+      tokenId,
+      entry: undefined,
+    });
 
     return Response.json(payload, { headers: ACTIONS_CORS_HEADERS });
   };

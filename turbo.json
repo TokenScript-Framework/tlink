@@ -16,11 +16,6 @@
       "cache": false,
       "persistent": true
     },
-    "@repo/token-kit#dev": {
-      "cache": false,
-      "persistent": true,
-      "outputs": ["dist/**"]
-    },
     "@repo/tlinks#dev": {
       "cache": false,
       "persistent": true,
