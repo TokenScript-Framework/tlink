@@ -36,7 +36,7 @@ const Page: React.FC = () => {
                   <span>Tlinks</span>
                 </h3>
               </div>
-              <div className="columns-1 md:columns-2 gap-4 space-y-4">
+              <div className="columns-1 md:columns-2 gap-4 space-y-4 mt-4">
                 <TlinkCard url="https://viewer.tokenscript.org/?chain=8453&contract=0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a&scriptId=7738_2#card=Info&tokenId=109541814075604622605202872494250821275866922285415705885847926644579782560125" />
                 <TlinkCard url="https://viewer.tokenscript.org/?chain=11155111&contract=0x31fc7840fA14F5e228E31D190b543deBDA13cCDA#card=Play&tokenId=28" />
                 <TlinkCard url="https://viewer.tokenscript.org/?chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=1649017156#" />
