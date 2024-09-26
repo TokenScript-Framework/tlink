@@ -36,20 +36,22 @@ type FetchTsDataOutput = {
 export async function fetchTsData(
   input: FetchTsDataInput,
 ): Promise<FetchTsDataOutput> {
-  let url = `https://doobtvjcpb8dc.cloudfront.net/token-view/${input.chainId}/${input.contract}/${input.tokenId}`;
+  const baseUrl = `https://api.smarttokenlabs.com/token-view/${input.chainId}/${input.contract}`;
+  const url = new URL(baseUrl);
 
-  // Add entry as query string if it's defined
+  url.searchParams.append('tokenId', input.tokenId);
+
   if (input.entry !== undefined) {
-    url += `?entry=${encodeURIComponent(input.entry)}`;
+    url.searchParams.append('entry', input.entry);
   }
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       method: 'GET',
       headers: {
         accept: 'application/json',
         'x-stl-key':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoibXVsdGktY2hhbm5lbC1yZW5kZXJpbmciLCJpYXQiOjE3MjcwNzkzODd9.n625mO2j-AyeK0qPIN9izgRVIzC8ERFJ35_DLdtFLBY',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoibXVsdGktY2hhbm5lbC1yZW5kZXJpbmctdGxpbmsiLCJpYXQiOjE3MjcxNzE1MDl9.9864en0XJbVgzACE_gHrQ00mr6fgctNRXWZ0Nex3DcQ',
       },
     });
 
