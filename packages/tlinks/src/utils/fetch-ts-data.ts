@@ -72,7 +72,11 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
 
   return {
     type: 'action',
-    icon: tokenMetadata?.image || tsMetadata.meta.imageUrl || '',
+    icon:
+      tokenMetadata?.image ||
+      tsMetadata.meta.imageUrl ||
+      tsMetadata.meta.iconUrl ||
+      '',
     label: tsMetadata?.name,
     title: tsMetadata?.name,
     description: tsMetadata.meta.description || '',
