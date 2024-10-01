@@ -213,21 +213,35 @@ export const ActionLayout = ({
   success,
   supportability,
 }: LayoutProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <div className={clsx('tlink', stylePresetClassMap[stylePreset])}>
       <div className="w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action">
         {image && (
           <Linkable
             url={websiteUrl}
-            className="block max-h-[100cqw] overflow-y-hidden px-5 pt-5"
+            className="block overflow-y-hidden px-5 pt-5"
           >
-            <img
-              className={clsx(
-                'aspect-auto w-full rounded-xl object-cover object-center',
-              )}
-              src={image}
-              alt="action-image"
-            />
+            <div className="relative aspect-square w-full">
+              <div
+                className={clsx(
+                  'absolute inset-0 bg-bg-secondary transition-opacity duration-300',
+                  imageLoaded ? 'opacity-0' : 'opacity-100',
+                )}
+              />
+              <img
+                className={clsx(
+                  'absolute inset-0 h-full w-full rounded-xl object-cover object-center transition-opacity duration-300',
+                  imageLoaded ? 'opacity-100' : 'opacity-0',
+                )}
+                width={342}
+                height={342}
+                src={image}
+                alt="action-image"
+                onLoad={() => setImageLoaded(true)}
+              />
+            </div>
           </Linkable>
         )}
         <div className="flex flex-col p-5">
