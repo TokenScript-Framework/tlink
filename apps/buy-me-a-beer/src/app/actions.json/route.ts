@@ -6,7 +6,7 @@ export const GET = () => {
       rules: [
         {
           pathPattern: '/**',
-          apiPath: 'http://localhost:3000/api/tlink',
+          apiPath: 'http://localhost:3000/api/tlink/**',
         },
       ],
     },

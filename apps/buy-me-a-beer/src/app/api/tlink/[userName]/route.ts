@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ActionGetResponse, ACTIONS_CORS_HEADERS } from '@repo/actions'
+import { notFound } from 'next/navigation'
 
-export const GET = async () => {
-  // const url = new URL(req.url)
-  // const account = url.searchParams.get('account')
+export const GET = async (
+  request: Request,
+  { params }: { params: { userName: string } },
+) => {
+  if (params.userName !== 'TantanFu') {
+    notFound()
+  }
 
   const config = {
-    userName: 'Tantan Fu',
+    userName: params.userName,
     userWallet: '0x6C30A9544D885F85812e9B92f38EC1dD5f31BB65',
   }
 
@@ -20,19 +25,19 @@ export const GET = async () => {
       actions: [
         {
           label: '5 USDT',
-          href: `/api/tlink/USDT?amount=5&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}/USDT?amount=5&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: '10 USDT',
-          href: `/api/tlink/USDT?amount=10&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}/USDT?amount=10&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: '15 USDT',
-          href: `/api/tlink/USDT?amount=15&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}/USDT?amount=15&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: 'Send Tip',
-          href: `/api/tlink/USDT?amount={amount}&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}/USDT?amount={amount}&userWallet=${config.userWallet}&chainId=137`,
           parameters: [
             {
               name: 'amount',

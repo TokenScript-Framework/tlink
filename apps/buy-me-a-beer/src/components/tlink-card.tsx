@@ -1,4 +1,5 @@
 'use client'
+import { Skeleton } from '@/components/ui/skeleton'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ActionConfig, ActionContainer, useAction } from '@repo/tlinks'
@@ -34,15 +35,55 @@ export const TlinkCard = (props: { url: string }) => {
     }),
   })
 
+  if (!action) {
+    return <TlinkSkeleton />
+  }
+
   return (
-    action && (
+    <div className="min-w-96">
+      <ActionContainer
+        action={action}
+        websiteUrl={props.url}
+        websiteText={props.url}
+      />
+    </div>
+  )
+}
+
+function TlinkSkeleton() {
+  return (
+    <div className="max-w-96">
       <div className="min-w-96">
-        <ActionContainer
-          action={action}
-          websiteUrl={props.url}
-          websiteText={props.url}
-        />
+        <div className="tlink dial-light">
+          <div className="w-full overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action">
+            <div className="px-5 pt-5">
+              <Skeleton className="aspect-video w-full rounded-xl" />
+            </div>
+            <div className="flex flex-col p-5">
+              <div className="mb-2 flex items-center gap-2">
+                <Skeleton className="h-4 w-40" />
+              </div>
+              <Skeleton className="mb-0.5 h-6 w-3/4" />
+              <Skeleton className="mb-4 h-4 w-1/2" />
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="flex flex-grow basis-[calc(33.333%-2*4px)]"
+                    >
+                      <Skeleton className="h-12 w-full rounded-button" />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <Skeleton className="h-12 w-full rounded-input-standalone" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    )
+    </div>
   )
 }

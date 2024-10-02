@@ -1,6 +1,6 @@
 import { ACTIONS_CORS_HEADERS } from '@repo/actions'
 import { type NextRequest } from 'next/server'
-import { encodeFunctionData, erc20Abi } from 'viem'
+import { encodeFunctionData, erc20Abi, parseUnits } from 'viem'
 
 const chainIdToContractAddress = {
   // eth
@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const { account } = await req.json()
-    if (!account || !chainId || !userWallet) {
+    if (!account || !chainId || !userWallet || !amount) {
       return Response.json('Bad Request', { status: 400 })
     }
 
@@ -35,8 +35,7 @@ export const POST = async (req: NextRequest) => {
           data: encodeFunctionData({
             abi: erc20Abi,
             functionName: 'transfer',
-            // TODO:
-            args: [userWallet as `0x${string}`, BigInt(amount as string)],
+            args: [userWallet as `0x${string}`, parseUnits(amount, 6)],
           }),
         },
       },
