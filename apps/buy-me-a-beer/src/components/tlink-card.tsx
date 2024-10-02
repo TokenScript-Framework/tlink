@@ -1,15 +1,17 @@
-'use client'
-import { Skeleton } from '@/components/ui/skeleton'
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
+import { useRpcMessage } from '@/app/hooks/use-rpc-message'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { ActionConfig, ActionContainer, useAction } from '@repo/tlinks'
 import '@repo/tlinks/index.css'
-import { useAccount } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 
 export const TlinkCard = (props: { url: string }) => {
   const { openConnectModal } = useConnectModal()
-  const { address } = useAccount()
-  console.log('address', address)
+  const { address, chainId } = useAccount()
+  const { switchChainAsync } = useSwitchChain()
+  const { handleRpcMessage } = useRpcMessage()
 
   const { action } = useAction({
     url: props.url,
@@ -23,9 +25,18 @@ export const TlinkCard = (props: { url: string }) => {
           return Promise.resolve(address)
         }
       },
-      signTransaction: () => {
-        console.log('signTransaction')
-        return Promise.resolve({ signature: '123' })
+      signTransaction: async ({ txData, chainId: targetChainId }: any) => {
+        if (chainId?.toString() !== targetChainId.toString()) {
+          await switchChainAsync({ chainId: Number(targetChainId) })
+        }
+        return handleRpcMessage('eth_sendTransaction', [txData])
+          .then((resposen) => {
+            console.log(resposen)
+            return { signature: '123' }
+          })
+          .catch((e) => {
+            return { error: e.message }
+          })
       },
       getConnectedAccount: () => {
         console.log('getConnectedAccount')
@@ -45,6 +56,9 @@ export const TlinkCard = (props: { url: string }) => {
         action={action}
         websiteUrl={props.url}
         websiteText={props.url}
+        callbacks={{
+          onActionMount: () => {},
+        }}
       />
     </div>
   )

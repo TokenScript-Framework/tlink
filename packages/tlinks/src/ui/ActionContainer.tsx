@@ -444,7 +444,12 @@ export const ActionContainer = ({
       );
 
       if (!signResult || isSignTransactionError(signResult)) {
-        dispatch({ type: ExecutionType.RESET });
+        dispatch({
+          type: ExecutionType.SOFT_RESET,
+          errorMessage:
+            (signResult as { error: string }).error ??
+            'Unknown error, please try again',
+        });
       } else {
         if (!payload.links?.next) {
           dispatch({
