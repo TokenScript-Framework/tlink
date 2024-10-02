@@ -1,3 +1,4 @@
+import { isProd } from '@/lib/utils'
 import { ACTIONS_CORS_HEADERS } from '@repo/actions'
 
 export const GET = () => {
@@ -6,7 +7,9 @@ export const GET = () => {
       rules: [
         {
           pathPattern: '/**',
-          apiPath: 'http://localhost:3000/api/tlink/**',
+          apiPath: isProd
+            ? 'https://buy-me-a-beer-sigma.vercel.app/api/tlink/**'
+            : 'http://localhost:3000/api/tlink/**',
         },
       ],
     },
