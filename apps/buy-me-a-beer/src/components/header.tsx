@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Beer, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -36,11 +37,20 @@ export function Header() {
             </Link>
           </nav>
           <div className="hidden md:flex space-x-4">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
-              Log in
-            </button>
-            <button className="px-4 py-2 text-sm font-medium bg-amber-500 text-white rounded-full hover:bg-amber-600 transition-colors">
-              Sign up
+            <button
+              className="px-4 py-2 text-sm font-medium bg-amber-500 text-white rounded-full hover:bg-amber-600 transition-colors"
+              onClick={() => {
+                toast('Coming soon...', {
+                  icon: '⏳',
+                  style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                  },
+                })
+              }}
+            >
+              Create yours
             </button>
           </div>
           <button
@@ -82,11 +92,20 @@ export function Header() {
             >
               About
             </Link>
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
-              Log in
-            </button>
-            <button className="px-4 py-2 text-sm font-medium bg-amber-500 text-white rounded-full hover:bg-amber-600 transition-colors">
-              Sign up
+            <button
+              className="px-4 py-2 text-sm font-medium bg-amber-500 text-white rounded-full hover:bg-amber-600 transition-colors"
+              onClick={() => {
+                toast('Coming soon...', {
+                  icon: '⏳',
+                  style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                  },
+                })
+              }}
+            >
+              Create yours
             </button>
           </nav>
         </motion.div>
