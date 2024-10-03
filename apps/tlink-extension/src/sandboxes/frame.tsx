@@ -17,18 +17,14 @@ function TestSandbox() {
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       // The event.origin is null
-      console.log("tlink messaging 11111111111111111", {
-        event,
-        "window-ethereum": window.ethereum,
-        "chrome-runtime": chrome.runtime
-      })
+      // console.log("tlink messaging 11111111111111111", {
+      //   event,
+      //   "window-ethereum": window.ethereum,
+      //   "chrome-runtime": chrome.runtime
+      // })
       // here we can't use chrome.runtime.sendMessage, it's undefined
       // window.ethereum is also undefined
       if (event.data.source === "tlink-rpc-resp") {
-        console.log(
-          "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW succceeeddddddddddddddd!!!!!!!!!",
-          event.data
-        )
         iframeRef.current?.contentWindow?.postMessage(event.data.data, "*")
       } else {
         window.parent.postMessage({ source: "tlink", data: event.data }, "*")
@@ -61,6 +57,5 @@ export default TestSandbox
 
 function TestButton() {
   const [count, setCount] = useState(100)
-  console.log("count", count)
   return <button onClick={() => setCount(count + 1)}>Count: {count}</button>
 }

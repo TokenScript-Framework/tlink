@@ -17,32 +17,30 @@ const PlasmoOverlay = () => {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      console.log(
-        "tlink messaging 22222222222222222222",
-        event.origin,
-        event.data
-      )
+      // console.log(
+      //   "tlink messaging 22222222222222222222",
+      //   event.origin,
+      //   event.data
+      // )
       // The event.origin from frame.tsx is null
 
       if (event.data?.source === "tlink") {
-        console.log(
-          "overlay-------",
-          "Message received from iframe:",
-          event.data
-        )
         const resp = await chrome.runtime.sendMessage({
           type: "rpc",
           data: event.data.data
         })
 
-        console.log("tlink messaging 44444444444444444444", resp)
-        sendResponse(event.data, resp)
+        // console.log("tlink messaging 44444444444444444444", resp, event.data)
+        sendResponse(event.data.data, resp)
       }
 
-      function sendResponse(messageData: MessageEvent["data"], response: any) {
+      function sendResponse(
+        messageData: MessageEvent["data"],
+        response: any | null
+      ) {
         const data = messageData
 
-        if (response.error) {
+        if (response?.error) {
           data.error = response
         } else {
           data.result = response
@@ -67,6 +65,8 @@ const PlasmoOverlay = () => {
       <iframe
         src={chrome.runtime.getURL("/sandboxes/frame.html")}
         ref={iframeRef}
+        allow="clipboard-write"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
       />
     </div>
   )

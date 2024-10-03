@@ -1,11 +1,11 @@
 // never mark the function here async
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log(
-    "tlink messaging 33333333333333333333 on message",
-    msg,
-    sender,
-    typeof sender
-  )
+  // console.log(
+  //   "tlink messaging 33333333333333333333 on message",
+  //   msg,
+  //   sender,
+  //   typeof sender
+  // )
   if (!sender.tab || !sender.tab.id) {
     return null
   }
@@ -72,7 +72,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       targetChainId
     })
       .then((res) => {
-        console.log("tlink messaging testing res", res)
+        console.log("tlink messaging testing res", res, {
+          tabId: sender.tab.id,
+          rpcMethod,
+          walletType: selectedWallet,
+          params,
+          targetChainId
+        })
 
         if (["connect", "getConnectedAccount"].includes(msg.type)) {
           sendResponse(res[0] || "")
@@ -100,12 +106,6 @@ async function handleWalletCommunication({
   params: any
   targetChainId: string
 }) {
-  console.log("xxxxxxxxxxxxxxxxx debug", [
-    rpcMethod,
-    params,
-    targetChainId,
-    walletType
-  ])
   const resp = await chrome.scripting.executeScript({
     world: "MAIN",
     target: { tabId },

@@ -424,7 +424,6 @@ export const ActionContainer = ({
         !(payload as ActionPostResponse).transactionData ||
         isPostRequestError(payload)
       ) {
-        console.log('tx', payload);
         dispatch({
           type: ExecutionType.SOFT_RESET,
           errorMessage: isPostRequestError(payload)
