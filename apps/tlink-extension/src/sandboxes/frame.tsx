@@ -24,7 +24,15 @@ function TestSandbox() {
       })
       // here we can't use chrome.runtime.sendMessage, it's undefined
       // window.ethereum is also undefined
-      window.parent.postMessage({ source: "tlink", data: event.data }, "*")
+      if (event.data.source === "tlink-rpc-resp") {
+        console.log(
+          "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW succceeeddddddddddddddd!!!!!!!!!",
+          event.data
+        )
+        iframeRef.current?.contentWindow?.postMessage(event.data.data, "*")
+      } else {
+        window.parent.postMessage({ source: "tlink", data: event.data }, "*")
+      }
     }
 
     window.addEventListener("message", handleMessage)
@@ -38,11 +46,12 @@ function TestSandbox() {
       <TestButton />
       <iframe
         // key={`${chainId}-${contract}-${tokenId}-${address}`}
+        ref={iframeRef}
         style={{ height: "100%" }}
         src={dAppUrl}
         className="relative size-full"
         allow="clipboard-write"
-        sandbox="allow-same-origin allow-scripts"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
       />
     </div>
   )

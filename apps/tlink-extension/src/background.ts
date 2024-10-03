@@ -1,6 +1,11 @@
 // never mark the function here async
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log("tlink messaging 33333333333333333333 on message", msg, sender)
+  console.log(
+    "tlink messaging 33333333333333333333 on message",
+    msg,
+    sender,
+    typeof sender
+  )
   if (!sender.tab || !sender.tab.id) {
     return null
   }
@@ -13,13 +18,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true
   }
 
-  if (!msg.wallet) return false
+  if (msg.type !== "rpc" && !msg.wallet) return false
 
   new Promise((resolve) => {
-    chrome.storage.local.get(["openInTsViewer"], (storage) => {
-      resolve(storage.openInTsViewer)
-    })
-  }).then((openInTsViewer) => {
+    chrome.storage.local.get(
+      ["openInTsViewer", "selectedWallet"],
+      (storage) => {
+        resolve([storage.openInTsViewer, storage.selectedWallet])
+      }
+    )
+  }).then(([openInTsViewer, selectedWallet]: any) => {
     if (
       openInTsViewer &&
       msg.type !== "connect" &&
@@ -36,20 +44,30 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return sendResponse({ signature: "done" })
     }
 
-    let rpcMethod = msg.type
-    if (msg.type === "getConnectedAccount") {
-      rpcMethod = "eth_accounts"
-    } else if (msg.type === "connect") {
-      rpcMethod = "eth_requestAccounts"
+    let rpcMethod: string = ""
+    let params: any = []
+
+    if (msg.type === "rpc") {
+      rpcMethod = msg.data.method
+      params = msg.data.params
+    } else {
+      rpcMethod = msg.type
+      if (msg.type === "getConnectedAccount") {
+        rpcMethod = "eth_accounts"
+      } else if (msg.type === "connect") {
+        rpcMethod = "eth_requestAccounts"
+      }
+      params = [msg?.payload?.txData]
     }
 
     const targetChainId = msg?.payload?.chainId || "0"
-    const params = [msg?.payload?.txData]
+
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new", msg)
 
     handleWalletCommunication({
       tabId: sender.tab.id,
       rpcMethod,
-      walletType: msg.wallet,
+      walletType: selectedWallet,
       params,
       targetChainId
     })
@@ -82,6 +100,12 @@ async function handleWalletCommunication({
   params: any
   targetChainId: string
 }) {
+  console.log("xxxxxxxxxxxxxxxxx debug", [
+    rpcMethod,
+    params,
+    targetChainId,
+    walletType
+  ])
   const resp = await chrome.scripting.executeScript({
     world: "MAIN",
     target: { tabId },
@@ -125,8 +149,15 @@ async function handleWalletCommunication({
 
         return res
       } catch (e: any) {
+        const innerError = e.walk()
+        if (innerError) e = innerError
+
         console.log("error", e)
-        return { error: e.message ?? "Unknown error" }
+        return {
+          error: e.message + (e.data?.message ? " " + e.data?.message : ""),
+          message: e.message + (e.data?.message ? " " + e.data?.message : ""),
+          code: e.data?.code ?? e.code
+        }
       }
     }
   })

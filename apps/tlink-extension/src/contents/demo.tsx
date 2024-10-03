@@ -1,6 +1,6 @@
 import cssText from "data-text:~style.css"
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://twitter.com/*", "https://x.com/*", "https://pro.x.com/*"]
@@ -13,6 +13,8 @@ export const getStyle = () => {
 }
 
 const PlasmoOverlay = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
       console.log(
@@ -34,6 +36,22 @@ const PlasmoOverlay = () => {
         })
 
         console.log("tlink messaging 44444444444444444444", resp)
+        sendResponse(event.data, resp)
+      }
+
+      function sendResponse(messageData: MessageEvent["data"], response: any) {
+        const data = messageData
+
+        if (response.error) {
+          data.error = response
+        } else {
+          data.result = response
+        }
+
+        iframeRef.current?.contentWindow?.postMessage(
+          { source: "tlink-rpc-resp", data },
+          "*"
+        )
       }
     }
 
@@ -46,7 +64,10 @@ const PlasmoOverlay = () => {
 
   return (
     <div className="z-50 flex fixed top-32 right-8 bg-gray-300 h-[800px]">
-      <iframe src={chrome.runtime.getURL("/sandboxes/frame.html")} />
+      <iframe
+        src={chrome.runtime.getURL("/sandboxes/frame.html")}
+        ref={iframeRef}
+      />
     </div>
   )
 }
