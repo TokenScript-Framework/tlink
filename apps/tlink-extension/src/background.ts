@@ -36,7 +36,22 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return sendResponse({ signature: "done" })
     }
 
-    handleWalletCommunication(sender.tab.id, msg.type, msg.wallet, msg.payload)
+    let rpcMethod = msg.type
+    if (msg.type === "getConnectedAccount") {
+      rpcMethod = "eth_accounts"
+    } else if (msg.type === "connect") {
+      rpcMethod = "eth_requestAccounts"
+    }
+
+    const targetChainId = msg?.payload?.chainId || "0"
+
+    handleWalletCommunication(
+      sender.tab.id,
+      rpcMethod,
+      msg.wallet,
+      msg.payload,
+      targetChainId
+    )
       .then((res) => {
         console.log("tlink messaging testing res", res)
 
@@ -55,31 +70,27 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 async function handleWalletCommunication(
   tabId: number,
-  type: string,
+  rpcMethod: string,
   walletType: string,
-  payload: any | { txData: any; chainId: string }
+  payload: any | { txData: any; chainId: string },
+  targetChainId: string
 ) {
   payload = payload || {}
-  console.log("type", type)
   console.log("wallet", walletType)
   console.log("payload", payload)
 
-  let rpcMethod = type
-  if (type === "getConnectedAccount") {
-    rpcMethod = "eth_accounts"
-  } else if (type === "connect") {
-    rpcMethod = "eth_requestAccounts"
-  }
-
   const params = [payload.txData]
-
-  const targetChainId = payload.chainId || "0"
 
   const resp = await chrome.scripting.executeScript({
     world: "MAIN",
     target: { tabId },
     args: [rpcMethod, params, targetChainId, walletType],
-    func: async (rpcMethod, params, targetChainId, walletType) => {
+    func: async (
+      rpcMethod: string,
+      params: any,
+      targetChainId: string,
+      walletType: string
+    ) => {
       try {
         const provider = window.ethereum
         if (walletType === "rabby" && !provider.isRabby) {
