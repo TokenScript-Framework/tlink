@@ -1,5 +1,5 @@
 import type { PlasmoCSConfig } from "plasmo"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://twitter.com/*", "https://x.com/*", "https://pro.x.com/*"]
@@ -12,36 +12,39 @@ function TestSandbox() {
   const scriptURI =
     "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-prod.tsml"
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const dAppUrl = `https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&tokenscriptUrl=https%3A%2F%2Fviewer.tokenscript.org%2Fassets%2Ftokenscripts%2Fsmart-cat-prod.tsml&chainId=137`
+  const dAppUrl = `https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&chainId=137`
+
+  useEffect(() => {
+    const handleMessage = async (e: MessageEvent) => {
+      // if (event.origin !== "https://trusted-domain.com") return;
+      console.log("extension iframe ------------event", e)
+      console.log(
+        "extension iframe ------------window.ethereum",
+        // @ts-ignore
+        window.ethereum
+      )
+      console.log("chrome.runtime", chrome.runtime)
+      // here we can't use chrome.runtime.sendMessage
+      window.parent.postMessage({ source: "tlink", data: e.data }, "*")
+    }
+
+    window.addEventListener("message", handleMessage)
+
+    return () => window.removeEventListener("message", handleMessage)
+  }, [])
 
   return (
     <div style={{ height: "800px" }}>
       here we have useRef
       <TestButton />
-      {/* <iframe
-        srcDoc={`
-        <p>Hello world srcdoc!</p>
-        <script>
-          document.body.style.backgroundColor = 'lightblue';
-          setInterval(() => {
-            document.body.style.backgroundColor =
-              document.body.style.backgroundColor === 'lightblue' ? 'lightgreen' : 'lightblue';
-          }, 2000);
-        </script>
-      `}>
-        <p>Your browser does not support iframes.</p>
-      </iframe> */}
-      {/* <iframe
-        style={{ height: "100%" }}
-        src="https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&tokenscriptUrl=https%3A%2F%2Fviewer.tokenscript.org%2Fassets%2Ftokenscripts%2Fsmart-cat-prod.tsml&chainId=137">
-        <p>Your browser does not support iframes.</p>
-      </iframe> */}
       <iframe
         // key={`${chainId}-${contract}-${tokenId}-${address}`}
         style={{ height: "100%" }}
         src={dAppUrl}
         className="relative size-full"
-        allow="clipboard-write"></iframe>
+        allow="clipboard-write"
+        sandbox="allow-same-origin allow-scripts"
+      />
     </div>
   )
 }
@@ -49,6 +52,7 @@ function TestSandbox() {
 export default TestSandbox
 
 function TestButton() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(100)
+  console.log("count", count)
   return <button onClick={() => setCount(count + 1)}>Count: {count}</button>
 }
