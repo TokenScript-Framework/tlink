@@ -43,7 +43,7 @@ function TestSandbox() {
       <iframe
         // key={`${chainId}-${contract}-${tokenId}-${address}`}
         ref={iframeRef}
-        style={{ height: "100%" }}
+        style={{ height: "100%", width: "100%" }}
         src={dAppUrl}
         className="relative size-full"
         allow="clipboard-write"

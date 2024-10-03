@@ -1,6 +1,10 @@
 import cssText from "data-text:~style.css"
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+
+import "~style.css"
+
+import { Dialog, DialogContent } from "~components/dialog"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://twitter.com/*", "https://x.com/*", "https://pro.x.com/*"]
@@ -14,6 +18,7 @@ export const getStyle = () => {
 
 const PlasmoOverlay = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [open, setOpen] = useState(true)
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -61,14 +66,23 @@ const PlasmoOverlay = () => {
   }, [])
 
   return (
-    <div className="z-50 flex fixed top-32 right-8 bg-gray-300 h-[800px]">
-      <iframe
-        src={chrome.runtime.getURL("/sandboxes/frame.html")}
-        ref={iframeRef}
-        allow="clipboard-write"
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-      />
-    </div>
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        {/* <DialogTrigger asChild>
+          <button>hello</button>
+        </DialogTrigger> */}
+        <DialogContent className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar">
+          <iframe
+            src={chrome.runtime.getURL("/sandboxes/frame.html")}
+            ref={iframeRef}
+            allow="clipboard-write"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+            className="w-full h-full no-scrollbar"
+          />
+        </DialogContent>
+      </Dialog>
+      <div className="z-50 flex fixed top-32 right-8 bg-gray-300 h-[800px]"></div>
+    </>
   )
 }
 
