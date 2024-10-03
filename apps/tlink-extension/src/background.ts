@@ -1,6 +1,6 @@
 // never mark the function here async
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log("on message", msg, sender)
+  console.log("tlink messaging 33333333333333333333 on message", msg, sender)
   if (!sender.tab || !sender.tab.id) {
     return null
   }
@@ -38,6 +38,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     handleWalletCommunication(sender.tab.id, msg.type, msg.wallet, msg.payload)
       .then((res) => {
+        console.log("tlink messaging testing res", res)
+
+        if (["connect", "getConnectedAccount"].includes(msg.type)) {
+          sendResponse(res[0] || "")
+        }
         sendResponse(res)
       })
       .catch((err) => {
@@ -51,12 +56,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 async function handleWalletCommunication(
   tabId: number,
   type: string,
-  wallet: string,
+  walletType: string,
   payload: any | { txData: any; chainId: string }
 ) {
   payload = payload || {}
   console.log("type", type)
-  console.log("wallet", wallet)
+  console.log("wallet", walletType)
   console.log("payload", payload)
 
   let rpcMethod = type
@@ -73,11 +78,11 @@ async function handleWalletCommunication(
   const resp = await chrome.scripting.executeScript({
     world: "MAIN",
     target: { tabId },
-    args: [rpcMethod, params, targetChainId, wallet],
-    func: async (rpcMethod, params, targetChainId, wallet) => {
+    args: [rpcMethod, params, targetChainId, walletType],
+    func: async (rpcMethod, params, targetChainId, walletType) => {
       try {
         const provider = window.ethereum
-        if (wallet === "rabby" && !provider.isRabby) {
+        if (walletType === "rabby" && !provider.isRabby) {
           return
         }
 
@@ -106,10 +111,6 @@ async function handleWalletCommunication(
             : params
         })
 
-        if (["eth_accounts", "eth_requestAccounts"].includes(rpcMethod)) {
-          return res[0] || ""
-        }
-
         return res
       } catch (e: any) {
         console.log("error", e)
@@ -117,5 +118,6 @@ async function handleWalletCommunication(
       }
     }
   })
+
   return resp[0].result
 }

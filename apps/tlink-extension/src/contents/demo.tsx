@@ -14,8 +14,13 @@ export const getStyle = () => {
 
 const PlasmoOverlay = () => {
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      // if (event.origin !== "https://trusted-iframe-domain.com") return
+    const handleMessage = async (event: MessageEvent) => {
+      console.log(
+        "tlink messaging 22222222222222222222",
+        event.origin,
+        event.data
+      )
+      // The event.origin from frame.tsx is null
 
       if (event.data?.source === "tlink") {
         console.log(
@@ -23,7 +28,12 @@ const PlasmoOverlay = () => {
           "Message received from iframe:",
           event.data
         )
-        chrome.runtime.sendMessage({ type: "rpc", data: event.data.data })
+        const resp = await chrome.runtime.sendMessage({
+          type: "rpc",
+          data: event.data.data
+        })
+
+        console.log("tlink messaging 44444444444444444444", resp)
       }
     }
 

@@ -15,17 +15,16 @@ function TestSandbox() {
   const dAppUrl = `https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&chainId=137`
 
   useEffect(() => {
-    const handleMessage = async (e: MessageEvent) => {
-      // if (event.origin !== "https://trusted-domain.com") return;
-      console.log("extension iframe ------------event", e)
-      console.log(
-        "extension iframe ------------window.ethereum",
-        // @ts-ignore
-        window.ethereum
-      )
-      console.log("chrome.runtime", chrome.runtime)
-      // here we can't use chrome.runtime.sendMessage
-      window.parent.postMessage({ source: "tlink", data: e.data }, "*")
+    const handleMessage = async (event: MessageEvent) => {
+      // The event.origin is null
+      console.log("tlink messaging 11111111111111111", {
+        event,
+        "window-ethereum": window.ethereum,
+        "chrome-runtime": chrome.runtime
+      })
+      // here we can't use chrome.runtime.sendMessage, it's undefined
+      // window.ethereum is also undefined
+      window.parent.postMessage({ source: "tlink", data: event.data }, "*")
     }
 
     window.addEventListener("message", handleMessage)
