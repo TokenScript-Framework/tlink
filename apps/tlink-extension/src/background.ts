@@ -44,14 +44,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     const targetChainId = msg?.payload?.chainId || "0"
+    const params = [msg?.payload?.txData]
 
-    handleWalletCommunication(
-      sender.tab.id,
+    handleWalletCommunication({
+      tabId: sender.tab.id,
       rpcMethod,
-      msg.wallet,
-      msg.payload,
+      walletType: msg.wallet,
+      params,
       targetChainId
-    )
+    })
       .then((res) => {
         console.log("tlink messaging testing res", res)
 
@@ -68,19 +69,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   return true
 })
 
-async function handleWalletCommunication(
-  tabId: number,
-  rpcMethod: string,
-  walletType: string,
-  payload: any | { txData: any; chainId: string },
+async function handleWalletCommunication({
+  tabId,
+  rpcMethod,
+  walletType,
+  params,
+  targetChainId
+}: {
+  tabId: number
+  rpcMethod: string
+  walletType: string
+  params: any
   targetChainId: string
-) {
-  payload = payload || {}
-  console.log("wallet", walletType)
-  console.log("payload", payload)
-
-  const params = [payload.txData]
-
+}) {
   const resp = await chrome.scripting.executeScript({
     world: "MAIN",
     target: { tabId },
