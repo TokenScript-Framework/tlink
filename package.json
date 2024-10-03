@@ -4,6 +4,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "dev:beer": "turbo dev --filter=buy-me-a-beer --filter={./packages/*}",
+    "dev:extension": "turbo dev --filter=tlink-extension --filter={./packages/*}",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
