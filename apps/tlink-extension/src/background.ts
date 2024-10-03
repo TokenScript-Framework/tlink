@@ -132,7 +132,7 @@ async function handleWalletCommunication({
             targetChainId = "0x" + parseInt(targetChainId).toString(16)
           }
 
-          if (currentChainId !== targetChainId) {
+          if (targetChainId !== "0x0" && currentChainId !== targetChainId) {
             await provider.request({
               method: "wallet_switchEthereumChain",
               params: [{ chainId: targetChainId }]
