@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         // })
 
         if (["connect", "getConnectedAccount"].includes(msg.type)) {
-          sendResponse(res[0] || "")
+          sendResponse(res?.[0] || "")
         } else {
           sendResponse(res)
         }
