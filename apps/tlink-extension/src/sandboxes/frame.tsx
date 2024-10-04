@@ -37,7 +37,7 @@ function Sandbox() {
   useGlobalStyle()
 
   return (
-    <div style={{ height: "800px" }}>
+    <div style={{ height: "100%" }}>
       {dAppUrl && (
         <iframe
           key={dAppUrl}
@@ -64,6 +64,9 @@ function useGlobalStyle() {
         margin: 0;
         padding: 0;
         overflow: hidden;
+      }
+      html, body, #__plasmo {
+        height: 100%;
       }
     `
     document.head.appendChild(style)

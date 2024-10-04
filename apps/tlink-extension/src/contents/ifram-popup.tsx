@@ -71,43 +71,45 @@ const PlasmoOverlay = () => {
     "https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&chainId=137"
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg">
-          <div className="rounded-lg overflow-hidden">
-            <div className="w-full h-12 px-2 flex justify-between items-center">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg">
+        <div className="rounded-lg overflow-hidden">
+          <div className="w-full h-12 px-2 flex justify-between items-center text-black">
+            <Button
+              onClick={() => setOpen(false)}
+              variant="outline"
+              size="icon"
+              className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none">
+              <CircleX className="h-6 w-6" />
+            </Button>
+
+            <div>
               <Button
-                onClick={() => setOpen(false)}
                 variant="outline"
                 size="icon"
-                className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none">
-                <CircleX className="h-6 w-6" />
-              </Button>
-
-              <div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none">
+                className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none"
+                asChild>
+                <a
+                  href={dAppUrl.replace("viewType=sts-token", "")}
+                  target="_blank">
                   <SquareArrowUpRight className="h-6 w-6" />
-                </Button>
-              </div>
+                </a>
+              </Button>
             </div>
-
-            <iframe
-              src={chrome.runtime.getURL(
-                `/sandboxes/frame.html?url=${encodeURIComponent(dAppUrl)}`
-              )}
-              ref={iframeRef}
-              allow="clipboard-write"
-              sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-              className="w-full h-full no-scrollbar rounded-lg"
-            />
           </div>
-        </DialogContent>
-      </Dialog>
-      <div className="z-50 flex fixed top-32 right-8 bg-gray-300 h-[800px]"></div>
-    </>
+
+          <iframe
+            src={chrome.runtime.getURL(
+              `/sandboxes/frame.html?url=${encodeURIComponent(dAppUrl)}`
+            )}
+            ref={iframeRef}
+            allow="clipboard-write"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+            className="w-full h-[calc(100%-48px)] no-scrollbar rounded-lg"
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 
