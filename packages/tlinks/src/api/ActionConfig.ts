@@ -1,3 +1,4 @@
+import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
 import { AbstractActionComponent } from './Action/action-components/index.ts';
 import { type Action } from './Action/index.ts';
 import type { TransactionPayload } from './actions-spec.ts';
@@ -12,7 +13,10 @@ export interface ActionContext {
 export interface IncomingActionConfig {
   adapter: Pick<
     ActionAdapter,
-    'connect' | 'signTransaction' | 'getConnectedAccount'
+    | 'connect'
+    | 'signTransaction'
+    | 'getConnectedAccount'
+    | 'interceptHandlePost'
   > &
     Partial<Pick<ActionAdapter, 'metadata'>>;
 }
@@ -32,6 +36,7 @@ export interface ActionAdapter {
     payload: TransactionPayload,
     context: ActionContext,
   ) => Promise<{ signature: string } | { error: string }>;
+  interceptHandlePost: (href: string) => boolean;
 }
 
 export class ActionConfig implements ActionAdapter {
@@ -63,5 +68,9 @@ export class ActionConfig implements ActionAdapter {
     } catch {
       return null;
     }
+  }
+
+  interceptHandlePost(href: string) {
+    return isTokenScriptViewerUrl(href);
   }
 }

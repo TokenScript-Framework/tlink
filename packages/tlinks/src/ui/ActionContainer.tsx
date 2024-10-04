@@ -362,6 +362,17 @@ export const ActionContainer = ({
     component: AbstractActionComponent,
     params?: Record<string, string | string[]>,
   ) => {
+    console.log(
+      'intercepted --------------------------------------',
+      component.href,
+      component,
+      action.adapter.interceptHandlePost(component.href),
+    );
+    if (action.adapter.interceptHandlePost(component.href)) {
+      console.log('intercepted --------------------------------------');
+      return;
+    }
+
     if (params) {
       if (component instanceof FormActionComponent) {
         Object.entries(params).forEach(([name, value]) =>

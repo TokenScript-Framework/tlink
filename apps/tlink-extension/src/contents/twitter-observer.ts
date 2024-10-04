@@ -24,6 +24,11 @@ const adapter = (wallet: string) =>
     connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
     getConnectedAccount: () =>
       chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
+    interceptHandlePost: (href) => {
+      // TODO: check if href is a valid tokenscript url
+      // send message to background to open the iframe
+      return true
+    },
     metadata: {}
   })
 
