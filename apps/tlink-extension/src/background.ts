@@ -62,8 +62,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     const targetChainId = msg?.payload?.chainId || "0"
 
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new", msg)
-
     handleWalletCommunication({
       tabId: sender.tab.id,
       rpcMethod,
@@ -72,18 +70,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       targetChainId
     })
       .then((res) => {
-        console.log("tlink messaging testing res", res, {
-          tabId: sender.tab.id,
-          rpcMethod,
-          walletType: selectedWallet,
-          params,
-          targetChainId
-        })
+        // console.log("tlink messaging testing res", res, {
+        //   tabId: sender.tab.id,
+        //   rpcMethod,
+        //   walletType: selectedWallet,
+        //   params,
+        //   targetChainId
+        // })
 
         if (["connect", "getConnectedAccount"].includes(msg.type)) {
           sendResponse(res[0] || "")
+        } else {
+          sendResponse(res)
         }
-        sendResponse(res)
       })
       .catch((err) => {
         console.error("error handling message", err)
