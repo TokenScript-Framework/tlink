@@ -131,13 +131,9 @@ async function handleWalletCommunication({
 
         return res
       } catch (e: any) {
-        const innerError = e.walk()
-        if (innerError) e = innerError
-
-        console.log("error", e)
         return {
-          error: e.message + (e.data?.message ? " " + e.data?.message : ""),
-          message: e.message + (e.data?.message ? " " + e.data?.message : ""),
+          error: e.message || (e.data?.message ? " " + e.data?.message : ""),
+          message: e.message || (e.data?.message ? " " + e.data?.message : ""),
           code: e.data?.code ?? e.code
         }
       }
