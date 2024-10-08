@@ -362,14 +362,8 @@ export const ActionContainer = ({
     component: AbstractActionComponent,
     params?: Record<string, string | string[]>,
   ) => {
-    console.log(
-      'intercepted --------------------------------------',
-      component.href,
-      component,
-      action.adapter.interceptHandlePost(component.href),
-    );
-    if (action.adapter.interceptHandlePost(component.href)) {
-      console.log('intercepted --------------------------------------');
+    if (action.adapter.interceptHandlePost?.(component.href)) {
+      // if interceptHandlePost returns true, it means the action is intercepted and handled by the adapter
       return;
     }
 

@@ -20,38 +20,42 @@ export const getStyle: PlasmoGetStyle = () => {
   return style
 }
 
-const adapter = (wallet: string) =>
-  new ActionConfig({
-    signTransaction: (payload: any) =>
-      chrome.runtime.sendMessage({
-        type: "eth_sendTransaction",
-        wallet,
-        payload
-      }),
-    connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
-    getConnectedAccount: () =>
-      chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
-    interceptHandlePost: (href) => {
-      // TODO: check if href is a valid tokenscript url
-      // send message to background to open the iframe
-      return true
-    },
-    metadata: {}
-  })
-
-async function initTwitterObserver() {
-  chrome.runtime.sendMessage({ type: "getSelectedWallet" }, (wallet) => {
-    if (wallet) {
-      setupTwitterObserver(adapter(wallet))
-    }
-  })
-}
-
-initTwitterObserver()
-
 const PlasmoOverlay = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
+  const [dAppUrl, setDAppUrl] = useState("")
+
+  useEffect(() => {
+    console.log("hello in useEffect")
+    const adapter = (wallet: string) =>
+      new ActionConfig({
+        signTransaction: (payload: any) =>
+          chrome.runtime.sendMessage({
+            type: "eth_sendTransaction",
+            wallet,
+            payload
+          }),
+        connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
+        getConnectedAccount: () =>
+          chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
+        interceptHandlePost: (href) => {
+          setDAppUrl(href)
+          setOpen(true)
+          return true
+        },
+        metadata: {}
+      })
+
+    async function initTwitterObserver() {
+      chrome.runtime.sendMessage({ type: "getSelectedWallet" }, (wallet) => {
+        if (wallet) {
+          setupTwitterObserver(adapter(wallet))
+        }
+      })
+    }
+
+    initTwitterObserver()
+  }, [])
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -98,11 +102,8 @@ const PlasmoOverlay = () => {
     }
   }, [])
 
-  const dAppUrl =
-    "https://viewer.tokenscript.org/?viewType=sts-token&chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156&chainId=137"
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open && !!dAppUrl} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg">
         <div className="rounded-lg overflow-hidden">
           <div className="w-full h-12 px-2 flex justify-between items-center text-black">
