@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 import { TokenScriptWebsite } from "~constant"
-import { Checkbox } from "~popup/components/Checkbox"
 import { Header } from "~popup/components/Header"
 import { WalletSelector } from "~popup/components/WalletSelector"
 
@@ -10,21 +9,14 @@ import "~style.css"
 const Popup = () => {
   const [isLoading, setLoading] = useState(true)
   const [selectedWallet, setSelectedWallet] = useState<string | null>()
-  const [openInTsViewer, setOpenInTsViewer] = useState<boolean>(false)
 
   useEffect(() => {
-    chrome.storage.local.get(["selectedWallet", "openInTsViewer"], (result) => {
+    chrome.storage.local.get(["selectedWallet"], (result) => {
       const storedWallet = result.selectedWallet ?? null
       setSelectedWallet(storedWallet)
-      setOpenInTsViewer(result.openInTsViewer || false)
       setLoading(false)
     })
   }, [])
-
-  const handleOpenInTsViewerChange = () => {
-    setOpenInTsViewer(!openInTsViewer)
-    chrome.storage.local.set({ openInTsViewer: !openInTsViewer })
-  }
 
   if (isLoading) return null
   return (
@@ -46,24 +38,6 @@ const Popup = () => {
             selectedWallet={selectedWallet}
             setSelectedWallet={setSelectedWallet}
           />
-
-          <label
-            className="cursor-pointer items-center w-full mt-4"
-            onClick={handleOpenInTsViewerChange}>
-            <input
-              type="hidden"
-              checked={openInTsViewer}
-              onChange={handleOpenInTsViewerChange}
-            />
-            <div className="px-4 py-3 flex flex-row items-center justify-center gap-3 rounded-lg group">
-              <div className="flex flex-col flex-1">
-                <span className="text-subtext font-medium">
-                  Open TokenScript viewer in new tab
-                </span>
-              </div>
-              <Checkbox checked={openInTsViewer} />
-            </div>
-          </label>
 
           {/* {selectedWallet && (
             <div className="bg-accent-brand/10 rounded-lg p-2 flex items-center gap-2 w-full">

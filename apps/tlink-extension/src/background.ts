@@ -1,5 +1,6 @@
 // never mark the function here async
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  console.log("background ----------", msg, sender)
   // console.log(
   //   "tlink messaging 33333333333333333333 on message",
   //   msg,
@@ -7,6 +8,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   //   typeof sender
   // )
   if (!sender.tab || !sender.tab.id) {
+    console.log("early return", msg)
     return null
   }
 
@@ -21,29 +23,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type !== "rpc" && !msg.wallet) return false
 
   new Promise((resolve) => {
-    chrome.storage.local.get(
-      ["openInTsViewer", "selectedWallet"],
-      (storage) => {
-        resolve([storage.openInTsViewer, storage.selectedWallet])
-      }
-    )
-  }).then(([openInTsViewer, selectedWallet]: any) => {
-    if (
-      openInTsViewer &&
-      msg.type !== "connect" &&
-      msg.type !== "getConnectedAccount"
-    ) {
-      const metadata = msg.payload?.metadata
-      if (!metadata) {
-        return
-      }
-      const { contract, tokenId, actionName } = metadata
-      chrome.tabs.create({
-        url: `https://viewer.tokenscript.org/?chain=${msg.payload.chainId}&contract=${contract}&tokenId=${tokenId}#card=${actionName}`
-      })
-      return sendResponse({ signature: "done" })
-    }
-
+    chrome.storage.local.get(["selectedWallet"], (storage) => {
+      resolve([storage.selectedWallet])
+    })
+  }).then(([selectedWallet]: any) => {
     let rpcMethod: string = ""
     let params: any = []
 
