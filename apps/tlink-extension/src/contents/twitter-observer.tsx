@@ -1,22 +1,53 @@
-import cssText from "data-text:~style.css"
+import { ActionConfig } from "@repo/tlinks"
+import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
+import styleText from "@repo/tlinks/index.css"
 import { CircleX, SquareArrowUpRight } from "lucide-react"
-import type { PlasmoCSConfig } from "plasmo"
+import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
 import { useEffect, useRef, useState } from "react"
+
+import "~style.css"
 
 import { Button } from "~components/button"
 import { Dialog, DialogContent } from "~components/dialog"
-
-import "~style.css"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://twitter.com/*", "https://x.com/*", "https://pro.x.com/*"]
 }
 
-export const getStyle = () => {
+export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style")
-  style.textContent = cssText
+  style.textContent = styleText as any
   return style
 }
+
+const adapter = (wallet: string) =>
+  new ActionConfig({
+    signTransaction: (payload: any) =>
+      chrome.runtime.sendMessage({
+        type: "eth_sendTransaction",
+        wallet,
+        payload
+      }),
+    connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
+    getConnectedAccount: () =>
+      chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
+    interceptHandlePost: (href) => {
+      // TODO: check if href is a valid tokenscript url
+      // send message to background to open the iframe
+      return true
+    },
+    metadata: {}
+  })
+
+async function initTwitterObserver() {
+  chrome.runtime.sendMessage({ type: "getSelectedWallet" }, (wallet) => {
+    if (wallet) {
+      setupTwitterObserver(adapter(wallet))
+    }
+  })
+}
+
+initTwitterObserver()
 
 const PlasmoOverlay = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
