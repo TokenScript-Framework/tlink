@@ -26,7 +26,6 @@ const PlasmoOverlay = () => {
   const [dAppUrl, setDAppUrl] = useState("")
 
   useEffect(() => {
-    console.log("hello in useEffect")
     const adapter = (wallet: string) =>
       new ActionConfig({
         signTransaction: (payload: any) =>

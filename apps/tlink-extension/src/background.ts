@@ -1,6 +1,5 @@
 // never mark the function here async
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  console.log("background ----------", msg, sender)
   // console.log(
   //   "tlink messaging 33333333333333333333 on message",
   //   msg,
@@ -8,7 +7,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   //   typeof sender
   // )
   if (!sender.tab || !sender.tab.id) {
-    console.log("early return", msg)
     return null
   }
 
