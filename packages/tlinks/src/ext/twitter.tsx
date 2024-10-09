@@ -231,7 +231,6 @@ function createAction({
   options: NormalizedObserverOptions;
   isInterstitial: boolean;
 }) {
-  console.log({ originalUrl, action, callbacks, options });
   const container = document.createElement('div');
   container.className = 'dialect-action-root-container';
 

@@ -362,6 +362,11 @@ export const ActionContainer = ({
     component: AbstractActionComponent,
     params?: Record<string, string | string[]>,
   ) => {
+    if (action.adapter.interceptHandlePost?.(component.href)) {
+      // if interceptHandlePost returns true, it means the action is intercepted and handled by the adapter
+      return;
+    }
+
     if (params) {
       if (component instanceof FormActionComponent) {
         Object.entries(params).forEach(([name, value]) =>
@@ -424,7 +429,6 @@ export const ActionContainer = ({
         !(payload as ActionPostResponse).transactionData ||
         isPostRequestError(payload)
       ) {
-        console.log('tx', payload);
         dispatch({
           type: ExecutionType.SOFT_RESET,
           errorMessage: isPostRequestError(payload)
