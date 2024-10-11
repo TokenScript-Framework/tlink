@@ -1,4 +1,4 @@
-import { ActionConfig } from "@repo/tlinks"
+import { ActionConfig, TokenScriptIframe } from "@repo/tlinks"
 import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import styleText from "@repo/tlinks/index.css"
 import { CircleX, SquareArrowUpRight } from "lucide-react"
@@ -9,7 +9,6 @@ import "~style.css"
 
 import { Button } from "~components/button"
 import { Dialog, DialogContent } from "~components/dialog"
-import { TokenScriptIframe } from "~components/tokenscript-iframe"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://twitter.com/*", "https://x.com/*", "https://pro.x.com/*"]

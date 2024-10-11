@@ -217,15 +217,7 @@ const DEFAULT_SECURITY_LEVEL: SecurityLevel = 'only-trusted';
 type Source = 'websites' | 'interstitials' | 'actions';
 type NormalizedSecurityLevel = Record<Source, SecurityLevel>;
 
-export const ActionContainer = ({
-  action: initialAction,
-  websiteUrl,
-  websiteText,
-  callbacks,
-  securityLevel = DEFAULT_SECURITY_LEVEL,
-  stylePreset = 'default',
-  Experimental__ActionLayout = ActionLayout,
-}: {
+export type ActionContainerProps = {
   action: Action;
   websiteUrl?: string | null;
   websiteText?: string | null;
@@ -234,7 +226,17 @@ export const ActionContainer = ({
   stylePreset?: StylePreset;
   // please do not use it yet, better api is coming..
   Experimental__ActionLayout?: typeof ActionLayout;
-}) => {
+};
+
+export const ActionContainer = ({
+  action: initialAction,
+  websiteUrl,
+  websiteText,
+  callbacks,
+  securityLevel = DEFAULT_SECURITY_LEVEL,
+  stylePreset = 'default',
+  Experimental__ActionLayout = ActionLayout,
+}: ActionContainerProps) => {
   const [action, setAction] = useState(initialAction);
   const normalizedSecurityLevel: NormalizedSecurityLevel = useMemo(() => {
     if (typeof securityLevel === 'string') {

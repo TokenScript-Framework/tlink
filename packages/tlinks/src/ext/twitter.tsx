@@ -11,7 +11,8 @@ import {
   getExtendedWebsiteState,
 } from '../api/index.ts';
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
-import { ActionContainer, type StylePreset } from '../ui/index.ts';
+import { type StylePreset } from '../ui/index.ts';
+import { Renderer } from '../ui/Renderer.tsx';
 import { noop } from '../utils/constants.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
@@ -238,7 +239,7 @@ function createAction({
 
   actionRoot.render(
     <div onClick={(e) => e.stopPropagation()}>
-      <ActionContainer
+      <Renderer
         stylePreset={resolveXStylePreset()}
         action={action}
         websiteUrl={originalUrl.toString()}

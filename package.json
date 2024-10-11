@@ -10,6 +10,10 @@
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
