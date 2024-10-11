@@ -3,7 +3,11 @@ import { useEffect, useRef } from 'react';
 
 // TODO: remove chrome API and pass the API in
 
-export function TokenScriptIframe(props: { dAppUrl: string }) {
+export function TokenScriptIframe(props: {
+  dAppUrl: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -61,8 +65,8 @@ export function TokenScriptIframe(props: { dAppUrl: string }) {
       ref={iframeRef}
       allow="clipboard-write"
       sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-      style={{ height: 'calc(100% - 48px)' }}
-      className="no-scrollbar w-full rounded-lg"
+      style={{ height: '100%', ...props.style }}
+      className={`no-scrollbar w-full rounded-lg ${props.className}`}
     />
   );
 }

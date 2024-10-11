@@ -83,7 +83,12 @@ const PlasmoOverlay = () => {
             </div>
           </div>
 
-          {dAppUrl && <TokenScriptIframe dAppUrl={dAppUrl} />}
+          {dAppUrl && (
+            <TokenScriptIframe
+              dAppUrl={dAppUrl}
+              style={{ height: "calc(100% - 48px)" }}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
