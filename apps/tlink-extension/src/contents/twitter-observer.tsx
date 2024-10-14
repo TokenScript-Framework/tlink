@@ -37,9 +37,13 @@ const PlasmoOverlay = () => {
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
         interceptHandlePost: (href) => {
-          setDAppUrl(href)
-          setOpen(true)
-          return true
+          if (href.includes("tokenscript.org")) {
+            setDAppUrl(href)
+            setOpen(true)
+            return true
+          } else {
+            return false
+          }
         },
         metadata: {}
       })

@@ -70,6 +70,6 @@ export class ActionConfig implements ActionAdapter {
   }
 
   interceptHandlePost(href: string) {
-    return this.adapter.interceptHandlePost?.(href) ?? false;
+    return this.adapter.interceptHandlePost?.(href) || false;
   }
 }
