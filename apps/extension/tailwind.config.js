@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // prefix: "tlink-",
-  content: ["./src/**/*.{js,ts,jsx,tsx,html}"],
+  content: ["assets/**", "entrypoints/**", "components/**"],
   safelist: process.env.NODE_ENV === "development" ? [{ pattern: /./ }] : [],
   theme: {
     extend: {
