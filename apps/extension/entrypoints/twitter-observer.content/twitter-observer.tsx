@@ -1,3 +1,4 @@
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { ActionConfig, TokenScriptIframe } from "@repo/tlinks"
 import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import "@repo/tlinks/index.css"
@@ -46,40 +47,45 @@ export const TwitterObserver = () => {
 
   return (
     <Dialog open={open && !!dAppUrl} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg">
-        <div className="rounded-lg overflow-hidden">
-          <div className="w-full h-12 px-2 flex justify-between items-center text-black">
-            <Button
-              onClick={() => setOpen(false)}
-              variant="outline"
-              size="icon"
-              className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none">
-              <CircleX className="h-6 w-6" />
-            </Button>
-
-            <div>
+      <VisuallyHidden>
+        <DialogContent
+          className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg"
+          aria-description="iframe">
+          <DialogTitle className="hidden">iframe</DialogTitle>
+          <div className="rounded-lg overflow-hidden">
+            <div className="w-full h-12 px-2 flex justify-between items-center text-black">
               <Button
+                onClick={() => setOpen(false)}
                 variant="outline"
                 size="icon"
-                className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none"
-                asChild>
-                <a
-                  href={dAppUrl.replace("viewType=sts-token", "")}
-                  target="_blank">
-                  <SquareArrowUpRight className="h-6 w-6" />
-                </a>
+                className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none">
+                <CircleX className="h-6 w-6" />
               </Button>
-            </div>
-          </div>
 
-          {dAppUrl && (
-            <TokenScriptIframe
-              dAppUrl={dAppUrl}
-              style={{ height: "calc(100% - 48px)" }}
-            />
-          )}
-        </div>
-      </DialogContent>
+              <div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none"
+                  asChild>
+                  <a
+                    href={dAppUrl.replace("viewType=sts-token", "")}
+                    target="_blank">
+                    <SquareArrowUpRight className="h-6 w-6" />
+                  </a>
+                </Button>
+              </div>
+            </div>
+
+            {dAppUrl && (
+              <TokenScriptIframe
+                dAppUrl={dAppUrl}
+                style={{ height: "calc(100% - 48px)" }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </VisuallyHidden>
     </Dialog>
   )
 }

@@ -60,7 +60,7 @@ export function TokenScriptIframe(props: {
     <iframe
       // @ts-expect-error
       src={chrome.runtime.getURL(
-        `/sandboxes/frame.html?url=${encodeURIComponent(props.dAppUrl)}`,
+        `/sandbox.html?url=${encodeURIComponent(props.dAppUrl)}`,
       )}
       ref={iframeRef}
       allow="clipboard-write"

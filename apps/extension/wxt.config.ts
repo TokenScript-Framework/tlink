@@ -7,7 +7,7 @@ export default defineConfig({
     permissions: ["storage", "activeTab", "scripting"],
     web_accessible_resources: [
       {
-        resources: ["sandboxes/frame.html"],
+        resources: ["sandbox.html"],
         matches: [
           "https://twitter.com/*",
           "https://x.com/*",

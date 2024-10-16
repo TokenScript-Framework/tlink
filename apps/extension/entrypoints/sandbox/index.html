@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tlink</title>
+    <meta name="manifest.type" content="browser_action" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      html,
+      body,
+      #root {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <iframe
+        id="tlink-iframe"
+        class="relative size-full"
+        style="height: 100%; width: 100%; border: none"
+        allow="clipboard-write"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"></iframe>
+    </div>
+    <script>
+      ;(function () {
+        const iframe = document.getElementById("tlink-iframe")
+
+        function handleMessage(event) {
+          if (event.data.source === "tlink-rpc-resp") {
+            iframe?.contentWindow?.postMessage(event.data.data, "*")
+          } else {
+            window.parent.postMessage(
+              { source: "tlink", data: event.data },
+              "*"
+            )
+          }
+        }
+
+        function init() {
+          const url = new URL(window.location.href)
+          const dAppUrl = url.searchParams.get("url")
+          if (dAppUrl) {
+            iframe.src = dAppUrl
+          }
+
+          window.addEventListener("message", handleMessage)
+        }
+
+        init()
+      })()
+    </script>
+  </body>
+</html>
