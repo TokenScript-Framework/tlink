@@ -8,7 +8,7 @@ export const Renderer = (props: ActionContainerProps) => {
     isTokenScriptViewerUrl(props.websiteUrl) &&
     props.websiteUrl.includes('card=')
   ) {
-    // const url = `https://viewer.tokenscript.org/?viewType=sts-token&chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&chainId=${input.chainId}#card=${name}`
+    // const url = `https://viewer.tokenscript.org/?chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&chainId=${input.chainId}#card=${name}`
     const url = new URL(props.websiteUrl);
 
     const params = new URLSearchParams(url.search);
@@ -23,7 +23,7 @@ export const Renderer = (props: ActionContainerProps) => {
     return (
       <div style={{ height: '700px' }}>
         <TokenScriptIframe
-          dAppUrl={`https://viewer-staging.tokenscript.org/?viewType=tlink&chain=${chainId}&contract=${contract}&tokenId=${tokenId}&card=${card}`}
+          dAppUrl={`https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${chainId}&contract=${contract}&tokenId=${tokenId}&card=${card}`}
         />
       </div>
     );

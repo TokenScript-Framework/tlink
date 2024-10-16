@@ -83,7 +83,7 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     links: {
       actions: (tsMetadata.actions || []).map(({ name, label }) => ({
         label: label,
-        href: `https://viewer.tokenscript.org/?viewType=sts-token&chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&chainId=${input.chainId}#card=${name}`,
+        href: `https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&card=${name}`,
       })),
     },
   };
