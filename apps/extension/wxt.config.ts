@@ -3,6 +3,7 @@ import { defineConfig } from "wxt"
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifest: {
+    name: "Tlink",
     host_permissions: ["https://twitter.com/*", "https://x.com/*"],
     permissions: ["storage", "activeTab", "scripting"],
     web_accessible_resources: [
