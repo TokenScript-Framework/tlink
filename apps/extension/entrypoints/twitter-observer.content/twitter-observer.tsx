@@ -49,7 +49,7 @@ export const TwitterObserver = () => {
     <Dialog open={open && !!dAppUrl} onOpenChange={setOpen}>
       <VisuallyHidden>
         <DialogContent
-          className="sm:max-w-[425px] h-[800px] p-0 no-scrollbar rounded-lg"
+          className="max-w-[460px] h-[800px] p-0 no-scrollbar rounded-lg"
           aria-description="iframe">
           <DialogTitle className="hidden">iframe</DialogTitle>
           <div className="rounded-lg overflow-hidden">
@@ -69,7 +69,7 @@ export const TwitterObserver = () => {
                   className="focus-visible:ring-0 focus-visible:ring-ring border-none shadow-none"
                   asChild>
                   <a
-                    href={dAppUrl.replace("viewType=sts-token", "")}
+                    href={dAppUrl.replace("viewType=tlink-card", "")}
                     target="_blank">
                     <SquareArrowUpRight className="h-6 w-6" />
                   </a>
@@ -80,7 +80,7 @@ export const TwitterObserver = () => {
             {dAppUrl && (
               <TokenScriptIframe
                 dAppUrl={dAppUrl}
-                style={{ height: "calc(100% - 48px)" }}
+                style={{ height: "calc(100% - 45px)" }}
               />
             )}
           </div>
