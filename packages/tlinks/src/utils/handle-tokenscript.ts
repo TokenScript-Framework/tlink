@@ -12,7 +12,8 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   const contract = params.get('contract') as `0x${string}`;
   const tokenId =
     params.get('tokenId') || hashParams.get('tokenId') || undefined;
-  const scriptId = params.get('scriptId') || hashParams.get('scriptId'); // 7738_2
+  const scriptId =
+    params.get('scriptId') || hashParams.get('scriptId') || undefined; // 7738_2
   const scriptIndex = scriptId ? scriptId.split('_')[1] : undefined; // get the index for example 2
 
   if (!chainId || !contract) {
@@ -24,6 +25,7 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     contract,
     tokenId,
     entry: scriptIndex || undefined,
+    scriptId,
   });
 };
 

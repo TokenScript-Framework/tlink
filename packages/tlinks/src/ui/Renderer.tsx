@@ -17,13 +17,12 @@ export const Renderer = (props: ActionContainerProps) => {
     const contract = params.get('contract') as `0x${string}`;
     const tokenId = params.get('tokenId') || hashParams.get('tokenId');
     const card = params.get('card') || hashParams.get('card');
-    // const scriptId = params.get('scriptId') || hashParams.get('scriptId'); // 7738_2
-    // const scriptIndex = scriptId ? scriptId.split('_')[1] : undefined; // get the index for example 2
+    const scriptId = params.get('scriptId') || hashParams.get('scriptId');
 
     return (
       <div style={{ height: '700px' }}>
         <TokenScriptIframe
-          dAppUrl={`https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${chainId}&contract=${contract}&tokenId=${tokenId}&card=${card}`}
+          dAppUrl={`https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${chainId}&contract=${contract}&tokenId=${tokenId}&card=${card}&scriptId=${scriptId}`}
         />
       </div>
     );
