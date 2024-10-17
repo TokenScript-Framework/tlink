@@ -11,8 +11,8 @@ import {
   getExtendedWebsiteState,
 } from '../api/index.ts';
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
-import { type StylePreset } from '../ui/index.ts';
-import { Renderer } from '../ui/Renderer.tsx';
+import { ActionContainer, type StylePreset } from '../ui/index.ts';
+import { RendererTokenScriptIframe } from '../ui/RendererTokenScriptIframe.tsx';
 import { noop } from '../utils/constants.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
@@ -199,6 +199,16 @@ async function handleNewNode(
   const actionApiUrlWithAccount = new URL(actionApiUrl);
   actionApiUrlWithAccount.searchParams.append('account', account || '');
 
+  const urlToTest = actionUrl.toString();
+  if (
+    urlToTest &&
+    urlToTest.includes('card=') &&
+    isTokenScriptViewerUrl(urlToTest)
+  ) {
+    addMargin(container).replaceChildren(createTokenScriptIframe(urlToTest));
+    return;
+  }
+
   const action = await Action.fetch(
     actionApiUrlWithAccount.toString(),
     config,
@@ -220,6 +230,21 @@ async function handleNewNode(
   );
 }
 
+function createTokenScriptIframe(websiteUrl: string) {
+  const container = document.createElement('div');
+  container.className = 'dialect-action-root-container';
+
+  const actionRoot = createRoot(container);
+
+  actionRoot.render(
+    <div onClick={(e) => e.stopPropagation()}>
+      <RendererTokenScriptIframe websiteUrl={websiteUrl} />
+    </div>,
+  );
+
+  return container;
+}
+
 function createAction({
   originalUrl,
   action,
@@ -239,7 +264,7 @@ function createAction({
 
   actionRoot.render(
     <div onClick={(e) => e.stopPropagation()}>
-      <Renderer
+      <ActionContainer
         stylePreset={resolveXStylePreset()}
         action={action}
         websiteUrl={originalUrl.toString()}

@@ -1,8 +1,7 @@
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url';
-import { ActionContainer, type ActionContainerProps } from './ActionContainer';
 import { TokenScriptIframe } from './TokenScriptIframe';
 
-export const Renderer = (props: ActionContainerProps) => {
+export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
   if (
     props.websiteUrl &&
     isTokenScriptViewerUrl(props.websiteUrl) &&
@@ -28,5 +27,5 @@ export const Renderer = (props: ActionContainerProps) => {
     );
   }
 
-  return <ActionContainer {...props} />;
+  return null;
 };
