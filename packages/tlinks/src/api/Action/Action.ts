@@ -87,7 +87,7 @@ export class Action {
     if (this._data.icon.startsWith('data:')) {
       return this._data.icon;
     }
-    if (this._data.icon === '') {
+    if (this._data.icon.trim() === '') {
       return '';
     }
     return proxifyImage(this._data.icon).toString();
