@@ -1,3 +1,5 @@
+import { buildTsIframeUrl } from './build-ts-ifram-url';
+
 // Input type
 type FetchTsDataInput = {
   chainId: number;
@@ -86,7 +88,13 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     links: {
       actions: (tsMetadata.actions || []).map(({ name, label }) => ({
         label: label,
-        href: `https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&card=${name}&scriptId=${input.scriptId}`,
+        href: buildTsIframeUrl({
+          chainId: input.chainId.toString(),
+          contract: input.contract,
+          card: name,
+          tokenId: input.tokenId,
+          scriptId: input.scriptId,
+        }),
       })),
     },
   };

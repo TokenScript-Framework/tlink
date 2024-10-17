@@ -1,3 +1,4 @@
+import { buildTsIframeUrl } from '../utils/build-ts-ifram-url';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url';
 import { TokenScriptIframe } from './TokenScriptIframe';
 
@@ -7,7 +8,6 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
     isTokenScriptViewerUrl(props.websiteUrl) &&
     props.websiteUrl.includes('card=')
   ) {
-    // const url = `https://viewer.tokenscript.org/?chain=${input.chainId}&contract=${input.contract}&tokenId=${input.tokenId}&chainId=${input.chainId}#card=${name}`
     const url = new URL(props.websiteUrl);
 
     const params = new URLSearchParams(url.search);
@@ -18,21 +18,17 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
     const card = params.get('card') || hashParams.get('card');
     const scriptId = params.get('scriptId') || hashParams.get('scriptId');
 
-    const dAppUrlParams = new URLSearchParams({
-      viewType: 'tlink-card',
-      chain: chainId || '',
-      contract: contract || '',
+    const dAppUrl = buildTsIframeUrl({
+      chainId,
+      contract,
+      card,
+      tokenId,
+      scriptId,
     });
-
-    if (card) dAppUrlParams.append('card', card);
-    if (tokenId) dAppUrlParams.append('tokenId', tokenId);
-    if (scriptId) dAppUrlParams.append('scriptId', scriptId);
 
     return (
       <div style={{ height: '700px' }}>
-        <TokenScriptIframe
-          dAppUrl={`https://viewer-staging.tokenscript.org/?${dAppUrlParams.toString()}`}
-        />
+        <TokenScriptIframe dAppUrl={dAppUrl} />
       </div>
     );
   }
