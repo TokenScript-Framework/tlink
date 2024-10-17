@@ -2,7 +2,7 @@
 type FetchTsDataInput = {
   chainId: number;
   contract: string;
-  tokenId: string;
+  tokenId?: string;
   entry?: string;
 };
 
@@ -39,7 +39,9 @@ export async function fetchTsData(
   const baseUrl = `https://api.smarttokenlabs.com/token-view/${input.chainId}/${input.contract}`;
   const url = new URL(baseUrl);
 
-  url.searchParams.append('tokenId', input.tokenId);
+  if (input.tokenId !== undefined) {
+    url.searchParams.append('tokenId', input.tokenId);
+  }
 
   if (input.entry !== undefined) {
     url.searchParams.append('entry', input.entry);
