@@ -18,10 +18,20 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
     const card = params.get('card') || hashParams.get('card');
     const scriptId = params.get('scriptId') || hashParams.get('scriptId');
 
+    const dAppUrlParams = new URLSearchParams({
+      viewType: 'tlink-card',
+      chain: chainId || '',
+      contract: contract || '',
+    });
+
+    if (card) dAppUrlParams.append('card', card);
+    if (tokenId) dAppUrlParams.append('tokenId', tokenId);
+    if (scriptId) dAppUrlParams.append('scriptId', scriptId);
+
     return (
       <div style={{ height: '700px' }}>
         <TokenScriptIframe
-          dAppUrl={`https://viewer-staging.tokenscript.org/?viewType=tlink-card&chain=${chainId}&contract=${contract}&tokenId=${tokenId}&card=${card}&scriptId=${scriptId}`}
+          dAppUrl={`https://viewer-staging.tokenscript.org/?${dAppUrlParams.toString()}`}
         />
       </div>
     );
