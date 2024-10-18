@@ -32,6 +32,13 @@
         const iframe = document.getElementById("tlink-iframe")
 
         function handleMessage(event) {
+
+          // We only proxy messages that originate from the child iframe or parent window
+          // This prevents postMessage listeners of other tlink iframes on the same page causing duplicate requests to the background service
+          if (event.source !== iframe.contentWindow && event.source !== window.parent.window) {
+            return;
+          }
+
           if (event.data.source === "tlink-rpc-resp") {
             iframe?.contentWindow?.postMessage(event.data.data, "*")
           } else {

@@ -19,6 +19,11 @@ export function TokenScriptIframe(props: {
       // )
       // The event.origin from frame.tsx is null
 
+      // We only proxy messages that originate from the child iframe
+      if (event.source !== iframeRef.current?.contentWindow) {
+        return;
+      }
+
       if (event.data?.source === 'tlink') {
         // @ts-expect-error
         const resp = await chrome.runtime.sendMessage({
