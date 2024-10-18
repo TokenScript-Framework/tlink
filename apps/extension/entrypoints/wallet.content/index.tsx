@@ -1,5 +1,6 @@
 import { TestWallet } from "@/entrypoints/wallet.content/test-wallet"
 import { config, handleApiResponse } from "@/entrypoints/wallet.content/wagmi"
+import { WalletConnector } from "@/entrypoints/wallet.content/wallet-connector"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import React, { useState } from "react"
 import * as ReactDOM from "react-dom/client"
@@ -28,6 +29,7 @@ const Wallet = () => {
             color: "white"
           }}>
           <TestWallet />
+          <WalletConnector />
         </div>
       </QueryClientProvider>
     </WagmiProvider>
