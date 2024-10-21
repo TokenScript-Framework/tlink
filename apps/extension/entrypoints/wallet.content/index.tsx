@@ -1,3 +1,4 @@
+import { GlobalApiSetup } from "@/entrypoints/wallet.content/components/global-api-setup"
 import { TlinkLogo } from "@/entrypoints/wallet.content/components/tlink-logo"
 import { config, handleApiResponse } from "@/entrypoints/wallet.content/wagmi"
 import { WalletConnector } from "@/entrypoints/wallet.content/wallet-connector"
@@ -19,6 +20,7 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
+        <GlobalApiSetup />
         <button
           type="button"
           onClick={() => setIsOpen(true)}

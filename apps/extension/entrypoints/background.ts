@@ -1,12 +1,6 @@
 export default defineBackground(() => {
   // never mark the function here async
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    // console.log(
-    //   "tlink messaging 33333333333333333333 on message",
-    //   msg,
-    //   sender,
-    //   typeof sender
-    // )
     if (!sender.tab || !sender.tab.id) {
       return null
     }
@@ -52,14 +46,6 @@ export default defineBackground(() => {
         targetChainId
       })
         .then((res) => {
-          // console.log("tlink messaging testing res", res, {
-          //   tabId: sender.tab.id,
-          //   rpcMethod,
-          //   walletType: selectedWallet,
-          //   params,
-          //   targetChainId
-          // })
-
           if (["connect", "getConnectedAccount"].includes(msg.type)) {
             sendResponse(res?.[0] || "")
           } else {
@@ -98,7 +84,7 @@ export default defineBackground(() => {
         walletType: string
       ) => {
         try {
-          const provider = window.ethereum
+          const provider = window.tlink || window.ethereum
           if (walletType === "rabby" && !provider.isRabby) {
             return
           }
