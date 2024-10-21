@@ -10,7 +10,7 @@ import {
   polygon,
   sepolia
 } from "wagmi/chains"
-import { coinbaseWallet, injected } from "wagmi/connectors"
+import { coinbaseWallet } from "wagmi/connectors"
 
 interface RpcProxyRequest {
   type: "TLINK_RPC_PROXY_REQ"
@@ -78,7 +78,6 @@ export const config = createConfig({
     klaytn
   ],
   connectors: [
-    injected(),
     coinbaseWallet({ appName: "tlink", preference: "smartWalletOnly" })
   ],
   transports: {

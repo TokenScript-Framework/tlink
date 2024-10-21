@@ -1,35 +1,41 @@
-import { Card } from "@/components/card"
-import { CoinbaseLogo } from "@/components/coinbase-logo"
+import { ChooseWallet } from "@/entrypoints/wallet.content/components/choose-wallet"
+import { ConnectedCard } from "@/entrypoints/wallet.content/components/connected-card"
+import { PendingIndicator } from "@/entrypoints/wallet.content/components/pending-indicator"
+import { Connector, useAccount, useConnect } from "wagmi"
 
 export const WalletConnector = () => {
+  const { isConnected } = useAccount()
+  const { connect, status } = useConnect()
+  const [selectedConnector, setSelectedConnector] = useState<Connector | null>(
+    null
+  )
+
+  function handleConnect(connector: Connector) {
+    setSelectedConnector(connector)
+    connect({ connector })
+  }
+
+  if (isConnected) {
+    return <ConnectedCard />
+  }
+
   return (
-    <Card className="w-full max-w-md p-6 bg-white rounded-3xl shadow-lg">
+    <div className="w-full">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-        Connect wallet
+        {status === "pending" ? "Connecting..." : "Connect wallet"}
       </h2>
-      <div className="space-y-4">
-        <Button
-          variant="outline"
-          className="w-full justify-between text-left font-normal h-16">
-          <div className="flex items-center gap-3">
-            <MetaMaskLogo className="w-7 h-7" />
-            <span className="text-lg text-[#383c48]">MetaMask</span>
-          </div>
-          <span className="text-sm text-blue-600">Last used</span>
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full justify-between text-left font-normal h-16">
-          <div className="flex items-center gap-3">
-            <CoinbaseLogo className="w-7 h-7" />
-            <span className="text-lg text-[#383c48]">Coinbase</span>
-          </div>
-          <span className="text-sm text-blue-600">Multichain</span>
-        </Button>
-      </div>
+
+      {status === "pending" ? (
+        selectedConnector && (
+          <PendingIndicator selectedConnector={selectedConnector} />
+        )
+      ) : (
+        <ChooseWallet onConnect={handleConnect} />
+      )}
+
       <div className="mt-6 text-center text-sm text-gray-500">
         Powered by <span className="font-semibold">tlink</span>
       </div>
-    </Card>
+    </div>
   )
 }
