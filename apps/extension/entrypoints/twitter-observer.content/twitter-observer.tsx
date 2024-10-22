@@ -11,17 +11,16 @@ export const TwitterObserver = () => {
   const [dAppUrl, setDAppUrl] = useState("")
 
   useEffect(() => {
-    const adapter = (wallet: string) =>
+    const adapter = () =>
       new ActionConfig({
         signTransaction: (payload: any) =>
           chrome.runtime.sendMessage({
             type: "eth_sendTransaction",
-            wallet,
             payload
           }),
-        connect: () => chrome.runtime.sendMessage({ wallet, type: "connect" }),
+        connect: () => chrome.runtime.sendMessage({ type: "connect" }),
         getConnectedAccount: () =>
-          chrome.runtime.sendMessage({ wallet, type: "getConnectedAccount" }),
+          chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
         interceptHandlePost: (href) => {
           if (href.includes("tokenscript.org")) {
             setDAppUrl(href)
@@ -35,11 +34,7 @@ export const TwitterObserver = () => {
       })
 
     async function initTwitterObserver() {
-      chrome.runtime.sendMessage({ type: "getSelectedWallet" }, (wallet) => {
-        if (wallet) {
-          setupTwitterObserver(adapter(wallet))
-        }
-      })
+      setupTwitterObserver(adapter())
     }
 
     initTwitterObserver()

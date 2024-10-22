@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react"
 
-function MetaMaskLogo(props: React.SVGProps<SVGSVGElement>) {
+export function MetaMaskLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width="77" height="77" viewBox="0 0 77 71" fill="none" {...props}>
       <path
@@ -88,7 +88,5 @@ function MetaMaskLogo(props: React.SVGProps<SVGSVGElement>) {
         strokeLinejoin="round"
       />
     </svg>
-  );
+  )
 }
-
-export default MetaMaskLogo;

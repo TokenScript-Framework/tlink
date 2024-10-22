@@ -1,75 +1,44 @@
 export default defineBackground(() => {
   // never mark the function here async
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    // console.log(
-    //   "tlink messaging 33333333333333333333 on message",
-    //   msg,
-    //   sender,
-    //   typeof sender
-    // )
     if (!sender.tab || !sender.tab.id) {
       return null
     }
 
-    if (msg.type === "getSelectedWallet") {
-      chrome.storage.local.get(["selectedWallet"], (storage) => {
-        console.log("selectedWallet", storage.selectedWallet)
-        sendResponse(storage.selectedWallet)
-      })
-      return true
+    let rpcMethod: string = ""
+    let params: any = []
+
+    if (msg.type === "rpc") {
+      rpcMethod = msg.data.method
+      params = msg.data.params
+    } else {
+      rpcMethod = msg.type
+      if (msg.type === "getConnectedAccount") {
+        rpcMethod = "eth_accounts"
+      } else if (msg.type === "connect") {
+        rpcMethod = "eth_requestAccounts"
+      }
+      params = [msg?.payload?.txData]
     }
 
-    if (msg.type !== "rpc" && !msg.wallet) return false
+    const targetChainId = msg?.payload?.chainId || "0"
 
-    new Promise((resolve) => {
-      chrome.storage.local.get(["selectedWallet"], (storage) => {
-        resolve([storage.selectedWallet])
-      })
-    }).then(([selectedWallet]: any) => {
-      let rpcMethod: string = ""
-      let params: any = []
-
-      if (msg.type === "rpc") {
-        rpcMethod = msg.data.method
-        params = msg.data.params
-      } else {
-        rpcMethod = msg.type
-        if (msg.type === "getConnectedAccount") {
-          rpcMethod = "eth_accounts"
-        } else if (msg.type === "connect") {
-          rpcMethod = "eth_requestAccounts"
-        }
-        params = [msg?.payload?.txData]
-      }
-
-      const targetChainId = msg?.payload?.chainId || "0"
-
-      handleWalletCommunication({
-        tabId: sender.tab!.id!,
-        rpcMethod,
-        walletType: selectedWallet,
-        params,
-        targetChainId
-      })
-        .then((res) => {
-          // console.log("tlink messaging testing res", res, {
-          //   tabId: sender.tab.id,
-          //   rpcMethod,
-          //   walletType: selectedWallet,
-          //   params,
-          //   targetChainId
-          // })
-
-          if (["connect", "getConnectedAccount"].includes(msg.type)) {
-            sendResponse(res?.[0] || "")
-          } else {
-            sendResponse(res)
-          }
-        })
-        .catch((err) => {
-          console.error("error handling message", err)
-        })
+    handleWalletCommunication({
+      tabId: sender.tab!.id!,
+      rpcMethod,
+      params,
+      targetChainId
     })
+      .then((res) => {
+        if (["connect", "getConnectedAccount"].includes(msg.type)) {
+          sendResponse(res?.[0] || "")
+        } else {
+          sendResponse(res)
+        }
+      })
+      .catch((err) => {
+        console.error("error handling message", err)
+      })
 
     return true
   })
@@ -77,31 +46,21 @@ export default defineBackground(() => {
   async function handleWalletCommunication({
     tabId,
     rpcMethod,
-    walletType,
     params,
     targetChainId
   }: {
     tabId: number
     rpcMethod: string
-    walletType: string
     params: any
     targetChainId: string
   }) {
     const resp = await chrome.scripting.executeScript({
       world: "MAIN",
       target: { tabId },
-      args: [rpcMethod, params, targetChainId, walletType],
-      func: async (
-        rpcMethod: string,
-        params: any,
-        targetChainId: string,
-        walletType: string
-      ) => {
+      args: [rpcMethod, params, targetChainId],
+      func: async (rpcMethod: string, params: any, targetChainId: string) => {
         try {
-          const provider = window.ethereum
-          if (walletType === "rabby" && !provider.isRabby) {
-            return
-          }
+          const provider = window.tlink || window.ethereum
 
           // switch chain if needed
           if (rpcMethod === "eth_sendTransaction") {
