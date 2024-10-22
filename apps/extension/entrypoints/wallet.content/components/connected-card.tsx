@@ -28,7 +28,7 @@ export function ConnectedCard() {
           onClick={() => disconnect()}
           type="button"
           variant="outline"
-          className="w-full justify-center border border-gray-300 rounded-lg flex items-center h-12">
+          className="w-full justify-center border border-gray-300 rounded-lg flex items-center h-12 text-black">
           <div className="flex items-center gap-2">
             <LogOut className="w-6 h-6" />
             Disconnect

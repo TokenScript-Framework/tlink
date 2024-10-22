@@ -23,6 +23,7 @@
     "@wagmi/core": "^2.13.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.3.0",
     "lucide-react": "^0.439.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
