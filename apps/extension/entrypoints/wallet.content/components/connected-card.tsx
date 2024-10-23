@@ -1,11 +1,24 @@
 import { ConnectorIcon } from "@/entrypoints/wallet.content/components/connector-icon"
+import { getIcon } from "@/entrypoints/wallet.content/wagmi"
 import { formatAddress } from "@/lib/format-address"
-import { LogOut } from "lucide-react"
-import { useAccount, useDisconnect } from "wagmi"
+import { Check, ChevronDown, Copy, LogOut } from "lucide-react"
+import { useState } from "react"
+import { useAccount, useChains, useDisconnect } from "wagmi"
+
+const _chains = [
+  { id: "ethereum", name: "Ethereum", icon: "🔷" },
+  { id: "binance", name: "Binance Smart Chain", icon: "🟨" },
+  { id: "polygon", name: "Polygon", icon: "🟣" },
+  { id: "avalanche", name: "Avalanche", icon: "🔺" }
+]
 
 export function ConnectedCard() {
-  const { connector, address } = useAccount()
+  const { connector, address, chainId } = useAccount()
   const { disconnect } = useDisconnect()
+  const [isCopied, setIsCopied] = useState(false)
+
+  const [selectedChain, setSelectedChain] = useState(_chains[0])
+  const chains = useChains()
 
   if (!address) {
     return null
@@ -18,12 +31,52 @@ export function ConnectedCard() {
       </h2>
 
       <div className="grow flex flex-col justify-between">
-        <div className="flex items-center justify-center gap-4 bg-white p-4 rounded-lg">
-          {connector && <ConnectorIcon connector={connector} />}
-          <span className="text-lg text-[#383c48]">
-            {formatAddress(address!)}
-          </span>
+        <div className="flex justify-between items-center bg-white p-4 rounded-lg">
+          <div className="flex items-center justify-center gap-4">
+            {connector && <ConnectorIcon connector={connector} />}
+            <span className="text-lg text-[#383c48]">
+              {formatAddress(address!)}
+            </span>
+
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-none shadow-none text-gray-500"
+              onClick={() => {
+                navigator.clipboard.writeText(address!)
+                setIsCopied(true)
+                setTimeout(() => setIsCopied(false), 3000)
+              }}>
+              {isCopied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-48">
+                <span className="mr-2">{selectedChain.icon}</span>
+                {selectedChain.name}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48">
+              {chains.map((chain) => (
+                <DropdownMenuItem
+                  key={chain.id}
+                  // onSelect={() => setSelectedChain(chain)}
+                  className="flex items-center justify-between">
+                  <img src={getIcon(chain.id)} className="w-4 h-4" />
+                  {chainId === chain.id && <Check className="h-4 w-4" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+
         <Button
           onClick={() => disconnect()}
           type="button"

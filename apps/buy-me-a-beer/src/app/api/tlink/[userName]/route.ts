@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ActionGetResponse, ACTIONS_CORS_HEADERS } from '@repo/actions'
 import { notFound } from 'next/navigation'
-
 export const GET = async (
   request: Request,
   { params }: { params: { userName: string } },
