@@ -9,12 +9,12 @@ const list = [
     Component: (props: { openIframe: () => void }) => (
       <div className="min-w-[60px] flex flex-col items-center justify-center gap-2">
         <button
-          className="w-10 h-10 flex items-center justify-center bg-[#EEF0F3] hover:bg-[#E9EBEE] rounded-full"
+          className="w-10 h-10 flex items-center justify-center bg-[#EEF0F3] hover:bg-[#E9EBEE] dark:bg-[#33353D] dark:hover:bg-[#3B3D45] rounded-full text-black dark:text-white"
           type="button"
           onClick={() => props.openIframe()}>
           <SparklesIcon className="h-5 w-5" />
         </button>
-        <p className="text-[13px]">Tapp</p>
+        <p className="text-[13px] text-[var(--foreground)]">Tapp</p>
       </div>
     ),
     parseTokenUrl: () => {
