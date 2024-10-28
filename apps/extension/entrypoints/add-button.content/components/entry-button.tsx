@@ -1,7 +1,3 @@
-import {
-  IframePopup,
-  IframePopupRef
-} from "@/entrypoints/add-button.content/components/iframe-popup"
 import { fetchScriptUri } from "@/entrypoints/add-button.content/lib/fetch-scripturi"
 import "@repo/tlinks/index.css"
 import { useState } from "react"

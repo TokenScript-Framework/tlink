@@ -24,7 +24,7 @@ export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string }>(
             aria-description="iframe">
             <DialogTitle className="hidden">iframe</DialogTitle>
             <div className="rounded-lg overflow-hidden">
-              <div className="w-full h-12 px-2 flex justify-between items-center text-black">
+              <div className="w-full h-12 px-2 flex justify-between items-center text-black bg-white">
                 <Button
                   onClick={() => setOpen(false)}
                   variant="outline"
