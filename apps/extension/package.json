@@ -2,7 +2,7 @@
   "name": "tlink-extension",
   "description": "Experience Web3 on Twitter, Telegram and Farcaster.",
   "private": true,
-  "version": "0.4.1",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
