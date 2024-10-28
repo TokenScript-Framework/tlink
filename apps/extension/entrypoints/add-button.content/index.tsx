@@ -45,14 +45,20 @@ const list = [
     ),
     parseTokenUrl: () => {
       const parsedUrl = new URL(window.location.href)
-      const pathParts = parsedUrl.pathname
-        .replace("/assets/matic/", "")
-        .split("/")
+      const pathParts = parsedUrl.pathname.replace("/assets/", "").split("/")
+      const map = {
+        klaytn: 8217,
+        matic: 137,
+        ethereum: 1,
+        arbitrum: 42161,
+        avalanche: 43114,
+        bsc: 56
+      }
 
       return {
-        contractAddress: pathParts[0],
-        tokenId: pathParts[1],
-        chainId: "137" // TODO:
+        chainId: map[pathParts[0] as keyof typeof map].toString(),
+        contractAddress: pathParts[1],
+        tokenId: pathParts[2]
       }
     }
   }
