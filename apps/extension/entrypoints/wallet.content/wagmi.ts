@@ -77,9 +77,9 @@ export const config = createConfig({
     avalanche,
     klaytn
   ],
-  connectors: [
-    coinbaseWallet({ appName: "tlink", preference: "smartWalletOnly" })
-  ],
+  connectors: window.location.href.startsWith("https://wallet.coinbase.com/")
+    ? []
+    : [coinbaseWallet({ appName: "tlink", preference: "smartWalletOnly" })],
   transports: {
     [mainnet.id]: createCustomTransport(mainnet.rpcUrls.default.http[0]),
     [sepolia.id]: createCustomTransport(sepolia.rpcUrls.default.http[0]),
