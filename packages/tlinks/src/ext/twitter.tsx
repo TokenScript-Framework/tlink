@@ -12,7 +12,6 @@ import {
 } from '../api/index.ts';
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
 import { ActionContainer, type StylePreset } from '../ui/index.ts';
-import { RendererTokenScriptIframe } from '../ui/RendererTokenScriptIframe.tsx';
 import { noop } from '../utils/constants.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
@@ -205,7 +204,9 @@ async function handleNewNode(
     urlToTest.includes('card=') &&
     isTokenScriptViewerUrl(urlToTest)
   ) {
-    addMargin(container).replaceChildren(createTokenScriptIframe(urlToTest));
+    addMargin(container).replaceChildren(
+      createTokenScriptIframe(urlToTest, config.tsIframeRenderer),
+    );
     return;
   }
 
@@ -230,15 +231,19 @@ async function handleNewNode(
   );
 }
 
-function createTokenScriptIframe(websiteUrl: string) {
+function createTokenScriptIframe(
+  websiteUrl: string,
+  renderer: ActionAdapter['tsIframeRenderer'],
+) {
   const container = document.createElement('div');
   container.className = 'dialect-action-root-container';
 
   const actionRoot = createRoot(container);
+  const Comp = renderer || (() => null);
 
   actionRoot.render(
     <div onClick={(e) => e.stopPropagation()}>
-      <RendererTokenScriptIframe websiteUrl={websiteUrl} />
+      <Comp websiteUrl={websiteUrl} />
     </div>,
   );
 

@@ -16,6 +16,7 @@ export interface IncomingActionConfig {
     | 'signTransaction'
     | 'getConnectedAccount'
     | 'interceptHandlePost'
+    | 'tsIframeRenderer'
   > &
     Partial<Pick<ActionAdapter, 'metadata'>>;
 }
@@ -36,6 +37,7 @@ export interface ActionAdapter {
     context: ActionContext,
   ) => Promise<{ signature: string } | { error: string }>;
   interceptHandlePost?: (href: string) => boolean;
+  tsIframeRenderer?: (props: { websiteUrl: string }) => JSX.Element | null;
 }
 
 export class ActionConfig implements ActionAdapter {
@@ -72,4 +74,7 @@ export class ActionConfig implements ActionAdapter {
   interceptHandlePost(href: string) {
     return this.adapter.interceptHandlePost?.(href) || false;
   }
+
+  tsIframeRenderer = (props: { websiteUrl: string }) =>
+    this.adapter.tsIframeRenderer?.(props) || null;
 }

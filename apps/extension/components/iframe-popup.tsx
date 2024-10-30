@@ -1,5 +1,4 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { TokenScriptIframe } from "@repo/tlinks"
 import "@repo/tlinks/index.css"
 import { CircleX, SquareArrowUpRight } from "lucide-react"
 import { forwardRef, useImperativeHandle, useState } from "react"

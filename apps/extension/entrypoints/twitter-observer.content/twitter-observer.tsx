@@ -12,10 +12,7 @@ export const TwitterObserver = () => {
     const adapter = () =>
       new ActionConfig({
         signTransaction: (payload: any) =>
-          chrome.runtime.sendMessage({
-            type: "eth_sendTransaction",
-            payload
-          }),
+          chrome.runtime.sendMessage({ type: "eth_sendTransaction", payload }),
         connect: () => chrome.runtime.sendMessage({ type: "connect" }),
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
@@ -28,7 +25,8 @@ export const TwitterObserver = () => {
             return false
           }
         },
-        metadata: {}
+        metadata: {},
+        tsIframeRenderer: RendererTokenScriptIframe
       })
 
     async function initTwitterObserver() {
