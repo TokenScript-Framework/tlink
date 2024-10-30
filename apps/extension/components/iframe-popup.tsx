@@ -19,7 +19,7 @@ export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string }>(
       <Dialog open={open && !!props.dAppUrl} onOpenChange={setOpen}>
         <VisuallyHidden>
           <DialogContent
-            className="max-w-[460px] h-[800px] p-0 no-scrollbar rounded-lg"
+            className="max-w-[460px] h-[800px] p-0 no-scrollbar rounded-lg max-h-[90%]"
             aria-description="iframe">
             <DialogTitle className="hidden">iframe</DialogTitle>
             <div className="rounded-lg overflow-hidden">
