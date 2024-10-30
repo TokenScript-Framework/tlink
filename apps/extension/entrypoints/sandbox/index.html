@@ -32,16 +32,29 @@
         const iframe = document.getElementById("tlink-iframe")
 
         function handleMessage(event) {
-
           // We only proxy messages that originate from the child iframe or parent window
           // This prevents postMessage listeners of other tlink iframes on the same page causing duplicate requests to the background service
-          if (event.source !== iframe.contentWindow && event.source !== window.parent.window) {
-            return;
+          if (
+            event.source !== iframe.contentWindow &&
+            event.source !== window.parent.window
+          ) {
+            return
           }
 
-          if (event.data.source === "tlink-rpc-resp") {
+          if (event.data.type === "TLINK_API_REQUEST") {
+            // forward ts viewer API request out
+            window.parent.postMessage(
+              { source: "TLINK_API_REQUEST", data: event.data.data },
+              "*"
+            )
+          } else if (event.data.source === "TLINK_API_RESPONSE") {
+            // forward ts viewer API response in
+            iframe?.contentWindow?.postMessage(event.data, "*")
+          } else if (event.data.source === "tlink-rpc-resp") {
+            // forward response to ts viewer
             iframe?.contentWindow?.postMessage(event.data.data, "*")
           } else {
+            // forward ts viewer message out
             window.parent.postMessage(
               { source: "tlink", data: event.data },
               "*"

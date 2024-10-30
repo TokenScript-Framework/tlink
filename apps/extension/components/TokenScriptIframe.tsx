@@ -1,3 +1,4 @@
+import { handleTlinkApiRequest } from "@/lib/handle-tlink-api"
 import { useEffect, useRef } from "react"
 
 export function TokenScriptIframe(props: {
@@ -12,6 +13,24 @@ export function TokenScriptIframe(props: {
       // We only proxy messages that originate from the child iframe
       if (event.source !== iframeRef.current?.contentWindow) {
         return
+      }
+
+      if (event.data?.source === "TLINK_API_REQUEST") {
+        iframeRef.current?.contentWindow?.postMessage(
+          {
+            type: "TLINK_API_RESPONSE",
+            source: "TLINK_API_RESPONSE",
+            data: {
+              uid: event.data.data.uid,
+              method: event.data.data.method,
+              response: handleTlinkApiRequest(
+                event.data.data.method,
+                event.data.data.payload
+              )
+            }
+          },
+          "*"
+        )
       }
 
       if (event.data?.source === "tlink") {
