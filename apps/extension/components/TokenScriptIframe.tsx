@@ -75,7 +75,7 @@ export function TokenScriptIframe(props: {
       )}
       ref={iframeRef}
       allow="clipboard-write"
-      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
       style={{ height: "100%", ...props.style }}
       className={`no-scrollbar w-full rounded-lg ${props.className}`}
     />
