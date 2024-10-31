@@ -17,7 +17,7 @@ export const TwitterObserver = () => {
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
         interceptHandlePost: (href) => {
-          if (href.includes("tokenscript.org")) {
+          if (href.includes("tokenscript.org") || href.startsWith("http://localhost:3333/")) {
             setDAppUrl(href)
             iframePopupRef.current?.setOpen(true)
             return true
