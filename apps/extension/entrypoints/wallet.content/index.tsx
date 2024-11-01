@@ -42,9 +42,9 @@ export default defineContentScript({
   matches: [
     "https://twitter.com/*",
     "https://x.com/*",
-    "https://pro.x.com/*",
-    "https://wallet.coinbase.com/assets/nft/*",
-    "https://opensea.io/assets/*"
+    "https://pro.x.com/*"
+    // "https://wallet.coinbase.com/assets/nft/*",
+    // "https://opensea.io/assets/*"
   ],
   world: "MAIN",
 

@@ -6,9 +6,9 @@ export default defineConfig({
     name: "Tlink",
     host_permissions: [
       "https://twitter.com/*",
-      "https://x.com/*",
-      "https://wallet.coinbase.com/*",
-      "https://opensea.io/assets/*"
+      "https://x.com/*"
+      // "https://wallet.coinbase.com/*",
+      // "https://opensea.io/assets/*"
     ],
     permissions: ["storage", "activeTab", "scripting"],
     web_accessible_resources: [
@@ -17,9 +17,9 @@ export default defineConfig({
         matches: [
           "https://twitter.com/*",
           "https://x.com/*",
-          "https://pro.x.com/*",
-          "https://wallet.coinbase.com/*",
-          "https://opensea.io/*"
+          "https://pro.x.com/*"
+          // "https://wallet.coinbase.com/*",
+          // "https://opensea.io/*"
         ]
       }
     ],
