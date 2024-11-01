@@ -1,6 +1,6 @@
 import { GlobalApiSetup } from "@/entrypoints/wallet.content/components/global-api-setup"
 import { TlinkLogo } from "@/entrypoints/wallet.content/components/tlink-logo"
-import { config, handleApiResponse } from "@/entrypoints/wallet.content/wagmi"
+import {config, handleApiResponse, sendApiRequest} from "@/entrypoints/wallet.content/wagmi"
 import { WalletConnector } from "@/entrypoints/wallet.content/wallet-connector"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useState } from "react"
@@ -57,6 +57,50 @@ export default defineContentScript({
     // Create a root and render the App component
     const root = ReactDOM.createRoot(container)
     root.render(<App />)
+
+    window.fetch = new Proxy(window.fetch, {
+      apply: async function (target, that, args) {
+
+        // Route RPC request for coinbase smartwallet through the extension transport interface.
+        // It can't be done with custom wagmi transport as it's not used by the coinbase SDK.
+        if (args[0].startsWith("https://chain-proxy.wallet.coinbase.com")){
+          const decoded = JSON.parse(args[1].body);
+
+          try {
+
+            const result = await sendApiRequest(args[0], decoded.method, decoded.params);
+
+            //if (result.error)
+              //throw result.error;
+
+            return {
+              ok: true,
+              status: 200,
+              json: () => {
+                return result;
+              }
+            } as Response
+
+          } catch (error) {
+
+            console.log("RPC Error: ", error);
+
+            return {
+              ok: true,
+              status: 200,
+              json: () => {
+                return {
+                  ...decoded,
+                  error
+                }
+              }
+            }
+          }
+        }
+
+        return target.apply(that, args);
+      }
+    });
 
     // Return a cleanup function
     return () => {

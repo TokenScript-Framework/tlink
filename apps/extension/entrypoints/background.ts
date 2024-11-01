@@ -80,25 +80,25 @@ export default defineBackground(() => {
             }
           }
 
-          const res = await provider.request({
+          const result = await provider.request({
             method: rpcMethod,
             params: ["eth_accounts", "eth_requestAccounts"].includes(rpcMethod)
               ? undefined
               : params
           })
 
-          return res
+          return { result };
         } catch (e: any) {
+
+          if (e.walk) e = e.walk();
+
           return {
-            error: e.message || (e.data?.message ? " " + e.data?.message : ""),
-            message:
-              e.message || (e.data?.message ? " " + e.data?.message : ""),
-            code: e.data?.code ?? e.code
-          }
+            error: e
+          };
         }
       }
     })
 
-    return resp[0].result
+    return resp[0].result;
   }
 })
