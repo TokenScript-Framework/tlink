@@ -65,10 +65,10 @@ export default defineContentScript({
         // It can't be done with custom wagmi transport as it's not used by the coinbase SDK.
         if (args[0].startsWith("https://chain-proxy.wallet.coinbase.com")){
           const decoded = JSON.parse(args[1].body);
-          console.log("REQUEST INTERCEPTED!", args, decoded);
+
           try {
+
             const result = await sendApiRequest(args[0], decoded.method, decoded.params);
-            console.log("Response: ", result)
 
             //if (result.error)
               //throw result.error;
