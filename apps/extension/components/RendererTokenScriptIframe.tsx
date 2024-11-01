@@ -22,7 +22,8 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
       contract,
       card,
       tokenId,
-      scriptId
+      scriptId,
+      hash: url.hash
     })
 
     return (

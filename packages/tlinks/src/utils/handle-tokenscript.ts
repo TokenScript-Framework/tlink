@@ -26,6 +26,7 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
     tokenId,
     entry: scriptIndex || undefined,
     scriptId,
+    hash: actionUrl.hash,
   });
 };
 

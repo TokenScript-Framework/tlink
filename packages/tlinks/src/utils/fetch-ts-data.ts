@@ -7,6 +7,7 @@ type FetchTsDataInput = {
   tokenId?: string;
   entry?: string;
   scriptId?: string;
+  hash?: string;
 };
 
 // Output type
@@ -94,6 +95,7 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
           card: name,
           tokenId: input.tokenId,
           scriptId: input.scriptId,
+          hash: input.hash,
         }),
       })),
     },
