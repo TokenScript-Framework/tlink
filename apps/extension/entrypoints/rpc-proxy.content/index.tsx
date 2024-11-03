@@ -35,7 +35,7 @@ export default defineContentScript({
           window.postMessage({
             type: "TLINK_RPC_PROXY_RSP",
             requestId: data.requestId,
-            error: (error as Error).message
+            error: error
           })
         }
       }

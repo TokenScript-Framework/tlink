@@ -41,13 +41,13 @@ export function handleApiResponse(event: MessageEvent) {
       if (response.error) {
         request.reject(new Error(response.error))
       } else {
-        request.resolve(response.response.result)
+        request.resolve(response.response)
       }
     }
   }
 }
 
-function sendApiRequest(
+export function sendApiRequest(
   url: string,
   method: string,
   params?: any
