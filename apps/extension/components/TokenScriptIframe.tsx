@@ -49,9 +49,9 @@ export function TokenScriptIframe(props: {
         const data = messageData
 
         if (response?.error) {
-          data.error = response
+          data.error = response.error
         } else {
-          data.result = response
+          data.result = response.result
         }
 
         iframeRef.current?.contentWindow?.postMessage(
