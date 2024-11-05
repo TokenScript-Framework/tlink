@@ -253,8 +253,8 @@ export const ActionLayout = ({
                 className="group inline-flex items-center truncate text-subtext hover:cursor-pointer"
                 rel="noopener noreferrer"
               >
-                <LinkIcon className="mr-2 text-icon-primary transition-colors group-hover:text-icon-primary-hover motion-reduce:transition-none" />
-                <span className="text-text-link transition-colors group-hover:text-text-link-hover group-hover:underline motion-reduce:transition-none">
+                <LinkIcon className="mr-2 shrink-0 text-icon-primary transition-colors group-hover:text-icon-primary-hover motion-reduce:transition-none" />
+                <span className="truncate text-text-link transition-colors group-hover:text-text-link-hover group-hover:underline motion-reduce:transition-none">
                   {websiteText ?? websiteUrl}
                 </span>
               </a>

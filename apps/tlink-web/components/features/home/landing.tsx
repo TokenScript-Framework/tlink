@@ -1,5 +1,6 @@
 'use client'
 
+import { InstallButton } from '@/components/features/home/install-button'
 import { TlinkCard } from '@/components/tlink-card'
 import {
   Card,
@@ -32,19 +33,6 @@ export function LandingContent() {
       <header className="border-b border-gray-800">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-6 w-6 text-blue-400"
-            >
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-            </svg>
             <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">
               Tlink
             </span>
@@ -52,6 +40,7 @@ export function LandingContent() {
           <ConnectButton showBalance={false} />
         </div>
       </header>
+
       <main className="container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -63,12 +52,14 @@ export function LandingContent() {
             Tlink Explorer
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Dive into the future of decentralized networks with our cutting-edge
-            explorer
+            Experience Web3 on Twitter, Telegram and Farcaster. Install the
+            Tlink browser extension to interact with web3 today.
           </p>
         </motion.div>
 
-        <div className="columns-1 md:columns-3 gap-4 space-y-4 mt-4">
+        <InstallButton />
+
+        <div className="columns-1 xl:columns-3 lg:columns-2 gap-4 space-y-4 mt-4">
           {tlinks.map((tlink, i) => (
             <motion.div
               key={i}
