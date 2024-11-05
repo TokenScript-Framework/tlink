@@ -90,7 +90,6 @@ export const POST = async (req: NextRequest) => {
 
 export function OPTIONS() {
   return new Response(null, {
-    status: 204,
     headers: ACTIONS_CORS_HEADERS,
   })
 }
