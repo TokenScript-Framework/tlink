@@ -65,7 +65,10 @@ export const POST = async (req: NextRequest) => {
   try {
     const { account } = await req.json()
     if (!account || !chainId || !userWallet || !amount) {
-      return Response.json('Bad Request', { status: 400 })
+      return Response.json('Bad Request', {
+        status: 400,
+        headers: ACTIONS_CORS_HEADERS,
+      })
     }
 
     return Response.json(
@@ -84,7 +87,10 @@ export const POST = async (req: NextRequest) => {
       { headers: ACTIONS_CORS_HEADERS },
     )
   } catch (err) {
-    return Response.json('An unknown error occurred', { status: 400 })
+    return Response.json('An unknown error occurred', {
+      status: 400,
+      headers: ACTIONS_CORS_HEADERS,
+    })
   }
 }
 
