@@ -1,7 +1,9 @@
+import { LandingContent } from '@/components/features/home/landing'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChevronRight } from 'lucide-react'
 
 export default function Home() {
+  return <LandingContent />
   return (
     <div className="min-h-screen p-8 bg-background text-foreground">
       <main className="max-w-3xl mx-auto pt-16 space-y-8">
