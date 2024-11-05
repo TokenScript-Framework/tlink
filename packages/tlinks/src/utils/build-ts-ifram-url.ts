@@ -4,6 +4,7 @@ export const buildTsIframeUrl = ({
   card,
   tokenId,
   scriptId,
+  originId,
   hash,
 }: {
   chainId: string | null;
@@ -11,6 +12,7 @@ export const buildTsIframeUrl = ({
   card?: string | null;
   tokenId?: string | null;
   scriptId?: string | null;
+  originId?: string | null;
   hash?: string | null; // must start with #
 }) => {
   const dAppUrlParams = new URLSearchParams({
@@ -20,6 +22,7 @@ export const buildTsIframeUrl = ({
   });
 
   if (card) dAppUrlParams.append('card', card);
+  if (originId) dAppUrlParams.append('originId', originId);
   if (tokenId) dAppUrlParams.append('tokenId', tokenId);
   if (scriptId) dAppUrlParams.append('scriptId', scriptId);
 
