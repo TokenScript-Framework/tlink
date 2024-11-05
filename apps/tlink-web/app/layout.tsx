@@ -1,4 +1,5 @@
 import { Providers } from '@/components/providers'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
 import '@rainbow-me/rainbowkit/styles.css'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
@@ -32,6 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>{children}</Providers>
+        <TailwindIndicator />
       </body>
     </html>
   )

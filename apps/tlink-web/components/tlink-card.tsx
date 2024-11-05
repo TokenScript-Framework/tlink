@@ -2,6 +2,7 @@
 import { IframePopup, IframePopupRef } from '@/components/iframe-popup'
 import { RendererTokenScriptIframe } from '@/components/RendererTokenScriptIframe'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useRpcMessage } from '@/hooks/use-rpc-message'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import {
   ActionConfig,
@@ -10,15 +11,15 @@ import {
   useAction,
 } from '@repo/tlinks'
 import { useEffect, useRef, useState } from 'react'
-import { useAccount, useSendTransaction, useSwitchChain } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 
 export const TlinkCard = (props: { url: string }) => {
   const { openConnectModal } = useConnectModal()
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
   const [dAppUrl, setDAppUrl] = useState('')
+  const { handleRpcMessage } = useRpcMessage()
   const iframePopupRef = useRef<IframePopupRef>(null)
-  const { sendTransactionAsync } = useSendTransaction()
 
   useEffect(() => {
     setProxyUrl('')
@@ -41,10 +42,14 @@ export const TlinkCard = (props: { url: string }) => {
         if (chainId?.toString() !== targetChainId.toString()) {
           await switchChainAsync({ chainId: Number(targetChainId) })
         }
-        return sendTransactionAsync({
-          ...txData,
-          chainId: Number(targetChainId),
-        }) as any
+        return handleRpcMessage('eth_sendTransaction', [txData])
+          .then((resposen) => {
+            console.log(resposen)
+            return { signature: '123' }
+          })
+          .catch((e) => {
+            return { error: e.message }
+          })
       },
       getConnectedAccount: () => {
         return Promise.resolve(address || null)
