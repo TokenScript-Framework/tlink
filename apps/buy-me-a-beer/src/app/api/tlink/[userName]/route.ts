@@ -26,19 +26,19 @@ export const GET = async (
       actions: [
         {
           label: '5 USDT',
-          href: `/api/tlink/${params.userName}/?amount=5&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}?amount=5&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: '10 USDT',
-          href: `/api/tlink/${params.userName}/?amount=10&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}?amount=10&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: '15 USDT',
-          href: `/api/tlink/${params.userName}/?amount=15&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}?amount=15&userWallet=${config.userWallet}&chainId=137`,
         },
         {
           label: 'Send Tip',
-          href: `/api/tlink/${params.userName}/?amount={amount}&userWallet=${config.userWallet}&chainId=137`,
+          href: `/api/tlink/${params.userName}?amount={amount}&userWallet=${config.userWallet}&chainId=137`,
           parameters: [
             {
               name: 'amount',
