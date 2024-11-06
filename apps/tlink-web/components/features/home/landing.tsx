@@ -21,8 +21,8 @@ const steps = [
     icon: Download,
   },
   {
-    title: 'Open a tweet with TokenScript Viewer link',
-    description: 'Start exploring tokenized content',
+    title: 'Open a tweet with tlink',
+    description: 'Start exploring tapp right in your timeline',
     icon: Twitter,
   },
 ]
@@ -57,7 +57,25 @@ export function LandingContent() {
           </p>
         </motion.div>
 
-        <InstallButton />
+        <motion.div
+          className="flex justify-center my-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          <InstallButton />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-500">
+            Tlink Showcase
+          </h2>
+        </motion.div>
 
         <div className="columns-1 xl:columns-3 lg:columns-2 gap-4 space-y-4 mt-4">
           {tlinks.map((tlink, i) => (
@@ -67,19 +85,16 @@ export function LandingContent() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <TlinkCard url={tlink.link} />
+              <TlinkCard url={tlink.link} twitter={tlink.twitter} />
             </motion.div>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-          {}
-        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="text-center mb-12"
+          className="text-center my-12"
         >
           <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-500">
             How to use Tlink
@@ -117,6 +132,53 @@ export function LandingContent() {
           ))}
         </div>
       </main>
+
+      <Cta />
+    </div>
+  )
+}
+
+function Cta() {
+  return (
+    <div className="relative isolate overflow-hidden bg-gray-900">
+      <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            Boost your productivity. Start using our app today.
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-pretty text-lg/8 text-gray-300">
+            Incididunt sint fugiat pariatur cupidatat consectetur sit cillum
+            anim id veniam aliqua proident excepteur commodo do ea.
+          </p>
+          <motion.div
+            className="mt-10 flex items-center justify-center gap-x-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <InstallButton />
+          </motion.div>
+        </div>
+      </div>
+      <svg
+        viewBox="0 0 1024 1024"
+        aria-hidden="true"
+        className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]"
+      >
+        <circle
+          r={512}
+          cx={512}
+          cy={512}
+          fill="url(#8d958450-c69f-4251-94bc-4e091a323369)"
+          fillOpacity="0.7"
+        />
+        <defs>
+          <radialGradient id="8d958450-c69f-4251-94bc-4e091a323369">
+            <stop stopColor="#7775D6" />
+            <stop offset={1} stopColor="#E935C1" />
+          </radialGradient>
+        </defs>
+      </svg>
     </div>
   )
 }

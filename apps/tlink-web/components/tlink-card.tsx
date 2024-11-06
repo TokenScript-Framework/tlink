@@ -10,10 +10,11 @@ import {
   setProxyUrl,
   useAction,
 } from '@repo/tlinks'
+import { Twitter } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
 
-export const TlinkCard = (props: { url: string }) => {
+export const TlinkCard = (props: { url: string; twitter?: string }) => {
   const { openConnectModal } = useConnectModal()
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
@@ -72,13 +73,22 @@ export const TlinkCard = (props: { url: string }) => {
   })
 
   return action ? (
-    <div className="min-w-96">
+    <div className="relative">
       <ActionContainer
         action={action}
         websiteUrl={props.url}
         websiteText={props.url}
       />
       <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} />
+      {props.twitter && (
+        <a
+          href={props.twitter}
+          target="_blank"
+          className="absolute top-6 right-6 text-sm text-white p-4 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full shadow-sm hover:scale-110 transition-transform duration-200"
+        >
+          <Twitter />
+        </a>
+      )}
     </div>
   ) : (
     <TlinkCardSkeleton />
