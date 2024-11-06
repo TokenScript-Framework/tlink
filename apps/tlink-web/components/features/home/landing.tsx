@@ -144,11 +144,11 @@ function Cta() {
       <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            Boost your productivity. Start using our app today.
+            Start using Tlink today
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-pretty text-lg/8 text-gray-300">
-            Incididunt sint fugiat pariatur cupidatat consectetur sit cillum
-            anim id veniam aliqua proident excepteur commodo do ea.
+            Experience Web3 on Twitter, Telegram and Farcaster. Install the
+            Tlink browser extension to interact with web3 today.
           </p>
           <motion.div
             className="mt-10 flex items-center justify-center gap-x-6"
