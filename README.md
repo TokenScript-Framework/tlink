@@ -10,3 +10,7 @@ Run the following command:
 pnpm install
 pnpm run dev:extension
 ```
+
+The build output will be in `apps/extension/.output/chrome-mv3`.
+
+Then open `chrome://extensions/` in Chrome, enable developer mode and load the extension.
