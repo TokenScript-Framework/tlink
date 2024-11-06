@@ -1,24 +1,13 @@
 import { ConnectorIcon } from "@/entrypoints/wallet.content/components/connector-icon"
-import { getIcon } from "@/entrypoints/wallet.content/wagmi"
 import { formatAddress } from "@/lib/format-address"
-import { Check, ChevronDown, Copy, LogOut } from "lucide-react"
+import { Check, Copy, LogOut } from "lucide-react"
 import { useState } from "react"
-import { useAccount, useChains, useDisconnect } from "wagmi"
-
-const _chains = [
-  { id: "ethereum", name: "Ethereum", icon: "🔷" },
-  { id: "binance", name: "Binance Smart Chain", icon: "🟨" },
-  { id: "polygon", name: "Polygon", icon: "🟣" },
-  { id: "avalanche", name: "Avalanche", icon: "🔺" }
-]
+import { useAccount, useDisconnect } from "wagmi"
 
 export function ConnectedCard() {
   const { connector, address, chainId } = useAccount()
   const { disconnect } = useDisconnect()
   const [isCopied, setIsCopied] = useState(false)
-
-  const [selectedChain, setSelectedChain] = useState(_chains[0])
-  const chains = useChains()
 
   if (!address) {
     return null
@@ -55,26 +44,7 @@ export function ConnectedCard() {
             </Button>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-48">
-                <span className="mr-2">{selectedChain.icon}</span>
-                {selectedChain.name}
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48">
-              {chains.map((chain) => (
-                <DropdownMenuItem
-                  key={chain.id}
-                  // onSelect={() => setSelectedChain(chain)}
-                  className="flex items-center justify-between">
-                  <img src={getIcon(chain.id)} className="w-4 h-4" />
-                  {chainId === chain.id && <Check className="h-4 w-4" />}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <SwitchChainDropdown />
         </div>
 
         <Button
