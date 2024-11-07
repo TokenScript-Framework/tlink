@@ -5,9 +5,9 @@ export const tlinks = [
     link: 'https://viewer.tokenscript.org/?chain=137&contract=0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe&tokenId=1649017156#',
   },
   {
-    twitter: 'https://x.com/TantanFu122765/status/1846716253416968590',
+    twitter: 'https://x.com/TantanFu122765/status/1854365272200864200',
     // Mooarty
-    link: 'https://viewer.tokenscript.org/?chain=11155111&contract=0x31fc7840fA14F5e228E31D190b543deBDA13cCDA#card=Play&tokenId=28',
+    link: 'https://viewer.tokenscript.org/?chain=137&contract=0xb48f53010acbc0e24d3d12d892e2215879e6fd13&tokenId=715',
   },
   {
     twitter: 'https://x.com/TantanFu122765/status/1841370375982346612',
