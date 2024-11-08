@@ -1,4 +1,4 @@
-import { ActionConfig } from "@repo/tlinks"
+import { ActionConfig, isTokenScriptViewerUrl } from "@repo/tlinks"
 import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import "@repo/tlinks/index.css"
 import { useEffect, useState } from "react"
@@ -17,7 +17,7 @@ export const TwitterObserver = () => {
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
         interceptHandlePost: (href) => {
-          if (href.includes("tokenscript.org") || href.startsWith("http://localhost:3333/")) {
+          if (isTokenScriptViewerUrl(href)) {
             setDAppUrl(href)
             iframePopupRef.current?.setOpen(true)
             return true
