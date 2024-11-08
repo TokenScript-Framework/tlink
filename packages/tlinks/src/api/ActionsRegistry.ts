@@ -206,16 +206,22 @@ async function fetchActionsRegistryConfig(): Promise<ActionsRegistryConfig> {
     return {
       actions: [
         { host: 'localhost:3000', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
       ],
       interstitials: [
         { host: 'localhost:3000', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
       ],
       websites: [
         { host: 'localhost:3000', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
       ],

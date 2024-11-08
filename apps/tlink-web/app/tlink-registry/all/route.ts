@@ -6,6 +6,8 @@ export async function GET() {
       actions: [
         { host: 'localhost:3000', state: 'trusted' },
         { host: 'localhost:3001', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
         { host: 'www.charityconnect.io', state: 'trusted' },
@@ -17,6 +19,8 @@ export async function GET() {
       interstitials: [
         { host: 'localhost:3000', state: 'trusted' },
         { host: 'localhost:3001', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
         { host: 'www.charityconnect.io', state: 'trusted' },
@@ -28,6 +32,8 @@ export async function GET() {
       websites: [
         { host: 'localhost:3000', state: 'trusted' },
         { host: 'localhost:3001', state: 'trusted' },
+        { host: 'tlink.store', state: 'trusted' },
+        { host: 'staging-tlink.store', state: 'trusted' },
         { host: 'viewer.tokenscript.org', state: 'trusted' },
         { host: 'viewer-staging.tokenscript.org', state: 'trusted' },
         { host: 'www.charityconnect.io', state: 'trusted' },

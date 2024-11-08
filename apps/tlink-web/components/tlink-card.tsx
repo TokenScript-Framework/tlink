@@ -7,6 +7,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 import {
   ActionConfig,
   ActionContainer,
+  isTokenScriptViewerUrl,
   setProxyUrl,
   useAction,
 } from '@repo/tlinks'
@@ -56,10 +57,7 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
         return Promise.resolve(address || null)
       },
       interceptHandlePost: (href) => {
-        if (
-          href.includes('tokenscript.org') ||
-          href.startsWith('http://localhost:3333/')
-        ) {
+        if (isTokenScriptViewerUrl(href)) {
           setDAppUrl(href)
           iframePopupRef.current?.setOpen(true)
           return true
