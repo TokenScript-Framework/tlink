@@ -46,7 +46,7 @@ export function SwitchChainDropdown() {
             width={24}
             height={24}
           />
-          <span>{currentChain?.name}</span>
+          <span className="text-black">{currentChain?.name}</span>
           <ChevronDown
             className={cn(
               "h-4 w-4 transition-transform duration-200",
