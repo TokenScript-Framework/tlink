@@ -1,5 +1,7 @@
 import { ACTIONS_CORS_HEADERS } from '@repo/actions'
 
+export const runtime = 'edge'
+
 export async function GET() {
   return Response.json(
     {
