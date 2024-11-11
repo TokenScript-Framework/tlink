@@ -1,6 +1,7 @@
 'use client'
 
 import { InstallButton } from '@/components/features/home/install-button'
+import { Header } from '@/components/header'
 import { TlinkCard } from '@/components/tlink-card'
 import {
   Card,
@@ -9,10 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { tlinks } from '@/lib/constants'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { motion } from 'framer-motion'
 import { Download, Twitter } from 'lucide-react'
-import Link from 'next/link'
 
 const steps = [
   {
@@ -30,16 +29,7 @@ const steps = [
 export function LandingContent() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
-      <header className="border-b border-gray-800">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">
-              Tlink
-            </span>
-          </Link>
-          <ConnectButton showBalance={false} />
-        </div>
-      </header>
+      <Header />
 
       <main className="container mx-auto px-4 py-12">
         <motion.div
