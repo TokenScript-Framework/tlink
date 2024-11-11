@@ -1,4 +1,5 @@
-let proxyUrl: string | null = 'https://tlink-web.vercel.app/proxy';
+let proxyUrl: string | null =
+  'https://store-backend.smartlayer.network/tlink/proxy';
 
 export function setProxyUrl(url: string): void {
   if (!url) {
