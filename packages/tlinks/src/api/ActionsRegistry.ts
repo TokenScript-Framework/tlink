@@ -187,7 +187,7 @@ export const getExtendedInterstitialState = (
 async function fetchActionsRegistryConfig(): Promise<ActionsRegistryConfig> {
   try {
     const response = await fetch(
-      'https://tlink-registry.vercel.app/tlink-registry/all',
+      'https://store-backend.smartlayer.network/tlink/tlink-registry/all',
     );
     if (!response.ok) {
       console.error(
