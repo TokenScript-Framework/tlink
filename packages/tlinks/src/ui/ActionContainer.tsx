@@ -453,7 +453,7 @@ export const ActionContainer = ({
         dispatch({
           type: ExecutionType.SOFT_RESET,
           errorMessage:
-            (signResult as { error: string }).error ??
+            ((signResult.error as any).message || signResult.error) ??
             'Unknown error, please try again',
         });
       } else {
@@ -467,7 +467,7 @@ export const ActionContainer = ({
 
         // chain
         const nextAction = await action.chain(payload.links.next, {
-          signature: signResult.signature,
+          signature: (signResult as { signature: string }).signature,
           account: account,
         });
 
