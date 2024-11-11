@@ -31,7 +31,7 @@ export default defineBackground(() => {
     })
       .then((res) => {
         if (["connect", "getConnectedAccount"].includes(msg.type)) {
-          sendResponse(res?.[0] || "")
+          sendResponse(res.result?.[0] || "")
         } else {
           sendResponse(res)
         }
@@ -87,18 +87,17 @@ export default defineBackground(() => {
               : params
           })
 
-          return { result };
+          return { result }
         } catch (e: any) {
-
-          if (e.walk) e = e.walk();
+          if (e.walk) e = e.walk()
 
           return {
             error: e
-          };
+          }
         }
       }
     })
 
-    return resp[0].result;
+    return resp[0].result
   }
 })

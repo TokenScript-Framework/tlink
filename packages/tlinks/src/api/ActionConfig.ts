@@ -35,7 +35,10 @@ export interface ActionAdapter {
   signTransaction: (
     payload: TransactionPayload,
     context: ActionContext,
-  ) => Promise<{ signature: string } | { error: string }>;
+  ) => Promise<
+    | { signature: string }
+    | { error: string | { code: number; message: string } }
+  >;
   interceptHandlePost?: (href: string) => boolean;
   tsIframeRenderer?: (props: { websiteUrl: string }) => JSX.Element | null;
 }
