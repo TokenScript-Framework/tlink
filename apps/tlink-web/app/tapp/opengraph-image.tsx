@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from 'next/og'
 
@@ -13,7 +14,6 @@ export const size = {
 
 export const contentType = 'image/png'
 
-// Image generation
 export default async function Image() {
   const interSemiBold = fetch(
     new URL('./Neue-Plak-Extended-SemiBold.woff', import.meta.url),
@@ -24,18 +24,54 @@ export default async function Image() {
   const title = 'Smart Cat'
   const actionName = 'Vote Delegation'
 
+  const imgSrc: any = await fetch(new URL(imgUrl)).then((res) =>
+    res.arrayBuffer(),
+  )
+
   return new ImageResponse(
     (
       <div
-        className="w-[1200px] h-[630px] bg-cover bg-center px-[90px]"
-        style={{ backgroundImage: 'url(/bg.png)' }}
+        style={{
+          display: 'flex',
+          width: '1200px',
+          height: '630px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          paddingLeft: '90px',
+          paddingRight: '90px',
+          backgroundImage: 'url(https://tlink-web.vercel.app/bg.png)',
+        }}
       >
-        <div className="flex items-center justify-between h-full">
-          <div>
-            <div className="text-white text-[66px] font-semibold mb-[200px]">
-              Vote Delegation
-              <div>
-                With <span className="text-[#5EFF26]">TLinks</span>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '100%',
+            gap: '80px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxWidth: '600px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                color: 'white',
+                fontSize: '66px',
+                fontWeight: 600,
+                marginBottom: '200px',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                Vote Delegation
+                <div style={{ display: 'flex' }}>
+                  With <span style={{ color: '#5EFF26' }}>TLinks</span>
+                </div>
               </div>
             </div>
 
@@ -82,19 +118,51 @@ export default async function Image() {
             </svg>
           </div>
 
-          <div className="flex flex-col w-[400px] bg-[#15202B] h-full px-3 py-5">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-2">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '400px',
+              backgroundColor: '#15202B',
+              height: '100%',
+              padding: '20px 12px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '16px',
+              }}
+            >
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <img
                   src="https://tlink-web.vercel.app/smart-layer-logo.jpg"
-                  className="w-7 h-7 rounded"
+                  style={{ width: '28px', height: '28px', borderRadius: '4px' }}
                   alt="logo"
                 />
-                <div className="flex items-center gap-2 justify-center">
-                  <div className="font-bold text-[14px] text-[#F7F9F9]">
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                      color: '#F7F9F9',
+                    }}
+                  >
                     Smart Layer
                   </div>
-                  <svg className="w-4 h-4" viewBox="0 0 22 22">
+                  <svg
+                    style={{ width: '16px', height: '16px' }}
+                    viewBox="0 0 22 22"
+                  >
                     <linearGradient
                       id="37-a"
                       x1="4.411"
@@ -136,34 +204,101 @@ export default async function Image() {
                       ></path>
                     </g>
                   </svg>
-                  <span className="text-[#8A98A5]">@SmartLayer · 9h</span>
+                  <span style={{ color: '#8A98A5' }}>@SmartLayer · 9h</span>
                 </div>
               </div>
               <svg
-                className="w-4 h-4 text-[#8A98A5] fill-[#8A98A5]"
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  color: '#8A98A5',
+                  fill: '#8A98A5',
+                }}
                 viewBox="0 0 24 24"
               >
-                <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2m9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2"></path>
+                <path
+                  fill="#8A98A5"
+                  d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2m9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2"
+                ></path>
               </svg>
             </div>
 
-            <div className="flex flex-col justify-between grow">
-              <div className="border-[#467788] bg-[#020216] w-full overflow-hidden rounded-2xl border">
-                <div className="block overflow-y-hidden px-4 pt-4">
-                  <div className="relative aspect-square w-full">
-                    <div className="bg-bg-secondary absolute inset-0 opacity-0 transition-opacity duration-300"></div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                flexGrow: 1,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: '1px solid #467788',
+                  backgroundColor: '#020216',
+                  width: '100%',
+                  overflow: 'hidden',
+                  borderRadius: '16px',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    padding: '16px 16px 0 16px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      display: 'flex',
+                    }}
+                  >
                     <img
-                      className="absolute inset-0 h-full w-full rounded-xl object-cover object-center opacity-100 transition-opacity duration-300"
+                      style={{
+                        height: '342px',
+                        width: '342px',
+                        borderRadius: '12px',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        opacity: 1,
+                        transition: 'opacity 300ms',
+                      }}
                       width="342"
                       height="342"
-                      src={imgUrl}
+                      src={imgSrc}
                       alt="action-image"
                     />
                   </div>
                 </div>
-                <div className="flex flex-col p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="text-subtext group inline-flex items-center truncate hover:cursor-pointer text-[#76777B]">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: '16px',
+                  }}
+                >
+                  <div
+                    style={{
+                      marginBottom: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: '#76777B',
+                        display: 'flex',
+                        alignItems: 'center',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        cursor: 'pointer',
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -171,9 +306,9 @@ export default async function Image() {
                         fill="none"
                         viewBox="0 0 16 16"
                         preserveAspectRatio="xMidYMid meet"
-                        className="mr-2 shrink-0"
+                        style={{ marginRight: '8px', flexShrink: 0 }}
                       >
-                        <g fill="currentColor" clip-path="url(#a)">
+                        <g fill="currentColor" clipPath="url(#a)">
                           <path d="M7.409 9.774 9.774 7.41a.836.836 0 1 0-1.183-1.183L6.226 8.592A.836.836 0 1 0 7.41 9.774Z"></path>
                           <path d="M10.76.503A4.709 4.709 0 0 0 7.41 1.889L5.83 3.467A.836.836 0 1 0 7.014 4.65L8.59 3.072a3.067 3.067 0 0 1 4.338 4.337L11.35 8.987a.835.835 0 1 0 1.182 1.182l1.578-1.577a4.738 4.738 0 0 0-3.35-8.09ZM5.24 15.497a4.706 4.706 0 0 0 3.351-1.386l1.578-1.577a.836.836 0 1 0-1.182-1.183l-1.578 1.578a3.067 3.067 0 1 1-4.337-4.337L4.65 7.014A.836.836 0 1 0 3.467 5.83L1.889 7.41a4.737 4.737 0 0 0 3.351 8.088Z"></path>
                         </g>
@@ -183,20 +318,73 @@ export default async function Image() {
                           </clipPath>
                         </defs>
                       </svg>
-                      <span className="text-text-link  truncate transition-colors">
+                      <span
+                        style={{
+                          color: '#76777B',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          transition: 'colors',
+                        }}
+                      >
                         link.to.token
                       </span>
                     </div>
                   </div>
-                  <span className="text-text text-white font-semibold mb-4">
+                  <span
+                    style={{
+                      color: 'white',
+                      fontWeight: 600,
+                      marginBottom: '16px',
+                    }}
+                  >
                     {title}
                   </span>
 
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <div className="flex flex-grow basis-[calc(33.333%-2*4px)]">
-                        <button className="rounded-button text-black rounded-full h-8 flex w-full items-center justify-center text-nowrap px-4 py-3 font-semibold bg-[#5EFF26]">
-                          <span className="min-w-0 truncate">{actionName}</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '12px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                        gap: '8px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexGrow: 1,
+                        }}
+                      >
+                        <button
+                          style={{
+                            color: 'black',
+                            borderRadius: '9999px',
+                            height: '32px',
+                            display: 'flex',
+                            width: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            whiteSpace: 'nowrap',
+                            padding: '12px 16px',
+                            fontWeight: 600,
+                            backgroundColor: '#5EFF26',
+                          }}
+                        >
+                          <span
+                            style={{
+                              minWidth: 0,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {actionName}
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -204,38 +392,96 @@ export default async function Image() {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="text-[#8A98A5] flex items-center gap-1">
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    color: '#8A98A5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
                   <span>
-                    <svg className="fill-[#8A98A5] w-4 h-4" viewBox="0 0 24 24">
-                      <path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366a8.13 8.13 0 0 1 8.129 8.13c0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067A8.005 8.005 0 0 1 1.751 10m8.005-6a6.005 6.005 0 1 0 .133 12.01l.351-.01h1.761v2.3l5.087-2.81A6.127 6.127 0 0 0 14.122 4z"></path>
+                    <svg
+                      style={{ width: '16px', height: '16px' }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#8A98A5"
+                        d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366a8.13 8.13 0 0 1 8.129 8.13c0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067A8.005 8.005 0 0 1 1.751 10m8.005-6a6.005 6.005 0 1 0 .133 12.01l.351-.01h1.761v2.3l5.087-2.81A6.127 6.127 0 0 0 14.122 4z"
+                      ></path>
                     </svg>
                   </span>
                   <span>131</span>
                 </div>
 
-                <div className="text-[#8A98A5] flex items-center gap-1">
+                <div
+                  style={{
+                    color: '#8A98A5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
                   <span>
-                    <svg className="fill-[#8A98A5] w-4 h-4" viewBox="0 0 24 24">
-                      <path d="m4.5 3.88 4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5a4 4 0 0 1-4-4V7.55L1.432 9.48.068 8.02zM16.5 6H11V4h5.5a4 4 0 0 1 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2"></path>
+                    <svg
+                      style={{ width: '16px', height: '16px' }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#8A98A5"
+                        d="m4.5 3.88 4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5a4 4 0 0 1-4-4V7.55L1.432 9.48.068 8.02zM16.5 6H11V4h5.5a4 4 0 0 1 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2"
+                      ></path>
                     </svg>
                   </span>
                   <span>47</span>
                 </div>
 
-                <div className="text-[#8A98A5] flex items-center gap-1">
+                <div
+                  style={{
+                    color: '#8A98A5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
                   <span>
-                    <svg className="fill-[#8A98A5] w-4 h-4" viewBox="0 0 24 24">
-                      <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                    <svg
+                      style={{ width: '16px', height: '16px' }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#8A98A5"
+                        d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"
+                      ></path>
                     </svg>
                   </span>
                   <span>675</span>
                 </div>
 
-                <div className="text-[#8A98A5] flex items-center gap-1">
+                <div
+                  style={{
+                    color: '#8A98A5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
                   <span>
-                    <svg className="fill-[#8A98A5] w-4 h-4" viewBox="0 0 24 24">
-                      <path d="M8.75 21V3h2v18zM18 21V8.5h2V21zM4 21l.004-10h2L6 21zm9.248 0v-7h2v7z"></path>
+                    <svg
+                      style={{ width: '16px', height: '16px' }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#8A98A5"
+                        d="M8.75 21V3h2v18zM18 21V8.5h2V21zM4 21l.004-10h2L6 21zm9.248 0v-7h2v7z"
+                      ></path>
                     </svg>
                   </span>
                   <span>2M</span>
@@ -246,10 +492,7 @@ export default async function Image() {
         </div>
       </div>
     ),
-    // ImageResponse options
     {
-      // For convenience, we can re-use the exported opengraph-image
-      // size config to also set the ImageResponse's width and height.
       ...size,
       fonts: [
         {
