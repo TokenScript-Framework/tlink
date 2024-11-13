@@ -16,9 +16,15 @@ export default defineConfig([
       'src/index.css',
       'src/ext/twitter.tsx',
       'src/createTlink.ts',
+      'src/utils/index.ts',
     ],
     dts: {
-      entry: ['src/index.ts', 'src/ext/twitter.tsx', 'src/createTlink.ts'],
+      entry: [
+        'src/index.ts',
+        'src/ext/twitter.tsx',
+        'src/createTlink.ts',
+        'src/utils/index.ts',
+      ],
     },
   },
 ]);

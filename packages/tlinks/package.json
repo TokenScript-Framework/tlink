@@ -37,6 +37,11 @@
       "import": "./dist/createTlink.js",
       "require": "./dist/createTlink.js"
     },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
+    },
     "./index.css": "./dist/index.css"
   },
   "files": [
