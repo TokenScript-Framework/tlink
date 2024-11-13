@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
+import { fetchTsData } from '@repo/tlinks/utils'
 import { ImageResponse } from 'next/og'
+import { NextRequest } from 'next/server'
 
-// Route segment config
 export const runtime = 'edge'
 
-// Image metadata
-export const alt = 'About Acme'
-export const size = {
-  width: 1200,
-  height: 630,
-}
-
-export const contentType = 'image/png'
-
-export default async function Image() {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { chain: string; contract: string; tokenId: string } },
+) {
   const interSemiBold = fetch(
-    new URL('./Neue-Plak-Extended-SemiBold.woff', import.meta.url),
+    new URL('@/styles/Neue-Plak-Extended-SemiBold.woff', import.meta.url),
   ).then((res) => res.arrayBuffer())
 
-  const imgUrl =
-    'https://resources.smartlayer.network/smartcat/reources/images/14aac9c763f1cd29583a13d3e9b4e736.png'
-  const title = 'Smart Cat'
-  const actionName = 'Vote Delegation'
+  const { chain, contract, tokenId } = params
+  const { tsMetadata, tokenMetadata } = await fetchTsData({
+    chainId: Number(chain),
+    contract,
+    tokenId,
+  })
+
+  const imgUrl = tokenMetadata?.image || ''
+  const title = tsMetadata?.name || tokenMetadata?.name
+  const actionName = tsMetadata.actions[0].label
 
   const imgSrc: any = await fetch(new URL(imgUrl)).then((res) =>
     res.arrayBuffer(),
@@ -48,6 +48,7 @@ export default async function Image() {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: '100%',
+            width: '100%',
             gap: '80px',
           }}
         >
@@ -68,7 +69,7 @@ export default async function Image() {
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                Vote Delegation
+                {title}
                 <div style={{ display: 'flex' }}>
                   With <span style={{ color: '#5EFF26' }}>TLinks</span>
                 </div>
@@ -493,7 +494,8 @@ export default async function Image() {
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
       fonts: [
         {
           name: 'Inter',
