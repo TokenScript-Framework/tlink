@@ -39,7 +39,7 @@ export function LandingContent() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600">
-            Tlink Explorer
+            Tlink Store
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Experience Web3 on Twitter, Telegram and Farcaster. Install the
