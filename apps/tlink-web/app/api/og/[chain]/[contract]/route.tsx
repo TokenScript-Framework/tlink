@@ -32,13 +32,20 @@ export async function GET(
     scriptId: scriptId ?? undefined,
   })
 
-  const imgUrl = tokenMetadata?.image || ''
+  const imgUrl = tokenMetadata?.image || tsMetadata?.meta.iconUrl || ''
   const title = tsMetadata?.name || tokenMetadata?.name
   const actionName = tsMetadata.actions[0].label
 
-  const imgSrc: any = await fetch(new URL(imgUrl)).then((res) =>
-    res.arrayBuffer(),
-  )
+  let imgSrc: any
+  try {
+    imgSrc = await fetch(new URL(rewriteUrlIfIpfsUrl(imgUrl))).then((res) =>
+      res.arrayBuffer(),
+    )
+  } catch (error) {
+    // Create a 1x1 white pixel as fallback
+    const whitePixel = new Uint8Array([255, 255, 255, 255]) // RGBA white pixel
+    imgSrc = whitePixel.buffer
+  }
 
   return new ImageResponse(
     (
@@ -518,4 +525,20 @@ export async function GET(
       ],
     },
   )
+}
+
+function rewriteUrlIfIpfsUrl(url: string) {
+  if (!url) {
+    return ''
+  } else if (url.toLowerCase().startsWith('https://ipfs.io/ipfs')) {
+    return url.replace(
+      'https://ipfs.io/ipfs',
+      'https://gateway.pinata.cloud/ipfs',
+    )
+  } else if (url.toLowerCase().startsWith('ipfs://ipfs')) {
+    return url.replace('ipfs://ipfs', 'https://gateway.pinata.cloud/ipfs')
+  } else if (url.toLowerCase().startsWith('ipfs://')) {
+    return url.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/')
+  }
+  return url
 }
