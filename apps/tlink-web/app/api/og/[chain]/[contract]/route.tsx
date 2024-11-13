@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchTsData } from '@repo/tlinks/utils'
 import { ImageResponse } from 'next/og'
@@ -7,17 +8,28 @@ export const runtime = 'edge'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { chain: string; contract: string; tokenId: string } },
+  { params }: { params: { chain: string; contract: string } },
 ) {
   const interSemiBold = fetch(
     new URL('@/styles/Neue-Plak-Extended-SemiBold.woff', import.meta.url),
   ).then((res) => res.arrayBuffer())
 
-  const { chain, contract, tokenId } = params
+  const { chain, contract } = params
+  const tokenId = req.nextUrl.searchParams.get('tokenId')
+
+  let scriptId: string | undefined | null =
+    req.nextUrl.searchParams.get('scriptId')
+  if (scriptId === 'undefined') {
+    scriptId = undefined
+  } else {
+    scriptId = scriptId ? scriptId.split('_')[1] : undefined
+  }
+
   const { tsMetadata, tokenMetadata } = await fetchTsData({
     chainId: Number(chain),
     contract,
-    tokenId,
+    tokenId: tokenId ?? undefined,
+    scriptId: scriptId ?? undefined,
   })
 
   const imgUrl = tokenMetadata?.image || ''
