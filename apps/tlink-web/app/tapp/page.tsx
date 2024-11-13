@@ -36,12 +36,14 @@ export async function generateMetadata(v: {
 
 export default function Tapp() {
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
       <Header />
-      <TappBanner />
-      <Suspense fallback={null}>
-        <TappDetail />
-      </Suspense>
+      <div className="relative flex-1 flex items-center justify-center flex-col overflow-hidden">
+        <TappBanner />
+        <Suspense fallback={null}>
+          <TappDetail />
+        </Suspense>
+      </div>
     </div>
   )
 }

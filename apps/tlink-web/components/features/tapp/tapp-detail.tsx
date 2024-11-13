@@ -37,7 +37,7 @@ export function TappDetail() {
   return (
     <main className="container mx-auto px-4 py-8 relative z-10">
       <div className="max-w-6xl mx-auto">
-        <Card className="bg-gray-800 border-gray-700 mt-[-35px] md:mt-[-70px]">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-8">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Left Column   */}
