@@ -28,6 +28,9 @@ export async function generateMetadata(v: {
 
   return {
     title: 'Tlink',
+    twitter: {
+      card: 'summary_large_image',
+    },
     openGraph: {
       images: [imageUrl],
     },
