@@ -62,8 +62,8 @@ export function App() {
             bottom: `${position.bottom}px`,
             right: 16
           }}
-          className="fixed w-16 h-16 shadow-lg rounded-full bg-white z-[1000] border flex items-center justify-center">
-          <TlinkLogo className="w-7 h-7 ml-1 mb-1" />
+          className="fixed w-16 h-16 shadow-lg rounded-full bg-white z-[1000] flex items-center justify-center">
+          <TlinkLogo className="w-full h-full rounded-full" />
         </button>
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
