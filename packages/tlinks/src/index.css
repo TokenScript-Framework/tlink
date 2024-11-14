@@ -190,3 +190,40 @@
   .custom {
   }
 }
+
+.farcaster-container button{
+    background-color: #1D9BF0 !important;
+    color:white !important;
+}
+
+.farcaster-container button:hover{
+    background-color:#3087DA
+}
+
+.farcaster-container button svg{
+   color:white;
+}
+
+.neynar-button-container img {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 9999px;
+}
+
+.neynar-button-container div {
+    position: absolute;
+    right: 0;;
+    border: 0;
+    top: 50px;
+    display: flex;
+    align-items: center;
+    background-color: black;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 200px;
+    z-index:999;
+}
+
+.neynar-button-container div button {
+    margin-left:8px;
+}
