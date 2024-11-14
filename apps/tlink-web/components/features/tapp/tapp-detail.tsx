@@ -38,7 +38,7 @@ export function TappDetail() {
     <main className="container mx-auto px-4 py-8 relative z-10">
       <div className="max-w-6xl mx-auto">
         <Card className="bg-gray-800 border-gray-700">
-          <CardContent className="p-8">
+          <CardContent className="px-0 md:p-8">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Left Column   */}
               <div className="">
@@ -46,7 +46,7 @@ export function TappDetail() {
               </div>
 
               {/* Right Column - Content */}
-              <div className="flex flex-col gap-8 justify-between">
+              <div className="flex flex-col gap-8 justify-between px-4 md:px-0">
                 <div className="flex flex-col gap-6">
                   <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-relaxed">
                     {data?.tsMetadata.name}

@@ -95,7 +95,7 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
 
 export function TlinkCardSkeleton() {
   return (
-    <div className="min-w-96">
+    <div className="max-w-full">
       <div className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md">
         <div className="px-5 pt-5">
           <Skeleton className="aspect-square w-full rounded-xl bg-gray-200" />
