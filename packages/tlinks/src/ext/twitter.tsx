@@ -159,20 +159,16 @@ async function handleNewNode(
 
 	let actionApiUrl: string | null;
 
-    console.log(actionUrl)
-
 	if (isTokenScriptViewerUrl(actionUrl)) {
 		// handle TokenScript viewer url
 		actionApiUrl = actionUrl.toString();
 	} else if(isFarcasterFrameUrl(actionUrl)){
         const chain = Number(actionUrl.searchParams.get('chain')) || 0;
-        console.log(chain)
         addMargin(container).replaceChildren(
             await createFarcasterFrame({chain, scriptURI:actionUrl.href})
         );
         return 
     }else if (interstitialData.isInterstitial) {
-        console.log('####2')
 		const interstitialState = getExtendedInterstitialState(
 			actionUrl.toString(),
 		);
@@ -215,7 +211,6 @@ async function handleNewNode(
 	actionApiUrlWithAccount.searchParams.append('account', account || '');
 
 	const urlToTest = actionUrl.toString();
-    console.log(urlToTest)
 	if (
 		urlToTest &&
 		urlToTest.includes('card=') &&
