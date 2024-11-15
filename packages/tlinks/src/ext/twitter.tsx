@@ -1,14 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import {
-	Action,
-	type ActionAdapter,
-	type ActionCallbacksConfig,
-	ActionsRegistry,
-	type ActionSupportStrategy,
-	defaultActionSupportStrategy,
-	getExtendedActionState,
-	getExtendedInterstitialState,
-	getExtendedWebsiteState,
+  Action,
+  type ActionAdapter,
+  type ActionCallbacksConfig,
+  ActionsRegistry,
+  type ActionSupportStrategy,
+  defaultActionSupportStrategy,
+  getExtendedActionState,
+  getExtendedInterstitialState,
+  getExtendedWebsiteState,
 } from '../api/index.ts';
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
 import { ActionContainer, type StylePreset } from '../ui/index.ts';
@@ -18,8 +18,8 @@ import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
 import { isFarcasterFrameUrl } from "../utils/is-farcaster-frame-url.ts";
 import { proxify } from '../utils/proxify.ts';
 import {
-	type ActionsJsonConfig,
-	ActionsURLMapper,
+  type ActionsJsonConfig,
+  ActionsURLMapper,
 } from '../utils/url-mapper.ts';
 import { FarcasterContainer } from '../ui/FarcasterContainer.tsx';
 import { isViewer } from '../ui/FarcasterFrame.tsx';
@@ -30,403 +30,403 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 type ObserverSecurityLevel = SecurityLevel;
 
 export interface ObserverOptions {
-	// trusted > unknown > malicious
-	securityLevel:
-	| ObserverSecurityLevel
-	| Record<'websites' | 'interstitials' | 'actions', ObserverSecurityLevel>;
-	supportStrategy: ActionSupportStrategy;
+  // trusted > unknown > malicious
+  securityLevel:
+  | ObserverSecurityLevel
+  | Record<'websites' | 'interstitials' | 'actions', ObserverSecurityLevel>;
+  supportStrategy: ActionSupportStrategy;
 }
 
 interface NormalizedObserverOptions {
-	securityLevel: Record<
-		'websites' | 'interstitials' | 'actions',
-		ObserverSecurityLevel
-	>;
-	supportStrategy: ActionSupportStrategy;
+  securityLevel: Record<
+    'websites' | 'interstitials' | 'actions',
+    ObserverSecurityLevel
+  >;
+  supportStrategy: ActionSupportStrategy;
 }
 
 const DEFAULT_OPTIONS: ObserverOptions = {
-	securityLevel: 'only-trusted',
-	supportStrategy: defaultActionSupportStrategy,
+  securityLevel: 'only-trusted',
+  supportStrategy: defaultActionSupportStrategy,
 };
 
 const normalizeOptions = (
-	options: Partial<ObserverOptions>,
+  options: Partial<ObserverOptions>,
 ): NormalizedObserverOptions => {
-	return {
-		...DEFAULT_OPTIONS,
-		...options,
-		securityLevel: (() => {
-			if (!options.securityLevel) {
-				return {
-					websites: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
-					interstitials: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
-					actions: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
-				};
-			}
+  return {
+    ...DEFAULT_OPTIONS,
+    ...options,
+    securityLevel: (() => {
+      if (!options.securityLevel) {
+        return {
+          websites: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
+          interstitials: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
+          actions: DEFAULT_OPTIONS.securityLevel as ObserverSecurityLevel,
+        };
+      }
 
-			if (typeof options.securityLevel === 'string') {
-				return {
-					websites: options.securityLevel,
-					interstitials: options.securityLevel,
-					actions: options.securityLevel,
-				};
-			}
+      if (typeof options.securityLevel === 'string') {
+        return {
+          websites: options.securityLevel,
+          interstitials: options.securityLevel,
+          actions: options.securityLevel,
+        };
+      }
 
-			return options.securityLevel;
-		})(),
-	};
+      return options.securityLevel;
+    })(),
+  };
 };
 
 export function setupTwitterObserver(
-	config: ActionAdapter,
-	callbacks: Partial<ActionCallbacksConfig> = {},
-	options: Partial<ObserverOptions> = DEFAULT_OPTIONS,
+  config: ActionAdapter,
+  callbacks: Partial<ActionCallbacksConfig> = {},
+  options: Partial<ObserverOptions> = DEFAULT_OPTIONS,
 ) {
-	const mergedOptions = normalizeOptions(options);
-	const twitterReactRoot = document.getElementById('react-root')!;
+  const mergedOptions = normalizeOptions(options);
+  const twitterReactRoot = document.getElementById('react-root')!;
 
-	const refreshRegistry = async () => {
-		return ActionsRegistry.getInstance().init();
-	};
+  const refreshRegistry = async () => {
+    return ActionsRegistry.getInstance().init();
+  };
 
-	// if we don't have the registry, then we don't show anything
-	refreshRegistry().then(() => {
-		// entrypoint
-		const observer = new MutationObserver((mutations) => {
-			// it's fast to iterate like this
-			for (let i = 0; i < mutations.length; i++) {
-				const mutation = mutations[i];
-				for (let j = 0; j < mutation.addedNodes.length; j++) {
-					const node = mutation.addedNodes[j];
-					if (node.nodeType !== Node.ELEMENT_NODE) {
-						return;
-					}
-					handleNewNode(
-						node as Element,
-						config,
-						callbacks,
-						mergedOptions,
-					).catch(noop);
-				}
-			}
-		});
+  // if we don't have the registry, then we don't show anything
+  refreshRegistry().then(() => {
+    // entrypoint
+    const observer = new MutationObserver((mutations) => {
+      // it's fast to iterate like this
+      for (let i = 0; i < mutations.length; i++) {
+        const mutation = mutations[i];
+        for (let j = 0; j < mutation.addedNodes.length; j++) {
+          const node = mutation.addedNodes[j];
+          if (node.nodeType !== Node.ELEMENT_NODE) {
+            return;
+          }
+          handleNewNode(
+            node as Element,
+            config,
+            callbacks,
+            mergedOptions,
+          ).catch(noop);
+        }
+      }
+    });
 
-		observer.observe(twitterReactRoot, { childList: true, subtree: true });
-	});
+    observer.observe(twitterReactRoot, { childList: true, subtree: true });
+  });
 }
 
 async function handleNewNode(
-	node: Element,
-	config: ActionAdapter,
-	callbacks: Partial<ActionCallbacksConfig>,
-	options: NormalizedObserverOptions,
+  node: Element,
+  config: ActionAdapter,
+  callbacks: Partial<ActionCallbacksConfig>,
+  options: NormalizedObserverOptions,
 ) {
-	const element = node as Element;
-	// first quick filtration
-	if (!element || element.localName !== 'div') {
-		return;
-	}
+  const element = node as Element;
+  // first quick filtration
+  if (!element || element.localName !== 'div') {
+    return;
+  }
 
-	let anchor;
+  let anchor;
 
-	const linkPreview = findLinkPreview(element);
+  const linkPreview = findLinkPreview(element);
 
-	let container = findContainerInTweet(
-		linkPreview?.card ?? element,
-		Boolean(linkPreview),
-	);
-	if (linkPreview) {
-		anchor = linkPreview.anchor;
-		container && container.remove();
-		container = linkPreview.card.parentElement as HTMLElement;
-	} else {
-		if (container) {
-			return;
-		}
-		const link = findLastLinkInText(element);
-		if (link) {
-			anchor = link.anchor;
-			container = getContainerForLink(link.tweetText);
-		}
-	}
+  let container = findContainerInTweet(
+    linkPreview?.card ?? element,
+    Boolean(linkPreview),
+  );
+  if (linkPreview) {
+    anchor = linkPreview.anchor;
+    container && container.remove();
+    container = linkPreview.card.parentElement as HTMLElement;
+  } else {
+    if (container) {
+      return;
+    }
+    const link = findLastLinkInText(element);
+    if (link) {
+      anchor = link.anchor;
+      container = getContainerForLink(link.tweetText);
+    }
+  }
 
-	if (!anchor || !container) return;
+  if (!anchor || !container) return;
 
-	const shortenedUrl = anchor.href;
-	const actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
-	const interstitialData = isInterstitial(actionUrl);
+  const shortenedUrl = anchor.href;
+  const actionUrl = await resolveTwitterShortenedUrl(shortenedUrl);
+  const interstitialData = isInterstitial(actionUrl);
 
-	let actionApiUrl: string | null;
+  let actionApiUrl: string | null;
 
-	if (isTokenScriptViewerUrl(actionUrl)) {
-		// handle TokenScript viewer url
-		actionApiUrl = actionUrl.toString();
-	} else if(isFarcasterFrameUrl(actionUrl)){
-        const chain = Number(actionUrl.searchParams.get('chain')) || 0;
-        addMargin(container).replaceChildren(
-            await createFarcasterFrame({chain, scriptURI:actionUrl.href})
-        );
-        return 
-    }else if (interstitialData.isInterstitial) {
-		const interstitialState = getExtendedInterstitialState(
-			actionUrl.toString(),
-		);
+  if (isTokenScriptViewerUrl(actionUrl)) {
+    // handle TokenScript viewer url
+    actionApiUrl = actionUrl.toString();
+  } else if (isFarcasterFrameUrl(actionUrl)) {
+    const chain = Number(actionUrl.searchParams.get('chain')) || 0;
+    addMargin(container).replaceChildren(
+      await createFarcasterFrame({ chain, scriptURI: actionUrl.href })
+    );
+    return
+  } else if (interstitialData.isInterstitial) {
+    const interstitialState = getExtendedInterstitialState(
+      actionUrl.toString(),
+    );
 
-		if (
-			!checkSecurity(interstitialState, options.securityLevel.interstitials)
-		) {
-			return;
-		}
-
-		actionApiUrl = interstitialData.decodedActionUrl;
-	} else {
-		const websiteState = getExtendedWebsiteState(actionUrl.toString());
-
-		if (!checkSecurity(websiteState, options.securityLevel.websites)) {
-			return;
-		}
-
-		const actionsJsonUrl = actionUrl.origin + '/actions.json';
-		const actionsJson = await fetch(proxify(actionsJsonUrl)).then(
-			(res) => res.json() as Promise<ActionsJsonConfig>,
-		);
-
-		const actionsUrlMapper = new ActionsURLMapper(actionsJson);
-
-		actionApiUrl = actionsUrlMapper.mapUrl(actionUrl);
-	}
-
-	const state = actionApiUrl ? getExtendedActionState(actionApiUrl) : null;
-	if (
-		!actionApiUrl ||
-		!state ||
-		!checkSecurity(state, options.securityLevel.actions)
-	) {
-		return;
-	}
-
-	const account = await config.getConnectedAccount();
-	const actionApiUrlWithAccount = new URL(actionApiUrl);
-	actionApiUrlWithAccount.searchParams.append('account', account || '');
-
-	const urlToTest = actionUrl.toString();
-	if (
-		urlToTest &&
-		urlToTest.includes('card=') &&
-		isTokenScriptViewerUrl(urlToTest)
-	) {
-		addMargin(container).replaceChildren(
-			createTokenScriptIframe(urlToTest, config.tsIframeRenderer),
-		);
-		return;
-	}
-	const chain = Number(actionUrl.searchParams.get('chain')) || 0;
-	const contract = actionUrl.searchParams.get('contract') || '';
-	const { isTSViewer, scriptURI} = await isViewer(chain, contract as `0x${string}`);
-
-    let actionElement
-
-    if(isTSViewer){
-        const action = await Action.fetch(
-            actionApiUrlWithAccount.toString(),
-            config,
-            options.supportStrategy,
-        ).catch(noop);
-
-        if (!action) {
-            return;
-        }
-
-        actionElement = await createAction({
-            originalUrl: actionUrl,
-            action,
-            callbacks,
-            options,
-            isInterstitial: interstitialData.isInterstitial,
-        })
-    }else{
-        actionElement = await createFarcasterFrame({chain, scriptURI});
+    if (
+      !checkSecurity(interstitialState, options.securityLevel.interstitials)
+    ) {
+      return;
     }
 
-	addMargin(container).replaceChildren(
-		actionElement
-	);
+    actionApiUrl = interstitialData.decodedActionUrl;
+  } else {
+    const websiteState = getExtendedWebsiteState(actionUrl.toString());
+
+    if (!checkSecurity(websiteState, options.securityLevel.websites)) {
+      return;
+    }
+
+    const actionsJsonUrl = actionUrl.origin + '/actions.json';
+    const actionsJson = await fetch(proxify(actionsJsonUrl)).then(
+      (res) => res.json() as Promise<ActionsJsonConfig>,
+    );
+
+    const actionsUrlMapper = new ActionsURLMapper(actionsJson);
+
+    actionApiUrl = actionsUrlMapper.mapUrl(actionUrl);
+  }
+
+  const state = actionApiUrl ? getExtendedActionState(actionApiUrl) : null;
+  if (
+    !actionApiUrl ||
+    !state ||
+    !checkSecurity(state, options.securityLevel.actions)
+  ) {
+    return;
+  }
+
+  const account = await config.getConnectedAccount();
+  const actionApiUrlWithAccount = new URL(actionApiUrl);
+  actionApiUrlWithAccount.searchParams.append('account', account || '');
+
+  const urlToTest = actionUrl.toString();
+  if (
+    urlToTest &&
+    urlToTest.includes('card=') &&
+    isTokenScriptViewerUrl(urlToTest)
+  ) {
+    addMargin(container).replaceChildren(
+      createTokenScriptIframe(urlToTest, config.tsIframeRenderer),
+    );
+    return;
+  }
+  const chain = Number(actionUrl.searchParams.get('chain')) || 0;
+  const contract = actionUrl.searchParams.get('contract') || '';
+  const { isTSViewer, scriptURI } = await isViewer(chain, contract as `0x${string}`);
+
+  let actionElement
+
+  if (isTSViewer) {
+    const action = await Action.fetch(
+      actionApiUrlWithAccount.toString(),
+      config,
+      options.supportStrategy,
+    ).catch(noop);
+
+    if (!action) {
+      return;
+    }
+
+    actionElement = await createAction({
+      originalUrl: actionUrl,
+      action,
+      callbacks,
+      options,
+      isInterstitial: interstitialData.isInterstitial,
+    })
+  } else {
+    actionElement = await createFarcasterFrame({ chain, scriptURI });
+  }
+
+  addMargin(container).replaceChildren(
+    actionElement
+  );
 }
 
 function createTokenScriptIframe(
-	websiteUrl: string,
-	renderer: ActionAdapter['tsIframeRenderer'],
+  websiteUrl: string,
+  renderer: ActionAdapter['tsIframeRenderer'],
 ) {
-	const container = document.createElement('div');
-	container.className = 'dialect-action-root-container';
+  const container = document.createElement('div');
+  container.className = 'dialect-action-root-container';
 
-	const actionRoot = createRoot(container);
-	const Comp = renderer || (() => null);
+  const actionRoot = createRoot(container);
+  const Comp = renderer || (() => null);
 
-	actionRoot.render(
-		<div onClick={(e) => e.stopPropagation()}>
-			<Comp websiteUrl={websiteUrl} />
-		</div>,
-	);
+  actionRoot.render(
+    <div onClick={(e) => e.stopPropagation()}>
+      <Comp websiteUrl={websiteUrl} />
+    </div>,
+  );
 
-	return container;
+  return container;
 }
 
 function createAction({
-	originalUrl,
-	action,
-	callbacks,
-	options,
+  originalUrl,
+  action,
+  callbacks,
+  options,
 }: {
-	originalUrl: URL;
-	action: Action;
-	callbacks: Partial<ActionCallbacksConfig>;
-	options: NormalizedObserverOptions;
-	isInterstitial: boolean;
+  originalUrl: URL;
+  action: Action;
+  callbacks: Partial<ActionCallbacksConfig>;
+  options: NormalizedObserverOptions;
+  isInterstitial: boolean;
 }) {
-	const container = document.createElement('div');
-	container.className = 'dialect-action-root-container';
+  const container = document.createElement('div');
+  container.className = 'dialect-action-root-container';
 
-	const actionRoot = createRoot(container);
+  const actionRoot = createRoot(container);
 
-	actionRoot.render(
-		<div onClick={(e) => e.stopPropagation()}>
-            <ActionContainer
-                stylePreset={resolveXStylePreset()}
-                action={action}
-                websiteUrl={originalUrl.toString()}
-                websiteText={originalUrl.hostname}
-                callbacks={callbacks}
-                securityLevel={options.securityLevel}
-            />		
-		</div>,
-	);
+  actionRoot.render(
+    <div onClick={(e) => e.stopPropagation()}>
+      <ActionContainer
+        stylePreset={resolveXStylePreset()}
+        action={action}
+        websiteUrl={originalUrl.toString()}
+        websiteText={originalUrl.hostname}
+        callbacks={callbacks}
+        securityLevel={options.securityLevel}
+      />
+    </div>,
+  );
 
-	return container;
+  return container;
 }
 
 function createFarcasterFrame({
-	chain,
-	scriptURI,
+  chain,
+  scriptURI,
 }: {
-	chain: number;
-	scriptURI: string;
+  chain: number;
+  scriptURI: string;
 }) {
 
-	const container = document.createElement('div');
-	container.className = 'dialect-action-root-container';
-	const actionRoot = createRoot(container);
-	const queryClient = new QueryClient();
+  const container = document.createElement('div');
+  container.className = 'dialect-action-root-container';
+  const actionRoot = createRoot(container);
+  const queryClient = new QueryClient();
 
-	actionRoot.render(
-		<div onClick={(e) => e.stopPropagation()}>
-            <WagmiProvider config={wagmiProviderConfig}>
-                <QueryClientProvider client={queryClient}>
-                    <NeynarContextProvider
-                        settings={{
-                            clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
-                            defaultTheme: Theme.Light,
-                            eventsCallbacks: {
-                                onAuthSuccess: () => { },
-                                onSignout() { },
-                            },
-                        }}
-                    >
-                        <FarcasterContainer chain={chain} scriptURI={scriptURI} />
-                    </NeynarContextProvider>
-                </QueryClientProvider>
-            </WagmiProvider>
-		</div>,
-	);
+  actionRoot.render(
+    <div onClick={(e) => e.stopPropagation()}>
+      <WagmiProvider config={wagmiProviderConfig}>
+        <QueryClientProvider client={queryClient}>
+          <NeynarContextProvider
+            settings={{
+              clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
+              defaultTheme: Theme.Light,
+              eventsCallbacks: {
+                onAuthSuccess: () => { },
+                onSignout() { },
+              },
+            }}
+          >
+            <FarcasterContainer chain={chain} scriptURI={scriptURI} />
+          </NeynarContextProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </div>,
+  );
 
-	return container;
+  return container;
 }
 
 const resolveXStylePreset = (): StylePreset => {
-	const colorScheme = document.querySelector('html')?.style.colorScheme;
+  const colorScheme = document.querySelector('html')?.style.colorScheme;
 
-	if (colorScheme) {
-		return colorScheme === 'dark' ? 'x-dark' : 'x-light';
-	}
+  if (colorScheme) {
+    return colorScheme === 'dark' ? 'x-dark' : 'x-light';
+  }
 
-	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-	return prefersDark ? 'x-dark' : 'x-light';
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? 'x-dark' : 'x-light';
 };
 
 async function resolveTwitterShortenedUrl(shortenedUrl: string): Promise<URL> {
-	const res = await fetch(shortenedUrl);
-	const html = await res.text();
-	const parser = new DOMParser();
-	const doc = parser.parseFromString(html, 'text/html');
-	const actionUrl = doc.querySelector('title')?.textContent;
-	return new URL(actionUrl!);
+  const res = await fetch(shortenedUrl);
+  const html = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const actionUrl = doc.querySelector('title')?.textContent;
+  return new URL(actionUrl!);
 }
 
 function findElementByTestId(element: Element, testId: string) {
-	if (element.attributes.getNamedItem('data-testid')?.value === testId) {
-		return element;
-	}
-	return element.querySelector(`[data-testid="${testId}"]`);
+  if (element.attributes.getNamedItem('data-testid')?.value === testId) {
+    return element;
+  }
+  return element.querySelector(`[data-testid="${testId}"]`);
 }
 
 function findContainerInTweet(element: Element, searchUp?: boolean) {
-	const message = searchUp
-		? (element.closest(`[data-testid="tweet"]`) ??
-			element.closest(`[data-testid="messageEntry"]`))
-		: (findElementByTestId(element, 'tweet') ??
-			findElementByTestId(element, 'messageEntry'));
+  const message = searchUp
+    ? (element.closest(`[data-testid="tweet"]`) ??
+      element.closest(`[data-testid="messageEntry"]`))
+    : (findElementByTestId(element, 'tweet') ??
+      findElementByTestId(element, 'messageEntry'));
 
-	if (message) {
-		return message.querySelector('.dialect-wrapper') as HTMLElement;
-	}
-	return null;
+  if (message) {
+    return message.querySelector('.dialect-wrapper') as HTMLElement;
+  }
+  return null;
 }
 
 function findLinkPreview(element: Element) {
-	const card = findElementByTestId(element, 'card.wrapper');
-	if (!card) {
-		return null;
-	}
+  const card = findElementByTestId(element, 'card.wrapper');
+  if (!card) {
+    return null;
+  }
 
-	const anchor = card.children[0]?.children[0] as HTMLAnchorElement;
+  const anchor = card.children[0]?.children[0] as HTMLAnchorElement;
 
-	return anchor ? { anchor, card } : null;
+  return anchor ? { anchor, card } : null;
 }
 
 function findLastLinkInText(element: Element) {
-	const tweetText = findElementByTestId(element, 'tweetText');
-	if (!tweetText) {
-		return null;
-	}
+  const tweetText = findElementByTestId(element, 'tweetText');
+  if (!tweetText) {
+    return null;
+  }
 
-	const links = tweetText.getElementsByTagName('a');
-	if (links.length > 0) {
-		const anchor = links[links.length - 1] as HTMLAnchorElement;
-		return { anchor, tweetText };
-	}
-	return null;
+  const links = tweetText.getElementsByTagName('a');
+  if (links.length > 0) {
+    const anchor = links[links.length - 1] as HTMLAnchorElement;
+    return { anchor, tweetText };
+  }
+  return null;
 }
 
 function getContainerForLink(tweetText: Element) {
-	const root = document.createElement('div');
-	root.className = 'dialect-wrapper';
-	const dm = tweetText.closest(`[data-testid="messageEntry"]`);
-	if (dm) {
-		root.classList.add('dialect-dm');
-		tweetText.parentElement?.parentElement?.prepend(root);
-	} else {
-		tweetText.parentElement?.append(root);
-	}
-	return root;
+  const root = document.createElement('div');
+  root.className = 'dialect-wrapper';
+  const dm = tweetText.closest(`[data-testid="messageEntry"]`);
+  if (dm) {
+    root.classList.add('dialect-dm');
+    tweetText.parentElement?.parentElement?.prepend(root);
+  } else {
+    tweetText.parentElement?.append(root);
+  }
+  return root;
 }
 
 function addMargin(element: HTMLElement) {
-	if (element && element.classList.contains('dialect-wrapper')) {
-		element.style.marginTop = '12px';
-		if (element.classList.contains('dialect-dm')) {
-			element.style.marginBottom = '8px';
-		}
-	}
-	return element;
+  if (element && element.classList.contains('dialect-wrapper')) {
+    element.style.marginTop = '12px';
+    if (element.classList.contains('dialect-dm')) {
+      element.style.marginBottom = '8px';
+    }
+  }
+  return element;
 }

@@ -7,51 +7,51 @@ globalThis.Buffer = Buffer;
 
 
 export const FarcasterContainer = ({
-    chain,
-    scriptURI,
+  chain,
+  scriptURI,
 }: FarcasterContainerProps) => {
 
-    const { user } = useNeynarContext();
-    const [farcaster, setFarcaster] = useState<FarcasterUser | null>(null);
+  const { user } = useNeynarContext();
+  const [farcaster, setFarcaster] = useState<FarcasterUser | null>(null);
 
-    useEffect(() => {
-        const setupFarcasterUser = async () => {
-            if (user) {
-                const address = await chrome.runtime.sendMessage({ type: "getConnectedAccount" });
-                setFarcaster({
-                    fid: user.fid,
-                    signerUUID: user.signer_uuid,
-                    username: user.username,
-                    displayName: user.display_name ?? "",
-                    verifiedAddresses: {
-                        ethAddresses: user.verified_addresses.eth_addresses ?? [],
-                        solAddresses: user.verified_addresses.sol_addresses ?? [],
-                    },
-                    currentAddress: address
-                });
-            }
-        };
+  useEffect(() => {
+    const setupFarcasterUser = async () => {
+      if (user) {
+        const address = await chrome.runtime.sendMessage({ type: "getConnectedAccount" });
+        setFarcaster({
+          fid: user.fid,
+          signerUUID: user.signer_uuid,
+          username: user.username,
+          displayName: user.display_name ?? "",
+          verifiedAddresses: {
+            ethAddresses: user.verified_addresses.eth_addresses ?? [],
+            solAddresses: user.verified_addresses.sol_addresses ?? [],
+          },
+          currentAddress: address
+        });
+      }
+    };
 
-        setupFarcasterUser();
-    }, [user]);
+    setupFarcasterUser();
+  }, [user]);
 
-    return (
-        <div className="tlink x-dark">
-            <div className=" w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action p-5">
-                <div className="mb-4 neynar-button-container relative flex justify-end">
-                    <NeynarAuthButton
-                        variant={SIWN_variant.FARCASTER}
-                        className="flex items-center p-2"
-                    />
-                </div>
-                {user && farcaster && (
-                    <FarcasterFrame
-                        farcaster={farcaster}
-                        chainId={chain}
-                        scriptURI={scriptURI}
-                    />
-                )}
-            </div>
+  return (
+    <div className="tlink x-dark">
+      <div className=" w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action p-5">
+        <div className="mb-4 neynar-button-container relative flex justify-end">
+          <NeynarAuthButton
+            variant={SIWN_variant.FARCASTER}
+            className="flex items-center p-2"
+          />
         </div>
-    );
+        {user && farcaster && (
+          <FarcasterFrame
+            farcaster={farcaster}
+            chainId={chain}
+            scriptURI={scriptURI}
+          />
+        )}
+      </div>
+    </div>
+  );
 };
