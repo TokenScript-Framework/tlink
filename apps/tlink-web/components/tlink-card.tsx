@@ -58,8 +58,12 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
       },
       interceptHandlePost: (href) => {
         if (isTokenScriptViewerUrl(href)) {
-          setDAppUrl(href)
-          iframePopupRef.current?.setOpen(true)
+          if (!address) {
+            openConnectModal?.()
+          } else {
+            setDAppUrl(href)
+            iframePopupRef.current?.setOpen(true)
+          }
           return true
         } else {
           return false
