@@ -8,6 +8,7 @@ import type {
   TypedActionParameter,
 } from '../../actions-spec.ts';
 import { Action } from '../Action.ts';
+import type {TokenscriptCardMetadata} from "../../../utils/fetch-ts-data.ts";
 
 export abstract class AbstractActionComponent {
   protected constructor(
@@ -15,6 +16,7 @@ export abstract class AbstractActionComponent {
     protected _label: string,
     protected _href: string,
     protected _parameters?: TypedActionParameter[],
+    protected _tsMetadata?: TokenscriptCardMetadata
   ) {}
 
   public get parent() {
@@ -23,6 +25,10 @@ export abstract class AbstractActionComponent {
 
   public get label() {
     return this._label;
+  }
+
+  public get tsMetadata(){
+    return this._tsMetadata;
   }
 
   public get parameters() {

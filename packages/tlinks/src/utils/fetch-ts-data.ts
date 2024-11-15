@@ -33,9 +33,14 @@ type FetchTsDataOutput = {
     actions: Array<{
       name: string;
       label: string;
+      fullScreen: boolean;
     }>;
   };
 };
+
+export interface TokenscriptCardMetadata {
+  fullScreen: boolean
+}
 
 export async function fetchTsData(
   input: FetchTsDataInput,
@@ -87,8 +92,11 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     title: tsMetadata?.name,
     description: tsMetadata.meta.description || '',
     links: {
-      actions: (tsMetadata.actions || []).map(({ name, label }) => ({
+      actions: (tsMetadata.actions || []).map(({ name, label, fullScreen }) => ({
         label: label,
+        tsMetadata: {
+          fullScreen
+        },
         href: buildTsIframeUrl({
           chainId: input.chainId.toString(),
           contract: input.contract,

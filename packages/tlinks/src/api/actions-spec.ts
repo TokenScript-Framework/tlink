@@ -66,6 +66,9 @@ export interface LinkedAction {
   href: string;
   /** button text rendered to the user */
   label: string;
+  tsMetadata?: {
+    fullScreen: boolean
+  }
   /**
    * Parameters used to accept user input within an action
    * @see {ActionParameter}

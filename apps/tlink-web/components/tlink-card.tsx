@@ -14,12 +14,15 @@ import {
 import { Twitter } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
+import {AbstractActionComponent} from "@repo/tlinks/src";
+import {TokenscriptCardMetadata} from "@repo/tlinks/src/utils/fetch-ts-data";
 
 export const TlinkCard = (props: { url: string; twitter?: string }) => {
   const { openConnectModal } = useConnectModal()
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
   const [dAppUrl, setDAppUrl] = useState('')
+  const [tsMetadata, setTsMetadata] = useState<TokenscriptCardMetadata|undefined>(undefined)
   const { handleRpcMessage } = useRpcMessage()
   const iframePopupRef = useRef<IframePopupRef>(null)
 
@@ -56,12 +59,13 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
       getConnectedAccount: () => {
         return Promise.resolve(address || null)
       },
-      interceptHandlePost: (href) => {
-        if (isTokenScriptViewerUrl(href)) {
+      interceptHandlePost: (component: AbstractActionComponent) => {
+        if (isTokenScriptViewerUrl(component.href)) {
           if (!address) {
             openConnectModal?.()
           } else {
-            setDAppUrl(href)
+            setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
+            setDAppUrl(component.href)
             iframePopupRef.current?.setOpen(true)
           }
           return true
@@ -81,7 +85,7 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
         websiteUrl={props.url}
         websiteText={props.url}
       />
-      <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} />
+      <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} tsMetadata={tsMetadata} />
       {props.twitter && (
         <a
           href={props.twitter}
