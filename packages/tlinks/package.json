@@ -48,7 +48,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@token-kit/onchain": "^0.0.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
@@ -78,9 +77,6 @@
     "@neynar/react": "^0.9.6",
     "@repo/actions": "workspace:*",
     "clsx": "^2.1.1",
-    "viem": "^2.21.6",
-    "wagmi": "^2.12.9",
-    "@rainbow-me/rainbowkit": "^2.1.6",
-    "@tanstack/react-query": "^5.50.1"
+    "viem": "^2.21.6"
   }
 }

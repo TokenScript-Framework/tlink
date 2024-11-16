@@ -5,10 +5,10 @@ import { Buffer } from 'buffer';
 import type { FarcasterContainerProps, FarcasterUser } from "../utils/constants.ts";
 globalThis.Buffer = Buffer;
 
-
 export const FarcasterContainer = ({
   chain,
   scriptURI,
+  adapter
 }: FarcasterContainerProps) => {
 
   const { user } = useNeynarContext();
@@ -17,7 +17,7 @@ export const FarcasterContainer = ({
   useEffect(() => {
     const setupFarcasterUser = async () => {
       if (user) {
-        const address = await chrome.runtime.sendMessage({ type: "getConnectedAccount" });
+        const address = await adapter.getConnectedAccount();
         setFarcaster({
           fid: user.fid,
           signerUUID: user.signer_uuid,
@@ -27,13 +27,13 @@ export const FarcasterContainer = ({
             ethAddresses: user.verified_addresses.eth_addresses ?? [],
             solAddresses: user.verified_addresses.sol_addresses ?? [],
           },
-          currentAddress: address
+          currentAddress: address || ''
         });
       }
     };
 
     setupFarcasterUser();
-  }, [user]);
+  }, [adapter, user]);
 
   return (
     <div className="tlink x-dark">
@@ -49,6 +49,7 @@ export const FarcasterContainer = ({
             farcaster={farcaster}
             chainId={chain}
             scriptURI={scriptURI}
+            adapter={adapter}
           />
         )}
       </div>

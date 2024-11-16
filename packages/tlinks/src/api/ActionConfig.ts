@@ -34,7 +34,7 @@ export interface ActionAdapter {
   getConnectedAccount: () => Promise<string | null>;
   signTransaction: (
     payload: TransactionPayload,
-    context: ActionContext,
+    context?: ActionContext,
   ) => Promise<
     | { signature: string }
     | { error: string | { code: number; message: string } }
@@ -54,7 +54,7 @@ export class ActionConfig implements ActionAdapter {
     return this.adapter.metadata ?? ActionConfig.DEFAULT_METADATA;
   }
 
-  signTransaction(payload: TransactionPayload, context: ActionContext) {
+  signTransaction(payload: TransactionPayload, context?: ActionContext) {
     return this.adapter.signTransaction(payload, context);
   }
 

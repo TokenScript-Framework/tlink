@@ -4,9 +4,6 @@ import {
   useMemo,
   useCallback,
 } from "react";
-import {
-  http,
-} from "wagmi";
 import { useFarcasterIdentity } from "@frames.js/render/identity/farcaster";
 import { useFrame } from "@frames.js/render/use-frame";
 import {
@@ -20,14 +17,16 @@ import {
 } from "@frames.js/render/ui";
 import { WebStorage } from "@frames.js/render/identity/storage";
 import { useNeynarContext } from "@neynar/react";
-import { tokenType } from "@token-kit/onchain";
-import { createPublicClient, type PublicClient } from "viem";
-import { getBlockExplorerUrl, getRPCURL, theme, type FarcasterUser, type StylingProps } from "../utils/constants.ts";
+import { getBlockExplorerUrl, theme, type FarcasterUser, type StylingProps } from "../utils/constants.ts";
+import type { ActionAdapter } from "../api/ActionConfig.ts";
+import { fetchScriptURI } from "../utils/fetch-ts-data.ts";
+
 interface FarcasterFrameProps {
   chainId: number;
   scriptURI?: string;
   cssClass?: string;
   farcaster: FarcasterUser
+  adapter: ActionAdapter
 }
 
 const VIEWER_PATTERNS = [
@@ -39,34 +38,50 @@ const VIEWER_PATTERNS = [
 ];
 
 export async function isViewer(
-  chainId: number,
-  contract: `0x${string}`,
+  actionUrl: URL,
 ) {
-  const client = createPublicClient({
-    transport: http(getRPCURL(chainId)),
-  });
-  const result = await tokenType(contract, client as PublicClient);
-  if (!result.scriptURI || result.scriptURI.length === 0) {
-    return { isTSViewer: false, scriptURI: '' };
+  const params = new URLSearchParams(actionUrl.search);
+  const chainId = params.get('chain');
+  const contract = params.get('contract') as `0x${string}`;
+  
+  if (!chainId || !contract) {
+    throw new Error('invalid tokenscript link');
   }
+  
+  try {
 
-  const scriptURI = result.scriptURI[0];
-  const isViewerResult = VIEWER_PATTERNS.some((pattern) =>
-    pattern === "viewer"
-      ? new URL(scriptURI).hostname.startsWith(pattern)
-      : scriptURI.toString().toLowerCase().startsWith(pattern),
-  );
+    const scriptURI = await fetchScriptURI({
+      chainId: Number(chainId),
+      contract,
+    });
 
-  return {
-    isTSViewer: isViewerResult,
-    scriptURI: scriptURI
-  };
+    const isViewerResult = VIEWER_PATTERNS.some((pattern) =>
+      pattern === "viewer"
+        ? new URL(scriptURI).hostname.startsWith(pattern)
+        : scriptURI.toString().toLowerCase().startsWith(pattern)
+    ) || scriptURI.toString().toLowerCase().endsWith('.tsml');
+
+
+    return {
+      isTSViewer: isViewerResult,
+      scriptURI: scriptURI,
+      chain: chainId
+    };
+  } catch (error) {
+    console.error('Error fetching scriptURI:', error);
+    return {
+      isTSViewer: true,
+      scriptURI: '',
+      chain: chainId
+    };
+  }
 }
 
 export function FarcasterFrame({
   farcaster,
   chainId,
   scriptURI,
+  adapter
 }: FarcasterFrameProps) {
 
   const components: FrameUIComponents<StylingProps> = {};
@@ -116,33 +131,35 @@ export function FarcasterFrame({
 
           const { params } = arg.transactionData;
 
-          const resp = await chrome.runtime.sendMessage({
-            type: "rpc",
-            data: {
-              method: "eth_sendTransaction",
-              params: [
-                {
-                  from: farcaster.currentAddress,
-                  to: params.to as `0x${string}`,
-                  data: params.data as `0x${string}`,
-                  gas: params.gas ? `0x${Number(params.gas).toString(16)}` : "0x5b8d80", //6000000
-                  value: params.value ? `0x${Number(params.value).toString(16)}` : "0x0"
-                },
-              ]
+          const payload = {
+            txData: {
+              from: farcaster.currentAddress,
+              to: params.to as `0x${string}`,
+              gas: params.gas ? `0x${Number(params.gas).toString(16)}` : "0x5b8d80", //6000000
+              value: params.value ? `0x${Number(params.value).toString(16)}` : "0x0",
+              data: params.data as `0x${string}`,
             },
-            payload: { chainId: `0x${chainId.toString(16)}` }
-          })
-
-          if (resp.error) {
-            throw Error(resp.error)
+            chainId: `0x${Number(chainId).toString(16)}`
           }
 
-          setTxHash(resp);
-          return resp;
+          const resp = await adapter.signTransaction(payload)
+
+          if ('error' in resp && resp.error) {
+            throw Error(typeof resp.error === 'string' ? resp.error : resp.error.message);
+          }
+
+          if (!('result' in resp)) {
+            throw Error('No transaction hash');
+          };
+
+          const hash = resp.result as `0x${string}`;
+          setTxHash(hash);;
+          return hash
+
         } catch (error: unknown) {
           console.log(error)
           if (error instanceof Error) {
-            if (error.message.includes("rejected")) {
+            if (error.message.includes("rejected") || error.message.includes("denied")) {
               setError("User rejected the transaction.");
             } else {
               setError(error.message);
@@ -154,7 +171,7 @@ export function FarcasterFrame({
         }
       },
     }),
-    [scriptURI, signerState, farcaster.currentAddress, chainId],
+    [scriptURI, signerState, farcaster.currentAddress, chainId, adapter],
   );
 
   const frameState = useFrame(frameConfig);

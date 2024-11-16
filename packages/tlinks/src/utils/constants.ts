@@ -1,5 +1,4 @@
 import type { FrameUITheme } from '@frames.js/render/ui';
-import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import {
   arbitrum,
   arbitrumGoerli,
@@ -15,21 +14,14 @@ import {
   polygonMumbai,
   sepolia,
 } from 'viem/chains';
+import { AbstractActionComponent, Action, type ActionAdapter, type ActionPostRequest, type TypedActionParameter } from '../api';
 
-export const noop = () => {};
+export const noop = () => { };
 
 export type StylingProps = {
   className?: string;
   style?: React.CSSProperties;
 };
-
-export const wagmiProviderConfig: ReturnType<typeof getDefaultConfig> =
-  getDefaultConfig({
-    appName: 'Tlink',
-    projectId: 'da8933d8-14f9-4c77-a5bc-dec0a855f034',
-    chains: [mainnet, polygon, optimism, arbitrum, base, sepolia, baseSepolia],
-    ssr: true,
-  });
 
 export const theme: FrameUITheme<StylingProps> = {
   Root: {
@@ -78,13 +70,6 @@ export function getBlockExplorerUrl(chainId: number): string {
   return chain?.blockExplorers?.default?.url || 'https://etherscan.io';
 }
 
-export function getRPCURL(chainId: number): string {
-  const chain = getChainById(chainId);
-  return (
-    (chain?.rpcUrls.default.http[0] as string) || 'https://cloudflare-eth.com'
-  );
-}
-
 export interface FarcasterUser {
   fid: number;
   signerUUID: string;
@@ -100,4 +85,35 @@ export interface FarcasterUser {
 export type FarcasterContainerProps = {
   chain: number;
   scriptURI: string;
+  adapter: ActionAdapter
 };
+
+export const SCRIPT_URI_ABI = [{
+  inputs: [],
+  name: "scriptURI",
+  outputs: [
+    {
+      internalType: "string[]",
+      name: "",
+      type: "string[]",
+    },
+  ],
+  stateMutability: "view",
+  type: "function",
+}] 
+
+export class SimpleActionComponent extends AbstractActionComponent {
+    constructor(parent: Action, label: string, href: string, parameters?: TypedActionParameter[]) {
+      super(parent, label, href, parameters);
+    }
+  
+    public get href(): string {
+      return this._href;
+    }
+  
+    protected buildBody(account: string): ActionPostRequest {
+      return {
+        account,
+      };
+    }
+  }

@@ -12,7 +12,7 @@ import {
 } from '../api/index.ts';
 import { checkSecurity, type SecurityLevel } from '../shared/index.ts';
 import { ActionContainer, type StylePreset } from '../ui/index.ts';
-import { noop, wagmiProviderConfig } from '../utils/constants.ts';
+import { noop } from '../utils/constants.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
 import { isFarcasterFrameUrl } from "../utils/is-farcaster-frame-url.ts";
@@ -24,8 +24,6 @@ import {
 import { FarcasterContainer } from '../ui/FarcasterContainer.tsx';
 import { isViewer } from '../ui/FarcasterFrame.tsx';
 import { NeynarContextProvider, Theme } from '@neynar/react';
-import { WagmiProvider } from 'wagmi';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 type ObserverSecurityLevel = SecurityLevel;
 
@@ -165,7 +163,7 @@ async function handleNewNode(
   } else if (isFarcasterFrameUrl(actionUrl)) {
     const chain = Number(actionUrl.searchParams.get('chain')) || 0;
     addMargin(container).replaceChildren(
-      await createFarcasterFrame({ chain, scriptURI: actionUrl.href })
+      await createFarcasterFrame({ chain, scriptURI: actionUrl.href, adapter: config })
     );
     return
   } else if (interstitialData.isInterstitial) {
@@ -221,9 +219,7 @@ async function handleNewNode(
     );
     return;
   }
-  const chain = Number(actionUrl.searchParams.get('chain')) || 0;
-  const contract = actionUrl.searchParams.get('contract') || '';
-  const { isTSViewer, scriptURI } = await isViewer(chain, contract as `0x${string}`);
+  const { isTSViewer, scriptURI, chain } = await isViewer(actionUrl);
 
   let actionElement
 
@@ -246,7 +242,7 @@ async function handleNewNode(
       isInterstitial: interstitialData.isInterstitial,
     })
   } else {
-    actionElement = await createFarcasterFrame({ chain, scriptURI });
+    actionElement = await createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
   }
 
   addMargin(container).replaceChildren(
@@ -309,34 +305,30 @@ function createAction({
 function createFarcasterFrame({
   chain,
   scriptURI,
+  adapter
 }: {
   chain: number;
   scriptURI: string;
+  adapter: ActionAdapter
 }) {
 
   const container = document.createElement('div');
   container.className = 'dialect-action-root-container';
   const actionRoot = createRoot(container);
-  const queryClient = new QueryClient();
-
   actionRoot.render(
     <div onClick={(e) => e.stopPropagation()}>
-      <WagmiProvider config={wagmiProviderConfig}>
-        <QueryClientProvider client={queryClient}>
-          <NeynarContextProvider
-            settings={{
-              clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
-              defaultTheme: Theme.Light,
-              eventsCallbacks: {
-                onAuthSuccess: () => { },
-                onSignout() { },
-              },
-            }}
-          >
-            <FarcasterContainer chain={chain} scriptURI={scriptURI} />
-          </NeynarContextProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+      <NeynarContextProvider
+        settings={{
+          clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
+          defaultTheme: Theme.Light,
+          eventsCallbacks: {
+            onAuthSuccess: () => { },
+            onSignout() { },
+          },
+        }}
+      >
+        <FarcasterContainer chain={chain} scriptURI={scriptURI} adapter={adapter} />
+      </NeynarContextProvider>
     </div>,
   );
 
