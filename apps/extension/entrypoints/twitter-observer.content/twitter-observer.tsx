@@ -3,8 +3,7 @@ import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import "@repo/tlinks/index.css"
 import { useEffect, useState } from "react"
 import "~/assets/style.css"
-import {TokenscriptCardMetadata} from "@repo/tlinks/dist/utils/index";
-import {AbstractActionComponent} from "@repo/tlinks/dist";
+import {AbstractActionComponent, TokenscriptCardMetadata} from "@repo/tlinks";
 
 export const TwitterObserver = () => {
   const [dAppUrl, setDAppUrl] = useState("")
