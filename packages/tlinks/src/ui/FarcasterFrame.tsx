@@ -40,15 +40,16 @@ const VIEWER_PATTERNS = [
 export async function isViewer(
   actionUrl: URL,
 ) {
+
   const params = new URLSearchParams(actionUrl.search);
   const chainId = params.get('chain');
   const contract = params.get('contract') as `0x${string}`;
-  
+
+  try {
   if (!chainId || !contract) {
     throw new Error('invalid tokenscript link');
   }
   
-  try {
 
     const scriptURI = await fetchScriptURI({
       chainId: Number(chainId),
