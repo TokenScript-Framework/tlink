@@ -5,7 +5,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import '@repo/tlinks/index.css'
 import { CircleX, SquareArrowUpRight } from 'lucide-react'
 import { forwardRef, useImperativeHandle, useState } from 'react'
-import {TokenscriptCardMetadata} from "@repo/tlinks/src/utils/fetch-ts-data";
+import {TokenscriptCardMetadata} from "@repo/tlinks/dist/utils/index";
 
 export interface IframePopupRef {
   setOpen: (open: boolean) => void
