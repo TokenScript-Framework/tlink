@@ -23,7 +23,7 @@ export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string, tsMetad
       <Dialog open={open && !!props.dAppUrl} onOpenChange={setOpen}>
         <VisuallyHidden>
           <DialogContent
-            className={(props.tsMetadata?.fullScreen ? "max-w-[90%] h-[90%]" : "max-w-[460px] h-[800px]") + " p-0 no-scrollbar rounded-lg max-h-[90%]"}
+            className={(props.tsMetadata?.fullScreen ? "h-[85%] w-[95%] max-w-[95%]" : "max-w-xl h-[800px]") + " p-0 no-scrollbar rounded-lg max-h-[90%]"}
             aria-description="iframe"
           >
             <DialogTitle className="hidden">iframe</DialogTitle>

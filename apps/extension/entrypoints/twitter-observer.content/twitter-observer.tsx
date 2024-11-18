@@ -40,5 +40,5 @@ export const TwitterObserver = () => {
     initTwitterObserver()
   }, [])
 
-  return <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} />
+  return <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} tsMetadata={tsMetadata} />
 }
