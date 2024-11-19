@@ -14,8 +14,7 @@ import {
 import { Twitter } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
-import {AbstractActionComponent} from "@repo/tlinks/src";
-import {TokenscriptCardMetadata} from "@repo/tlinks/src/utils/fetch-ts-data";
+import {AbstractActionComponent, TokenscriptCardMetadata} from "@repo/tlinks";
 
 export const TlinkCard = (props: { url: string; twitter?: string }) => {
   const { openConnectModal } = useConnectModal()
