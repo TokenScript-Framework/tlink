@@ -236,7 +236,7 @@ async function handleNewNode(
       return;
     }
 
-    actionElement = await createAction({
+    actionElement = createAction({
       originalUrl: actionUrl,
       action,
       callbacks,

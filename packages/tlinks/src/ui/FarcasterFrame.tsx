@@ -47,7 +47,11 @@ export async function isFarcasterFrame(
 
   try {
     if (!chainId || !contract) {
-      throw new Error('invalid tokenscript link');
+      return {
+        isFrame: false,
+        scriptURI: '',
+        chain: 0
+      };
     }
 
     const scriptURI = await fetchScriptURI({
@@ -129,12 +133,12 @@ export function FarcasterFrame({
           }
 
           const { params } = arg.transactionData;
-
+          
           const payload = {
             txData: {
               from: farcaster.currentAddress,
               to: params.to as `0x${string}`,
-              gas: params.gas ? `0x${Number(params.gas).toString(16)}` : "0x5b8d80", //6000000
+              gas: "0x5b8d80", //6000000
               value: params.value ? `0x${Number(params.value).toString(16)}` : "0x0",
               data: params.data as `0x${string}`,
             },
