@@ -22,7 +22,7 @@ import {
   ActionsURLMapper,
 } from '../utils/url-mapper.ts';
 import { FarcasterContainer } from '../ui/FarcasterContainer.tsx';
-import { isViewer } from '../ui/FarcasterFrame.tsx';
+import { isFarcasterFrame } from '../ui/FarcasterFrame.tsx';
 import { NeynarContextProvider, Theme } from '@neynar/react';
 
 type ObserverSecurityLevel = SecurityLevel;
@@ -219,11 +219,13 @@ async function handleNewNode(
     );
     return;
   }
-  const { isTSViewer, scriptURI, chain } = await isViewer(actionUrl);
+  const { isFrame, scriptURI, chain } = await isFarcasterFrame(actionUrl);
 
   let actionElement
 
-  if (isTSViewer) {
+  if (isFrame) {
+    actionElement = await createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
+  } else {
     const action = await Action.fetch(
       actionApiUrlWithAccount.toString(),
       config,
@@ -241,8 +243,6 @@ async function handleNewNode(
       options,
       isInterstitial: interstitialData.isInterstitial,
     })
-  } else {
-    actionElement = await createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
   }
 
   addMargin(container).replaceChildren(

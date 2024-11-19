@@ -37,7 +37,7 @@ const VIEWER_PATTERNS = [
   "ipfs://",
 ];
 
-export async function isViewer(
+export async function isFarcasterFrame(
   actionUrl: URL,
 ) {
 
@@ -46,10 +46,9 @@ export async function isViewer(
   const contract = params.get('contract') as `0x${string}`;
 
   try {
-  if (!chainId || !contract) {
-    throw new Error('invalid tokenscript link');
-  }
-  
+    if (!chainId || !contract) {
+      throw new Error('invalid tokenscript link');
+    }
 
     const scriptURI = await fetchScriptURI({
       chainId: Number(chainId),
@@ -62,16 +61,15 @@ export async function isViewer(
         : scriptURI.toString().toLowerCase().startsWith(pattern)
     ) || scriptURI.toString().toLowerCase().endsWith('.tsml');
 
-
     return {
-      isTSViewer: isViewerResult,
+      isFrame: !isViewerResult,
       scriptURI: scriptURI,
       chain: chainId
     };
   } catch (error) {
     console.error('Error fetching scriptURI:', error);
     return {
-      isTSViewer: true,
+      isFrame: false,
       scriptURI: '',
       chain: chainId
     };
