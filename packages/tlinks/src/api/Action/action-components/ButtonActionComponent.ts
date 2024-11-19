@@ -4,6 +4,7 @@ import type {
 } from '../../actions-spec.ts';
 import { Action } from '../Action.ts';
 import { AbstractActionComponent } from './AbstractActionComponent.ts';
+import type {TokenscriptCardMetadata} from "../../../utils/fetch-ts-data.ts";
 
 export class ButtonActionComponent extends AbstractActionComponent {
   constructor(
@@ -12,8 +13,9 @@ export class ButtonActionComponent extends AbstractActionComponent {
     protected _href: string,
     protected _parameters?: TypedActionParameter[],
     protected _parentComponent?: AbstractActionComponent,
+    protected _tsMetadata?: TokenscriptCardMetadata
   ) {
-    super(_parent, _label, _href, _parameters);
+    super(_parent, _label, _href, _parameters, _tsMetadata);
   }
 
   get parentComponent() {

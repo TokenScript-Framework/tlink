@@ -24,6 +24,7 @@ import {
   BASELINE_ACTION_VERSION,
   defaultActionSupportStrategy,
 } from './action-supportability.ts';
+import type {TokenscriptCardMetadata} from "../../utils/fetch-ts-data.ts";
 
 const MULTI_VALUE_TYPES: ActionParameterType[] = ['checkbox'];
 
@@ -63,7 +64,7 @@ export class Action {
         ? action.href
         : urlObj.origin + action.href;
 
-      return componentFactory(this, action.label, href, action.parameters);
+      return componentFactory(this, action.label, href, action.parameters, action.tsMetadata);
     });
   }
 
@@ -280,9 +281,10 @@ const componentFactory = (
   label: string,
   href: string,
   parameters?: TypedActionParameter[],
+  tsMetadata?: TokenscriptCardMetadata
 ): AbstractActionComponent => {
   if (!parameters?.length) {
-    return new ButtonActionComponent(parent, label, href);
+    return new ButtonActionComponent(parent, label, href, undefined, undefined, tsMetadata);
   }
 
   if (parameters.length > 1) {

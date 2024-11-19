@@ -5,12 +5,13 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import '@repo/tlinks/index.css'
 import { CircleX, SquareArrowUpRight } from 'lucide-react'
 import { forwardRef, useImperativeHandle, useState } from 'react'
+import {TokenscriptCardMetadata} from "@repo/tlinks";
 
 export interface IframePopupRef {
   setOpen: (open: boolean) => void
 }
 
-export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string }>(
+export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string, tsMetadata?: TokenscriptCardMetadata }>(
   (props, ref) => {
     const [open, setOpen] = useState(false)
 
@@ -22,7 +23,7 @@ export const IframePopup = forwardRef<IframePopupRef, { dAppUrl: string }>(
       <Dialog open={open && !!props.dAppUrl} onOpenChange={setOpen}>
         <VisuallyHidden>
           <DialogContent
-            className="max-w-[460px] h-[800px] p-0 no-scrollbar rounded-lg max-h-[90%]"
+            className={(props.tsMetadata?.fullScreen ? "h-[85%] w-[95%] max-w-[95%]" : "max-w-xl h-[800px]") + " p-0 no-scrollbar rounded-lg max-h-[90%]"}
             aria-description="iframe"
           >
             <DialogTitle className="hidden">iframe</DialogTitle>

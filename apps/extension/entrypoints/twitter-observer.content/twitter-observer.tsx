@@ -3,9 +3,11 @@ import { setupTwitterObserver } from "@repo/tlinks/ext/twitter"
 import "@repo/tlinks/index.css"
 import { useEffect, useState } from "react"
 import "~/assets/style.css"
+import {AbstractActionComponent, TokenscriptCardMetadata} from "@repo/tlinks";
 
 export const TwitterObserver = () => {
   const [dAppUrl, setDAppUrl] = useState("")
+  const [tsMetadata, setTsMetadata] = useState<TokenscriptCardMetadata|undefined>(undefined)
   const iframePopupRef = useRef<IframePopupRef>(null)
 
   useEffect(() => {
@@ -16,9 +18,10 @@ export const TwitterObserver = () => {
         connect: () => chrome.runtime.sendMessage({ type: "connect" }),
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
-        interceptHandlePost: (href) => {
-          if (isTokenScriptViewerUrl(href)) {
-            setDAppUrl(href)
+        interceptHandlePost: (component: AbstractActionComponent) => {
+          if (isTokenScriptViewerUrl(component.href)) {
+            setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
+            setDAppUrl(component.href)
             iframePopupRef.current?.setOpen(true)
             return true
           } else {
@@ -36,5 +39,5 @@ export const TwitterObserver = () => {
     initTwitterObserver()
   }, [])
 
-  return <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} />
+  return <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} tsMetadata={tsMetadata} />
 }

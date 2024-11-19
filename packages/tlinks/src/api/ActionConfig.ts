@@ -39,7 +39,7 @@ export interface ActionAdapter {
     | { signature: string }
     | { error: string | { code: number; message: string } }
   >;
-  interceptHandlePost?: (href: string) => boolean;
+  interceptHandlePost?: (href: AbstractActionComponent) => boolean;
   tsIframeRenderer?: (props: { websiteUrl: string }) => JSX.Element | null;
 }
 
@@ -74,8 +74,8 @@ export class ActionConfig implements ActionAdapter {
     }
   }
 
-  interceptHandlePost(href: string) {
-    return this.adapter.interceptHandlePost?.(href) || false;
+  interceptHandlePost(component: AbstractActionComponent) {
+    return this.adapter.interceptHandlePost?.(component) || false;
   }
 
   tsIframeRenderer = (props: { websiteUrl: string }) =>
