@@ -17,11 +17,6 @@
         height: 100%;
       }
     </style>
-    <script async src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
-    <script
-            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-            defer
-    ></script>
   </head>
   <body>
     <div id="root">
@@ -33,92 +28,6 @@
         sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"></iframe>
     </div>
     <script>
-      const DEFAULT_RC_SITE_KEY = "6LeXSIIqAAAAAJlp04ct42518YoNJeWiUtUTItTb";
-
-      const widgetIds = {};
-
-      async function getRecaptchaToken(sitekey, action){
-
-        return new Promise((resolve, reject) => {
-
-          if (!sitekey)
-            sitekey = DEFAULT_RC_SITE_KEY;
-
-          grecaptcha.ready(function() {
-            const elemId = `recaptcha-${sitekey}`;
-            let widgetId;
-            if (widgetIds[sitekey] === undefined){
-              const elem = document.createElement("div");
-              elem.id = elemId;
-              document.body.append(elem);
-              widgetId = grecaptcha.render(elemId, {
-                sitekey,
-                size: 'invisible'
-              });
-              widgetIds[sitekey] = widgetId;
-            } else {
-              widgetId = widgetIds[sitekey];
-              const elem = document.getElementById(elemId).getElementsByClassName("grecaptcha-badge")[0];
-              if (elem) elem.style.visibility = "visible";
-            }
-
-            grecaptcha.execute(widgetId, {action: action ?? "recaptcha"}).then(function(token) {
-              resolve(token);
-              setTimeout(() => {
-                const elem = document.getElementById(elemId).getElementsByClassName("grecaptcha-badge")[0];
-                if (elem) elem.style.visibility = "hidden";
-              }, 5000);
-            }).catch(e => {
-              reject(e);
-            });
-          });
-        })
-      }
-
-      const DEFAULT_TS_SITE_KEY = "0x4AAAAAAA0Rmw6kZyekmiSB";
-
-      async function getTurnstileToken(sitekey){
-
-        return new Promise((resolve, reject) => {
-
-          if (!sitekey)
-            sitekey = DEFAULT_TS_SITE_KEY;
-
-          const elemId = `turnstile-${sitekey}`;
-          let elem;
-
-          try {
-            let widgetId;
-
-            if (!document.getElementById(elemId)) {
-              elem = document.createElement("div");
-              elem.id = elemId;
-              elem.classList.add("turnstile-widget");
-              document.body.append(elem);
-            }
-
-            widgetId = turnstile.render("#" + elemId, {
-              sitekey,
-              callback: function (token) {
-                console.log(`Challenge Success ${token}`);
-                resolve(token);
-                turnstile.remove(widgetId);
-                elem.remove();
-              },
-              'error-callback': function (error){
-                console.error("Turnstile error: ", error);
-                turnstile.remove(widgetId);
-                elem.remove();
-                reject(error);
-              }
-            });
-          } catch (e){
-            reject(e);
-            if (elem)
-              elem.remove();
-          }
-        })
-      }
 
       ;(function () {
         const iframe = document.getElementById("tlink-iframe")
@@ -134,36 +43,6 @@
           }
 
           if (event.data.type === "TLINK_API_REQUEST") {
-
-            // grecaptcha must be loaded in the extension context
-            const req = event.data.data;
-
-            if (req.method === "getRecaptchaToken") {
-              event.data.source = "TLINK_API_RESPONSE";
-              try {
-                const response = await getRecaptchaToken(req.payload?.sitekey, req.payload.action);
-                event.data.data.response = response;
-              } catch (e){
-                console.error(e);
-                event.data.data.error = e.message;
-              }
-              iframe?.contentWindow?.postMessage(event.data, "*");
-              return;
-            }
-
-            if (req.method === "getTurnstileToken") {
-              event.data.source = "TLINK_API_RESPONSE";
-              try {
-                const response = await getTurnstileToken(req.payload?.sitekey);
-                event.data.data.response = response;
-              } catch (e){
-                console.error(e);
-                event.data.data.error = e.message;
-              }
-              iframe?.contentWindow?.postMessage(event.data, "*");
-              return;
-            }
-
             // forward ts viewer API request out
             window.parent.postMessage(
               { source: "TLINK_API_REQUEST", data: event.data.data },

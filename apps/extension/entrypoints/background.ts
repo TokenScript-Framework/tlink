@@ -1,8 +1,24 @@
+import {getTwitterHandle} from "@/lib/get-twitter-handle.ts";
+
 export default defineBackground(() => {
   // never mark the function here async
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (!sender.tab || !sender.tab.id) {
       return null
+    }
+
+    if (msg.type === "TLINK_API_REQUEST"){
+
+      console.log("Handling TLink API request from background: ", msg);
+
+      handleTlinkApiRequest(msg.method, msg.payload).then((res) => {
+        sendResponse(res);
+      }).catch((err) => {
+        // TODO: Error handling
+        console.error("error handling message", err, msg);
+      })
+
+      return true;
     }
 
     let rpcMethod: string = ""
@@ -37,11 +53,59 @@ export default defineBackground(() => {
         }
       })
       .catch((err) => {
-        console.error("error handling message", err)
+        console.error("error handling message", err, msg)
       })
 
     return true
   })
+
+  async function handleTlinkApiRequest(method: string, payload: any) {
+    switch (method) {
+      case "getTurnstileToken":
+      case "getRecaptchaToken":
+        return handleTlinkApiViaTSViewerWindow(method, payload);
+    }
+  }
+
+  async function handleTlinkApiViaTSViewerWindow(method: string, payload: any){
+
+    return new Promise(async (resolve, reject) => {
+
+      let popup: WindowProxy|null;
+
+      const requestUrl = `http://localhost:3333/?viewType=tlink-api&method=${method}&payload=${encodeURIComponent(JSON.stringify(payload))}`
+
+      function handleMessage(event: MessageEvent){
+        if (event.source !== popup) {
+          return
+        }
+
+        popup!.onclose = null;
+
+        resolve(event.data);
+      }
+
+      window.addEventListener("message", handleMessage);
+
+
+      //popup = window.open(requestUrl, "", 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=550px,height=800px`');
+      popup = await chrome.windows.create({
+        url: requestUrl,
+        type: 'popup',
+        focused: true,
+        setSelfAsOpener: true
+        // incognito, top, left, ...
+      }) as WindowProxy;
+
+      if (!popup)
+        reject("Failed to open the popup window");
+
+      popup!.onclose = () => {
+        reject("Popup closed");
+      }
+
+    });
+  }
 
   async function handleWalletCommunication({
     tabId,
