@@ -50,7 +50,7 @@ async function handleTlinkApiViaTSViewerWindow(method: string, payload: any){
 
         window.addEventListener("message", handleMessage);
 
-        popup = window.open(requestUrl, "", 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=250px,height=250px`');
+        popup = popupCenter(requestUrl, "TLink Request", 400, 400);
 
         if (!popup)
             reject(new Error("Failed to open the popup window"));
@@ -62,4 +62,10 @@ async function handleTlinkApiViaTSViewerWindow(method: string, payload: any){
         }, 1000)
 
     });
+}
+
+function popupCenter (url, title, w, h) {
+    const left = (screen.width/2)-(w/2);
+    const top = (screen.height/2)-(h/2);
+    return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 }
