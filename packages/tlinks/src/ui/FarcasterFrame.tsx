@@ -44,16 +44,16 @@ export async function isFarcasterFrame(
   const params = new URLSearchParams(actionUrl.search);
   const chainId = params.get('chain');
   const contract = params.get('contract') as `0x${string}`;
+ 
+  if (!chainId || !contract) {
+    return {
+      isFrame: false,
+      scriptURI: '',
+      chain: 0
+    };
+  }
 
   try {
-    if (!chainId || !contract) {
-      return {
-        isFrame: false,
-        scriptURI: '',
-        chain: 0
-      };
-    }
-
     const scriptURI = await fetchScriptURI({
       chainId: Number(chainId),
       contract,

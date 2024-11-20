@@ -163,7 +163,7 @@ async function handleNewNode(
   } else if (isFarcasterFrameUrl(actionUrl)) {
     const chain = Number(actionUrl.searchParams.get('chain')) || 0;
     addMargin(container).replaceChildren(
-      await createFarcasterFrame({ chain, scriptURI: actionUrl.href, adapter: config })
+    createFarcasterFrame({ chain, scriptURI: actionUrl.href, adapter: config })
     );
     return
   } else if (interstitialData.isInterstitial) {
@@ -224,7 +224,7 @@ async function handleNewNode(
   let actionElement
 
   if (isFrame) {
-    actionElement = await createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
+    actionElement = createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
   } else {
     const action = await Action.fetch(
       actionApiUrlWithAccount.toString(),
