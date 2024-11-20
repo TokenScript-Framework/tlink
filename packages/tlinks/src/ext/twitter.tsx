@@ -15,19 +15,23 @@ import { ActionContainer, type StylePreset } from '../ui/index.ts';
 import { noop } from '../utils/constants.ts';
 import { isInterstitial } from '../utils/interstitial-url.ts';
 import { isTokenScriptViewerUrl } from '../utils/is-tokenscript-viewer-url.ts';
+import { isFarcasterFrameUrl } from "../utils/is-farcaster-frame-url.ts";
 import { proxify } from '../utils/proxify.ts';
 import {
   type ActionsJsonConfig,
   ActionsURLMapper,
 } from '../utils/url-mapper.ts';
+import { FarcasterContainer } from '../ui/FarcasterContainer.tsx';
+import { isFarcasterFrame } from '../ui/FarcasterFrame.tsx';
+import { NeynarContextProvider, Theme } from '@neynar/react';
 
 type ObserverSecurityLevel = SecurityLevel;
 
 export interface ObserverOptions {
   // trusted > unknown > malicious
   securityLevel:
-    | ObserverSecurityLevel
-    | Record<'websites' | 'interstitials' | 'actions', ObserverSecurityLevel>;
+  | ObserverSecurityLevel
+  | Record<'websites' | 'interstitials' | 'actions', ObserverSecurityLevel>;
   supportStrategy: ActionSupportStrategy;
 }
 
@@ -156,6 +160,12 @@ async function handleNewNode(
   if (isTokenScriptViewerUrl(actionUrl)) {
     // handle TokenScript viewer url
     actionApiUrl = actionUrl.toString();
+  } else if (isFarcasterFrameUrl(actionUrl)) {
+    const chain = Number(actionUrl.searchParams.get('chain')) || 0;
+    addMargin(container).replaceChildren(
+      await createFarcasterFrame({ chain, scriptURI: actionUrl.href, adapter: config })
+    );
+    return
   } else if (interstitialData.isInterstitial) {
     const interstitialState = getExtendedInterstitialState(
       actionUrl.toString(),
@@ -209,25 +219,34 @@ async function handleNewNode(
     );
     return;
   }
+  const { isFrame, scriptURI, chain } = await isFarcasterFrame(actionUrl);
 
-  const action = await Action.fetch(
-    actionApiUrlWithAccount.toString(),
-    config,
-    options.supportStrategy,
-  ).catch(noop);
+  let actionElement
 
-  if (!action) {
-    return;
-  }
+  if (isFrame) {
+    actionElement = await createFarcasterFrame({ chain: Number(chain), scriptURI, adapter: config });
+  } else {
+    const action = await Action.fetch(
+      actionApiUrlWithAccount.toString(),
+      config,
+      options.supportStrategy,
+    ).catch(noop);
 
-  addMargin(container).replaceChildren(
-    createAction({
+    if (!action) {
+      return;
+    }
+
+    actionElement = createAction({
       originalUrl: actionUrl,
       action,
       callbacks,
       options,
       isInterstitial: interstitialData.isInterstitial,
-    }),
+    })
+  }
+
+  addMargin(container).replaceChildren(
+    actionElement
   );
 }
 
@@ -277,6 +296,39 @@ function createAction({
         callbacks={callbacks}
         securityLevel={options.securityLevel}
       />
+    </div>,
+  );
+
+  return container;
+}
+
+function createFarcasterFrame({
+  chain,
+  scriptURI,
+  adapter
+}: {
+  chain: number;
+  scriptURI: string;
+  adapter: ActionAdapter
+}) {
+
+  const container = document.createElement('div');
+  container.className = 'dialect-action-root-container';
+  const actionRoot = createRoot(container);
+  actionRoot.render(
+    <div onClick={(e) => e.stopPropagation()}>
+      <NeynarContextProvider
+        settings={{
+          clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
+          defaultTheme: Theme.Light,
+          eventsCallbacks: {
+            onAuthSuccess: () => { },
+            onSignout() { },
+          },
+        }}
+      >
+        <FarcasterContainer chain={chain} scriptURI={scriptURI} adapter={adapter} />
+      </NeynarContextProvider>
     </div>,
   );
 

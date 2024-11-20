@@ -109,3 +109,35 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
     },
   };
 }
+
+export async function fetchScriptURI(
+  input: FetchTsDataInput,
+): Promise<string> {
+  const baseUrl = `https://api.smarttokenlabs.com/token-view/${input.chainId}/${input.contract}/script-uri`;
+  const url = new URL(baseUrl);
+
+  if (input.entry !== undefined) {
+    url.searchParams.append('entry', input.entry);
+  }
+
+  try {
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'x-stl-key':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoibXVsdGktY2hhbm5lbC1yZW5kZXJpbmctdGxpbmsiLCJpYXQiOjE3MjcxNzE1MDl9.9864en0XJbVgzACE_gHrQ00mr6fgctNRXWZ0Nex3DcQ',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.scriptURI;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    throw error;
+  }
+}
