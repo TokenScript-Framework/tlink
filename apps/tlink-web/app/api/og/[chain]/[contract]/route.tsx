@@ -37,16 +37,20 @@ export async function GET(
   const actionName = tsMetadata.actions[0].label
 
   let imgSrc: any
+  console.log('11111111')
   try {
     imgSrc = await fetch(new URL(rewriteUrlIfIpfsUrl(imgUrl))).then((res) =>
       res.arrayBuffer(),
     )
+    console.log('22222222')
   } catch (error) {
+    console.log('33333333')
     // Create a 1x1 white pixel as fallback
     const whitePixel = new Uint8Array([255, 255, 255, 255]) // RGBA white pixel
     imgSrc = whitePixel.buffer
   }
 
+  console.log('44444444')
   return new ImageResponse(
     (
       <div
