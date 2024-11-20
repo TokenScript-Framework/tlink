@@ -3,7 +3,6 @@
 import { fetchTsData } from '@repo/tlinks/utils'
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
-import sharp from 'sharp'
 
 export const runtime = 'edge'
 
@@ -44,16 +43,14 @@ export async function GET(
       res.arrayBuffer(),
     )
     console.log('22222222')
-    imgSrc = await sharp(imgSrc).toFormat('png').toBuffer()
-    console.log('33333333')
   } catch (error) {
-    console.log('44444444')
+    console.log('33333333')
     // Create a 1x1 white pixel as fallback
     const whitePixel = new Uint8Array([255, 255, 255, 255]) // RGBA white pixel
     imgSrc = whitePixel.buffer
   }
 
-  console.log('55555555')
+  console.log('44444444')
   return new ImageResponse(
     (
       <div
