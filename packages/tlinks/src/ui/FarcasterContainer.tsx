@@ -37,11 +37,11 @@ export const FarcasterContainer = ({
 
   return (
     <div className="tlink x-dark">
-      <div className=" w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action p-5">
+      <div className="w-full cursor-default overflow-hidden rounded-2xl border border-stroke-primary bg-bg-primary shadow-action p-5">
         <div className="mb-4 neynar-button-container relative flex justify-end">
           <NeynarAuthButton
             variant={SIWN_variant.FARCASTER}
-            className="flex items-center p-2"
+            className="flex items-center p-2 text-white"
           />
         </div>
         {user && farcaster && (
