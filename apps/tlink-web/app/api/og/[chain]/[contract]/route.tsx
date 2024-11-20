@@ -6,6 +6,16 @@ import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
 
+function proxifyImage(url: string): URL {
+  url = rewriteUrlIfIpfsUrl(url)
+  const proxifiedUrl = new URL(
+    `https://store-backend.smartlayer.network/tlink/proxy/image`,
+  )
+  proxifiedUrl.searchParams.set('url', url)
+  console.log('proxifiedUrl', proxifiedUrl.toString())
+  return proxifiedUrl
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { chain: string; contract: string } },
@@ -39,9 +49,7 @@ export async function GET(
   let imgSrc: any
   console.log('11111111')
   try {
-    imgSrc = await fetch(new URL(rewriteUrlIfIpfsUrl(imgUrl))).then((res) =>
-      res.arrayBuffer(),
-    )
+    imgSrc = await fetch(proxifyImage(imgUrl)).then((res) => res.arrayBuffer())
     console.log('22222222')
   } catch (error) {
     console.log('33333333')
