@@ -41,14 +41,14 @@ export function TappDetail() {
       <div className="max-w-6xl mx-auto">
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="px-0 md:p-8">
-            <div className="grid md:grid-cols-2 gap-12">
+            <div className="flex flex-col lg:flex-row gap-12">
               {/* Left Column   */}
-              <div className="">
+              <div className="flex-1">
                 <TlinkCard url={tokenScriptUrl} />
               </div>
 
               {/* Right Column - Content */}
-              <div className="flex flex-col gap-8 justify-between px-4 md:px-0">
+              <div className="flex flex-col gap-8 justify-between px-4 md:px-0 flex-1">
                 <div className="flex flex-col gap-6">
                   <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-relaxed">
                     {displayName}
@@ -60,17 +60,20 @@ export function TappDetail() {
                     <Button
                       className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700
                                  text-white font-bold flex items-center gap-2 px-8 py-6 text-lg rounded-xl
-                                 shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105"
+                                 shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105 w-full"
                       asChild
                     >
                       <Link
                         href={data.tsMetadata.meta.aboutUrl}
                         target="_blank"
+                        className="flex items-center min-w-0"
                         rel="noopener noreferrer"
                       >
-                        <Globe className="mr-2 h-6 w-6" />
-                        Visit {displayName} website
-                        <ExternalLink className="ml-2 h-4 w-4" />
+                        <Globe className="mr-2 h-6 w-6 flex-shrink-0" />
+                        <span className="truncate">
+                          Visit {displayName} website
+                        </span>
+                        <ExternalLink className="ml-2 h-4 w-4 flex-shrink-0" />
                       </Link>
                     </Button>
                   )}
