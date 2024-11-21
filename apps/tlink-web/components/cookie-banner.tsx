@@ -63,7 +63,7 @@ export const CookieBanner = () => {
         <div className="flex flex-col gap-3 whitespace-nowrap sm:flex-row">
           <Button asChild variant="outline">
             <Link
-              href="/privacy"
+              href="/privacy-policy"
               className="hover:text-stl-blue"
               aria-label="Privacy Page"
             >
