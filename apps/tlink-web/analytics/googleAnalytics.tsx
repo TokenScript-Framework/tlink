@@ -1,23 +1,12 @@
-'use client'
-
-import { usePathname, useSearchParams } from 'next/navigation'
+import { GoogleAnalyticsTrackPv } from '@/analytics/google-analytics-track-pv'
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { Suspense } from 'react'
 
 export const GoogleAnalytics = ({
   GA_MEASUREMENT_ID,
 }: {
   GA_MEASUREMENT_ID: string
 }) => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const url = pathname + searchParams.toString()
-
-    pageview(GA_MEASUREMENT_ID, url)
-  }, [pathname, searchParams, GA_MEASUREMENT_ID])
-
   return (
     <>
       <Script
@@ -43,12 +32,9 @@ export const GoogleAnalytics = ({
                 `,
         }}
       />
+      <Suspense fallback={null}>
+        <GoogleAnalyticsTrackPv GA_MEASUREMENT_ID={GA_MEASUREMENT_ID} />
+      </Suspense>
     </>
   )
-}
-
-const pageview = (GA_MEASUREMENT_ID: string, url: string) => {
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    page_path: url,
-  })
 }

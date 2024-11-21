@@ -13,9 +13,11 @@ const AGREE_COOKIE_KEY = 'sl-cookie'
 
 const initGoogleAnalytics = (cookieConsent: boolean = true) => {
   const newValue = cookieConsent ? 'granted' : 'denied'
-  window.gtag('consent', 'update', {
-    analytics_storage: newValue,
-  })
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('consent', 'update', {
+      analytics_storage: newValue,
+    })
+  }
 }
 
 export const CookieBanner = () => {
