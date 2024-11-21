@@ -5,6 +5,7 @@ import { TailwindIndicator } from '@/components/tailwind-indicator'
 import '@rainbow-me/rainbowkit/styles.css'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { Suspense } from 'react'
 import './globals.css'
 
 const geistSans = localFont({
@@ -32,7 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <GoogleAnalytics GA_MEASUREMENT_ID="G-3576R4G248" />
+        <Suspense fallback={null}>
+          <GoogleAnalytics GA_MEASUREMENT_ID="G-3576R4G248" />
+        </Suspense>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
