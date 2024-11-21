@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetchTsData } from '@repo/tlinks/utils'
+import startCase from 'lodash.startcase'
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
 
@@ -33,7 +34,7 @@ export async function GET(
   })
 
   const imgUrl = tokenMetadata?.image || tsMetadata?.meta.iconUrl || ''
-  const title = tsMetadata?.name || tokenMetadata?.name
+  const title = startCase(tsMetadata?.name || '') || tokenMetadata?.name
   const actionName = tsMetadata.actions[0].label
 
   let imgSrc: any

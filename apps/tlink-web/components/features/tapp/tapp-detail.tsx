@@ -1,10 +1,10 @@
 'use client'
-
 import { TlinkCard } from '@/components/tlink-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { handleGetTokenScriptAction } from '@/lib/handle-get-ts-action'
 import { useQuery } from '@tanstack/react-query'
+import startCase from 'lodash.startcase'
 import { Chrome, ExternalLink, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -34,6 +34,8 @@ export function TappDetail() {
     'viewer.tokenscript.org/',
   )
 
+  const displayName = startCase(data?.tsMetadata.name || '')
+
   return (
     <main className="container mx-auto px-4 py-8 relative z-10">
       <div className="max-w-6xl mx-auto">
@@ -49,7 +51,7 @@ export function TappDetail() {
               <div className="flex flex-col gap-8 justify-between px-4 md:px-0">
                 <div className="flex flex-col gap-6">
                   <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-relaxed">
-                    {data?.tsMetadata.name}
+                    {displayName}
                   </h1>
                   <p className="text-gray-300 text-lg leading-relaxed">
                     {data?.tsMetadata.meta.description}
@@ -67,7 +69,7 @@ export function TappDetail() {
                         rel="noopener noreferrer"
                       >
                         <Globe className="mr-2 h-6 w-6" />
-                        Visit {data?.tsMetadata.name} website
+                        Visit {displayName} website
                         <ExternalLink className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
