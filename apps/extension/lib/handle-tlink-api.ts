@@ -10,11 +10,6 @@ export async function handleTlinkApiRequest(method: string, payload: any) {
       }
     case "getTurnstileToken":
     case "getRecaptchaToken":
-     /*return await chrome.runtime.sendMessage({
-        type: "TLINK_API_REQUEST",
-        method,
-        payload
-      })*/
       return await handleTlinkApiViaTSViewerWindow(method, payload);
   }
 
