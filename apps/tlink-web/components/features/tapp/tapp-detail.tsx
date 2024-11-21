@@ -2,9 +2,9 @@
 import { TlinkCard } from '@/components/tlink-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { formatTokenScriptTitle } from '@/lib/format-tokenscript-title'
 import { handleGetTokenScriptAction } from '@/lib/handle-get-ts-action'
 import { useQuery } from '@tanstack/react-query'
-import startCase from 'lodash.startcase'
 import { Chrome, ExternalLink, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -34,7 +34,7 @@ export function TappDetail() {
     'viewer.tokenscript.org/',
   )
 
-  const displayName = startCase(data?.tsMetadata.name || '')
+  const displayName = formatTokenScriptTitle(data?.tsMetadata.name || '')
 
   return (
     <main className="container mx-auto px-4 py-8 relative z-10">
