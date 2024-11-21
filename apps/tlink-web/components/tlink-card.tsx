@@ -65,14 +65,15 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
       interceptHandlePost: (component: AbstractActionComponent) => {
         if (isTokenScriptViewerUrl(component.href)) {
           window.open(TLINK_EXTENSION_URL, '_blank')
-          if (!address) {
-            openConnectModal?.()
-          } else {
-            setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
-            setDAppUrl(component.href)
-            iframePopupRef.current?.setOpen(true)
-          }
           return true
+          // if (!address) {
+          //   openConnectModal?.()
+          // } else {
+          //   setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
+          //   setDAppUrl(component.href)
+          //   iframePopupRef.current?.setOpen(true)
+          // }
+          // return true
         } else {
           return false
         }
