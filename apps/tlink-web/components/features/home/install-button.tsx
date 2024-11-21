@@ -1,9 +1,10 @@
+import { TLINK_EXTENSION_URL } from '@/lib/constants'
 import { Chrome } from 'lucide-react'
 
 export function InstallButton() {
   return (
     <a
-      href="https://chromewebstore.google.com/detail/tlink/eblnpllcmmepkmpaalggpibindkplcjj"
+      href={TLINK_EXTENSION_URL}
       target="_blank"
       className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-400 to-cyan-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
     >

@@ -3,25 +3,29 @@ import { IframePopup, IframePopupRef } from '@/components/iframe-popup'
 import { RendererTokenScriptIframe } from '@/components/RendererTokenScriptIframe'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRpcMessage } from '@/hooks/use-rpc-message'
+import { TLINK_EXTENSION_URL } from '@/lib/constants'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import {
+  AbstractActionComponent,
   ActionConfig,
   ActionContainer,
   isTokenScriptViewerUrl,
   setProxyUrl,
+  TokenscriptCardMetadata,
   useAction,
 } from '@repo/tlinks'
 import { Twitter } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
-import {AbstractActionComponent, TokenscriptCardMetadata} from "@repo/tlinks";
 
 export const TlinkCard = (props: { url: string; twitter?: string }) => {
   const { openConnectModal } = useConnectModal()
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
   const [dAppUrl, setDAppUrl] = useState('')
-  const [tsMetadata, setTsMetadata] = useState<TokenscriptCardMetadata|undefined>(undefined)
+  const [tsMetadata, setTsMetadata] = useState<
+    TokenscriptCardMetadata | undefined
+  >(undefined)
   const { handleRpcMessage } = useRpcMessage()
   const iframePopupRef = useRef<IframePopupRef>(null)
 
@@ -60,6 +64,7 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
       },
       interceptHandlePost: (component: AbstractActionComponent) => {
         if (isTokenScriptViewerUrl(component.href)) {
+          window.open(TLINK_EXTENSION_URL, '_blank')
           if (!address) {
             openConnectModal?.()
           } else {
@@ -84,7 +89,11 @@ export const TlinkCard = (props: { url: string; twitter?: string }) => {
         websiteUrl={props.url}
         websiteText={props.url}
       />
-      <IframePopup ref={iframePopupRef} dAppUrl={dAppUrl} tsMetadata={tsMetadata} />
+      <IframePopup
+        ref={iframePopupRef}
+        dAppUrl={dAppUrl}
+        tsMetadata={tsMetadata}
+      />
       {props.twitter && (
         <a
           href={props.twitter}

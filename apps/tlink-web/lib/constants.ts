@@ -23,3 +23,6 @@ export const tlinks = [
     link: 'https://viewer.tokenscript.org/?chain=8453&contract=0x80a6da00140c4798baba3b3f362839b6f87b6fc6&tokenId=21',
   },
 ]
+
+export const TLINK_EXTENSION_URL =
+  'https://chromewebstore.google.com/detail/tlink/eblnpllcmmepkmpaalggpibindkplcjj'

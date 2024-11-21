@@ -2,6 +2,7 @@
 import { TlinkCard } from '@/components/tlink-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { TLINK_EXTENSION_URL } from '@/lib/constants'
 import { formatTokenScriptTitle } from '@/lib/format-tokenscript-title'
 import { handleGetTokenScriptAction } from '@/lib/handle-get-ts-action'
 import { useQuery } from '@tanstack/react-query'
@@ -94,10 +95,7 @@ export function TappDetail() {
                                  shadow-lg shadow-blue-500/25 transition-all duration-200 hover:scale-105"
                     asChild
                   >
-                    <Link
-                      href="https://chromewebstore.google.com/detail/tlink/eblnpllcmmepkmpaalggpibindkplcjj"
-                      target="_blank"
-                    >
+                    <Link href={TLINK_EXTENSION_URL} target="_blank">
                       <Chrome className="w-6 h-6" />
                       Install Extension
                     </Link>
