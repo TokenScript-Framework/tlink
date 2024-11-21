@@ -4,6 +4,7 @@ import "@repo/tlinks/index.css"
 import { useEffect, useState } from "react"
 import "~/assets/style.css"
 import {AbstractActionComponent, TokenscriptCardMetadata} from "@repo/tlinks";
+import {openTsPopupWindow} from "@/lib/open-ts-popup-window";
 
 export const TwitterObserver = () => {
   const [dAppUrl, setDAppUrl] = useState("")
@@ -18,11 +19,19 @@ export const TwitterObserver = () => {
         connect: () => chrome.runtime.sendMessage({ type: "connect" }),
         getConnectedAccount: () =>
           chrome.runtime.sendMessage({ type: "getConnectedAccount" }),
-        interceptHandlePost: (component: AbstractActionComponent) => {
+        interceptHandlePost: async (component: AbstractActionComponent) => {
           if (isTokenScriptViewerUrl(component.href)) {
-            setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
-            setDAppUrl(component.href)
-            iframePopupRef.current?.setOpen(true)
+
+            const options = await chrome.storage.sync.get({ use_popup_window: false });
+
+            if (options.use_popup_window){
+                openTsPopupWindow(component.href, component.tsMetadata);
+            } else {
+                setTsMetadata(component.tsMetadata as TokenscriptCardMetadata)
+                setDAppUrl(component.href)
+                iframePopupRef.current?.setOpen(true)
+            }
+
             return true
           } else {
             return false
