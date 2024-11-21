@@ -4,6 +4,7 @@ import {
   base,
   baseSepolia,
   mainnet,
+  opBNB,
   optimism,
   polygon,
   sepolia,
@@ -12,6 +13,15 @@ import {
 export const config = getDefaultConfig({
   appName: 'Tlink',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-  chains: [mainnet, polygon, optimism, arbitrum, base, sepolia, baseSepolia],
+  chains: [
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    base,
+    sepolia,
+    baseSepolia,
+    opBNB,
+  ],
   ssr: true, // If your dApp uses server side rendering (SSR)
 })
