@@ -1,3 +1,5 @@
+import { GoogleAnalytics } from '@/analytics/googleAnalytics'
+import { CookieBanner } from '@/components/cookie-banner'
 import { Providers } from '@/components/providers'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -29,10 +31,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <GoogleAnalytics GA_MEASUREMENT_ID="G-3576R4G248" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <CookieBanner />
+        </Providers>
         <TailwindIndicator />
       </body>
     </html>
