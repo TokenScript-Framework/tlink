@@ -1,4 +1,5 @@
 import { getTwitterHandle } from "@/lib/get-twitter-handle"
+import {TS_VIEWER_URL} from "@repo/tlinks/utils";
 
 export async function handleTlinkApiRequest(method: string, payload: any) {
   switch (method) {
@@ -23,7 +24,7 @@ async function handleTlinkApiViaTSViewerWindow(method: string, payload: any){
         let popup: WindowProxy|null;
         let closedTimer;
 
-        const requestUrl = `http://localhost:3333/?viewType=tlink-api&method=${method}&payload=${encodeURIComponent(JSON.stringify(payload))}`
+        const requestUrl = `${TS_VIEWER_URL}?viewType=tlink-api&method=${method}&payload=${encodeURIComponent(JSON.stringify(payload))}`
 
         function handleMessage(event: MessageEvent){
 
@@ -59,7 +60,7 @@ async function handleTlinkApiViaTSViewerWindow(method: string, payload: any){
     });
 }
 
-function popupCenter (url, title, w, h) {
+function popupCenter(url: string, title: string, w: number, h: number) {
     const left = (screen.width/2)-(w/2);
     const top = (screen.height/2)-(h/2);
     return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);

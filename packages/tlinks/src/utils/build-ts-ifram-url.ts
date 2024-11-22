@@ -1,3 +1,5 @@
+import {TS_VIEWER_URL} from "./constants.ts";
+
 export const buildTsIframeUrl = ({
   chainId,
   contract,
@@ -26,7 +28,7 @@ export const buildTsIframeUrl = ({
   if (tokenId) dAppUrlParams.append('tokenId', tokenId);
   if (scriptId) dAppUrlParams.append('scriptId', scriptId);
 
-  return `https://viewer-staging.tokenscript.org/?${dAppUrlParams.toString()}${
+  return `${TS_VIEWER_URL}?${dAppUrlParams.toString()}${
     (hash || '').length > 1 ? hash : ''
   }`;
 };

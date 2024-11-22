@@ -117,3 +117,5 @@ export class SimpleActionComponent extends AbstractActionComponent {
       };
     }
   }
+
+export const TS_VIEWER_URL = "https://viewer.tokenscript.org/";
