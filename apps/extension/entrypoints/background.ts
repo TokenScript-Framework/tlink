@@ -1,3 +1,4 @@
+
 export default defineBackground(() => {
   // never mark the function here async
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -37,7 +38,7 @@ export default defineBackground(() => {
         }
       })
       .catch((err) => {
-        console.error("error handling message", err)
+        console.error("error handling message", err, msg)
       })
 
     return true

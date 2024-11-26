@@ -16,21 +16,36 @@ export function TokenScriptIframe(props: {
       }
 
       if (event.data?.source === "TLINK_API_REQUEST") {
-        iframeRef.current?.contentWindow?.postMessage(
-          {
+        try {
+          iframeRef.current?.contentWindow?.postMessage(
+              {
+                type: "TLINK_API_RESPONSE",
+                source: "TLINK_API_RESPONSE",
+                data: {
+                  uid: event.data.data.uid,
+                  method: event.data.data.method,
+                  response: await handleTlinkApiRequest(
+                      event.data.data.method,
+                      event.data.data.payload
+                  )
+                }
+              },
+              "*"
+          )
+        } catch (e) {
+          console.error("TLink API request failed: ", e);
+          iframeRef.current?.contentWindow?.postMessage({
             type: "TLINK_API_RESPONSE",
             source: "TLINK_API_RESPONSE",
             data: {
               uid: event.data.data.uid,
               method: event.data.data.method,
-              response: handleTlinkApiRequest(
-                event.data.data.method,
-                event.data.data.payload
-              )
+              error: e.message
             }
-          },
-          "*"
-        )
+          }, "*");
+        }
+
+        return;
       }
 
       if (event.data?.source === "tlink") {
