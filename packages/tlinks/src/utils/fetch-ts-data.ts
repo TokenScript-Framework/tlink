@@ -4,6 +4,9 @@ import { buildTsIframeUrl } from './build-ts-ifram-url';
 type FetchTsDataInput = {
   chainId: number;
   contract: string;
+  // This is used to specify the contract to use in the specified TokenScript
+  // If not specified the contract is selected based on the provided chain & contract
+  originId?: string;
   tokenId?: string;
   entry?: string;
   scriptId?: string;
@@ -100,6 +103,7 @@ export async function fetchTlinkData(input: FetchTsDataInput) {
         href: buildTsIframeUrl({
           chainId: input.chainId.toString(),
           contract: input.contract,
+          originId: input.originId,
           card: name,
           tokenId: input.tokenId,
           scriptId: input.scriptId,

@@ -16,6 +16,7 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
     const tokenId = params.get('tokenId') || hashParams.get('tokenId')
     const card = params.get('card') || hashParams.get('card')
     const scriptId = params.get('scriptId') || hashParams.get('scriptId')
+    const originId = params.get("originId") || hashParams.get("originId")
 
     const dAppUrl = buildTsIframeUrl({
       chainId,
@@ -23,6 +24,7 @@ export const RendererTokenScriptIframe = (props: { websiteUrl: string }) => {
       card,
       tokenId,
       scriptId,
+      originId,
       hash: url.hash,
     })
 

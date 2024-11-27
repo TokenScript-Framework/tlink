@@ -319,7 +319,7 @@ function createFarcasterFrame({
     <div onClick={(e) => e.stopPropagation()}>
       <NeynarContextProvider
         settings={{
-          clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034" || "",
+          clientId: "da8933d8-14f9-4c77-a5bc-dec0a855f034",
           defaultTheme: Theme.Light,
           eventsCallbacks: {
             onAuthSuccess: () => { },

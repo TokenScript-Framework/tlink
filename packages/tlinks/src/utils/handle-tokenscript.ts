@@ -15,6 +15,7 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   const scriptId =
     params.get('scriptId') || hashParams.get('scriptId') || undefined; // 7738_2
   const scriptIndex = scriptId ? scriptId.split('_')[1] : undefined; // get the index for example 2
+  const originId = params.get('originId') || hashParams.get('originId') || undefined;
 
   if (!chainId || !contract) {
     throw new Error('invalid tokenscript link');
@@ -23,6 +24,7 @@ export const handleGetTokenScriptAction = async (actionUrl: URL) => {
   return fetchTlinkData({
     chainId: Number(chainId),
     contract,
+    originId,
     tokenId,
     entry: scriptIndex || undefined,
     scriptId,
